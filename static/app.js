@@ -82,15 +82,22 @@ function updateProgress(percentage, message) {
         progressLog.appendChild(logEntry);
         progressLog.scrollTop = progressLog.scrollHeight;
     }
+    
+    // Log to console as fallback
+    if (message) {
+        console.log(`[${new Date().toLocaleTimeString()}] ${message}`);
+    }
 }
 
 function updateRequirementStatus(requirementId, status) {
     const row = document.querySelector(`tr:nth-child(${requirementId})`);
     if (row) {
         const statusCell = row.querySelector('td:nth-child(3)');
-        const statusClass = status === 'completed' ? 'bg-success' : status === 'in-progress' ? 'bg-warning' : 'bg-secondary';
-        const statusText = status === 'completed' ? 'Completed' : status === 'in-progress' ? 'In Progress' : 'Pending';
-        statusCell.innerHTML = `<span class="badge ${statusClass}">${statusText}</span>`;
+        if (statusCell) {
+            const statusClass = status === 'completed' ? 'bg-success' : status === 'in-progress' ? 'bg-warning' : 'bg-secondary';
+            const statusText = status === 'completed' ? 'Completed' : status === 'in-progress' ? 'In Progress' : 'Pending';
+            statusCell.innerHTML = `<span class="badge ${statusClass}">${statusText}</span>`;
+        }
     }
 }
 
