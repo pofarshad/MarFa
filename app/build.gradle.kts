@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
     id("org.owasp.dependencycheck") version "8.4.2"
     id("jacoco")
+    id("com.google.gms.google-services") version "4.4.0"
+    id("com.google.firebase.crashlytics") version "2.9.9"
 }
 
 android {
@@ -26,6 +28,15 @@ android {
             applicationIdSuffix = ".debug"
             // LeakCanary for memory leak detection
             isMinifyEnabled = false
+        }
+        
+        create("beta") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".beta"
+            versionNameSuffix = "-beta"
+            isDebuggable = false
+            // Enable Crashlytics for beta builds
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "true"
         }
         
         release {
@@ -119,6 +130,12 @@ dependencies {
     
     // GFW Knocker module
     implementation(project(":gfwknocker"))
+    
+    // Firebase Analytics & Crashlytics
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-config-ktx")
     
     // Memory leak detection (debug only)
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")

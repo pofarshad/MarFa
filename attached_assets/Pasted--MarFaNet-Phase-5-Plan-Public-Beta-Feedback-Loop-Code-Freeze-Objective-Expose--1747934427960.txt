@@ -1,0 +1,94 @@
+# **MarFaNet — Phase 5 Plan: Public Beta, Feedback Loop & Code Freeze**
+
+> **Objective:** Expose *MarFaNet 1.0.0‑rc1* to a controlled group of real users, collect telemetry & qualitative feedback, resolve any critical/blocking issues, then enter a strict **feature‑freeze** in preparation for General Availability (GA).
+
+---
+
+## 1 • Beta Distribution Strategy
+
+| Track             | Platform                                | Audience Size                      | Purpose                                                                |
+| ----------------- | --------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------- |
+| **Internal Test** | Google Play Console (20 users)          | Core devs & QA                     | Smoke verification of Play services, in‑app billing stubs, update flow |
+| **Closed Beta**   | Firebase App Distribution (500 users)   | Enthusiast community & power users | Real‑world network diversity & crash telemetry                         |
+| **Public Beta**   | GitHub Releases + direct APK (unlisted) | Unlimited                          | Broader latency & device coverage without Play restrictions            |
+
+### 1.1 Prerequisites
+
+* **Google Play Package Name**: `net.marfanet.android`
+* **Signing Keystore** already configured in CI.
+* **Firebase Crashlytics & Analytics** Gradle plugin added under *debug* & *release* flavours.
+
+---
+
+## 2 • Telemetry & Feedback Channels
+
+| Channel                 | Instrumentation                                      | Data Collected             | Owner |
+| ----------------------- | ---------------------------------------------------- | -------------------------- | ----- |
+| **Crashlytics**         | SDK + custom keys (Core = Xray version, Device API)  | Crashes, ANRs              | Core  |
+| **App Feedback Dialog** | In‑app *Send Feedback* (sends to GitHub Discussions) | User comments, screenshots | UX    |
+| **Performance Metrics** | Perfetto traces uploaded on opt‑in                   | CPU/RAM/Battery            | Perf  |
+| **GitHub Issues**       | Beta label `v1.0.0-beta`                             | Bug reports                | All   |
+
+---
+
+## 3 • Bug Triage & Resolution Workflow
+
+1. **Severity Definition**
+
+   * **Blocker** — data loss, app crash on launch, security flaw.
+   * **Major** — feature malfunction, frequent crashes.
+   * **Minor** — cosmetic, low‑impact glitches.
+2. **SLA**
+
+   * Blocker: fix < 24 h.
+   * Major: fix < 48 h.
+   * Minor: backlog for 1.0.1.
+3. **Branching**
+
+   * `release/1.0.0` — frozen; only cherry‑picked hotfixes.
+   * `hotfix/blocker‑#123` — PR into release branch.
+4. **RC Tags**
+
+   * `v1.0.0-rc2`, `rc3`… tagged after each blocker/major fix.
+
+---
+
+## 4 • Code Freeze Rules
+
+* **Date:** *T + 7 days* from Beta launch.
+* No new features after freeze; commits must reference a GitHub Issue ID labelled *bug* or *docs*.
+* CI gates remain identical; additionally require 0 new warnings in lint/detekt.
+
+---
+
+## 5 • Final Compliance & Audit Checklist (pre‑GA)
+
+| Area              | Tool                          | Pass Criteria                                           |
+| ----------------- | ----------------------------- | ------------------------------------------------------- |
+| **Security**      | OWASP DC, MobSF               | 0 Critical/High CVEs; MobSF score ≥ 90                  |
+| **License**       | Gradle‑Licensee + SPDX report | All dependencies GPL‑compatible; reports archived       |
+| **Accessibility** | Accessibility Scanner         | No critical contrast/label issues                       |
+| **Privacy**       | Exodus report                 | Tracker count ≤ 1 (Crashlytics); privacy policy updated |
+
+---
+
+## 6 • Timeline (calendar days)
+
+| Day | Activity                                                                     |
+| --- | ---------------------------------------------------------------------------- |
+| 0   | Publish *v1.0.0‑rc1* to Internal & Closed Beta; open GitHub discussion board |
+| 1‑3 | Collect telemetry; triage blockers/major issues                              |
+| 4   | Tag *v1.0.0‑rc2* with hotfixes; push to Closed Beta & Public Beta            |
+| 5‑6 | Monitor metrics; ≥ 95 % crash‑free sessions required                         |
+| 7   | **Code Freeze**; final audits & compliance checks                            |
+
+---
+
+## 7 • Exit Criteria — Phase 5 Complete
+
+1. Crash‑free sessions ≥ 95 % on Firebase.
+2. ≤ 1 open Blocker & ≤ 2 open Major issues.
+3. All compliance checks pass; reports archived under `/docs/audits/`.
+4. Dashboard Phase 5 progress = 100 %.
+
+> **Upon passing exit criteria, Phase 6 (GA Launch) will be scheduled: tag `v1.0.0`, merge `release/1.0.0` → `main`, publish source + APK, and announce release.**
