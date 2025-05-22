@@ -1,0 +1,43 @@
+##[debug]Starting: Set up job
+Current runner version: '2.324.0'
+Runner Image Provisioner
+Operating System
+Runner Image
+GITHUB_TOKEN Permissions
+Secret source: Actions
+##[debug]Primary repository: pofarshad/MarFa
+Prepare workflow directory
+##[debug]Creating pipeline directory: '/home/runner/work/MarFa'
+##[debug]Creating workspace directory: '/home/runner/work/MarFa/MarFa'
+##[debug]Update context data
+##[debug]Evaluating job-level environment variables
+##[debug]Evaluating job container
+##[debug]Evaluating job service containers
+##[debug]Evaluating job defaults
+Prepare all required actions
+Getting action download info
+Download immutable action package 'actions/checkout@v4'
+##[debug]Copied action archive '/opt/actionarchivecache/actions_checkout/11bd71901bbe5b1630ceea73d27597364c9af683.tar.gz' to '/home/runner/work/_actions/_temp_e5604e8e-553b-4206-8eef-3e4c3715daf4/19778115-9562-4bcf-9efa-a102f280e397.tar.gz'
+##[debug]Unwrap 'actions-checkout-11bd719' to '/home/runner/work/_actions/actions/checkout/v4'
+##[debug]Archive '/home/runner/work/_actions/_temp_e5604e8e-553b-4206-8eef-3e4c3715daf4/19778115-9562-4bcf-9efa-a102f280e397.tar.gz' has been unzipped into '/home/runner/work/_actions/actions/checkout/v4'.
+Download immutable action package 'actions/setup-java@v4'
+##[debug]Download 'https://api.github.com/internal/immutable-actions/actions/setup-java/download/sha256:f19074bc6e03e0cc5389bc939c3f552c56f3dc75fb76d68353fa9344584fda1f?x-ghcr-actor-id=988526997&x-ghcr-actor-type=repository&x-ghcr-alg=hmac-sha256&x-ghcr-date=2025-05-22T21:00:55Z&x-ghcr-expires=10m0s&x-ghcr-host=ghcr.io&***
+##[debug]Unwrap 'action' to '/home/runner/work/_actions/actions/setup-java/v4'
+##[debug]Archive '/home/runner/work/_actions/_temp_14954ba7-dca6-451f-8c5a-02ffb7bdec2b/0eafd376-159e-4d86-91e9-8083c8ab3b55.tar.gz' has been unzipped into '/home/runner/work/_actions/actions/setup-java/v4'.
+Download action repository 'android-actions/setup-android@v3' (SHA:9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407)
+##[debug]Download 'https://api.github.com/repos/android-actions/setup-android/tarball/9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407' to '/home/runner/work/_actions/_temp_df8494bc-1c3b-4c66-9cbc-d3ef78628248/8a7b6075-538c-46a5-9968-bf084598f41b.tar.gz'
+##[debug]Unwrap 'android-actions-setup-android-9fc6c4e' to '/home/runner/work/_actions/android-actions/setup-android/v3'
+##[debug]Archive '/home/runner/work/_actions/_temp_df8494bc-1c3b-4c66-9cbc-d3ef78628248/8a7b6075-538c-46a5-9968-bf084598f41b.tar.gz' has been unzipped into '/home/runner/work/_actions/android-actions/setup-android/v3'.
+Download immutable action package 'actions/cache@v3'
+  Version: 3.4.3
+  Digest: sha256:912f76fb11db1ca09ae23248a39eb86e79ea0f0f6e183d9cb96d0b778eeea4e2
+  Source commit SHA: 2f8e54208210a422b2efd51efaa6bd6d7ca8920f
+##[debug]Copied action archive '/opt/actionarchivecache/actions_cache/2f8e54208210a422b2efd51efaa6bd6d7ca8920f.tar.gz' to '/home/runner/work/_actions/_temp_f11cf61b-f3ea-4c25-86df-d9d3f52b45be/bb0fecd5-da32-4f5e-ad39-5fdcd61b960e.tar.gz'
+##[debug]Unwrap 'actions-cache-2f8e542' to '/home/runner/work/_actions/actions/cache/v3'
+##[debug]Archive '/home/runner/work/_actions/_temp_f11cf61b-f3ea-4c25-86df-d9d3f52b45be/bb0fecd5-da32-4f5e-ad39-5fdcd61b960e.tar.gz' has been unzipped into '/home/runner/work/_actions/actions/cache/v3'.
+Error: Missing download info for actions/upload-artifact@v3
+##[debug]System.Exception: Missing download info for actions/upload-artifact@v3
+##[debug]   at GitHub.Runner.Worker.ActionManager.PrepareActionsRecursiveAsync(IExecutionContext executionContext, PrepareActionsState state, IEnumerable`1 actions, Int32 depth, Guid parentStepId)
+##[debug]   at GitHub.Runner.Worker.ActionManager.PrepareActionsAsync(IExecutionContext executionContext, IEnumerable`1 steps, Guid rootStepId)
+##[debug]   at GitHub.Runner.Worker.JobExtension.InitializeJob(IExecutionContext jobContext, AgentJobRequestMessage message)
+##[debug]Finishing: Set up job
