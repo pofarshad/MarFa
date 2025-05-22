@@ -180,6 +180,13 @@ async function generateSpecs() {
         
         updateProgress(60, 'Generating documentation...');
         
+        updateProgress(60, 'Processing responses...');
+        
+        const xrayData = await xrayResponse.json();
+        const rebrandData = await rebrandResponse.json();
+        
+        updateProgress(70, 'Generating documentation...');
+        
         // Generate documentation
         const docsResponse = await fetch('/api/generate-documentation', {
             method: 'POST',
@@ -188,16 +195,14 @@ async function generateSpecs() {
             },
             body: JSON.stringify({
                 specs_data: {
-                    xray: await xrayResponse.json(),
-                    rebranding: await rebrandResponse.json()
+                    xray: xrayData,
+                    rebranding: rebrandData
                 }
             })
         });
         
         updateProgress(80, 'Finalizing specifications...');
         
-        const xrayData = await xrayResponse.json();
-        const rebrandData = await rebrandResponse.json();
         const docsData = await docsResponse.json();
         
         if (xrayData.success && rebrandData.success && docsData.success) {

@@ -1,0 +1,710 @@
+{
+  "metadata": {
+    "generated_at": "2025-05-22T19:42:15.544977",
+    "version": "1.0.0",
+    "source_brand": "Hiddify",
+    "target_brand": "MarFaNet",
+    "source_package": "com.hiddify.hiddify",
+    "target_package": "net.marfanet.android"
+  },
+  "package_changes": {
+    "package_mapping": {
+      "com.hiddify.hiddify": "net.marfanet.android",
+      "com.hiddify.hiddify.core": "net.marfanet.android.core",
+      "com.hiddify.hiddify.service": "net.marfanet.android.service",
+      "com.hiddify.hiddify.ui": "net.marfanet.android.ui",
+      "com.hiddify.hiddify.data": "net.marfanet.android.data",
+      "com.hiddify.hiddify.util": "net.marfanet.android.util",
+      "com.hiddify.hiddify.config": "net.marfanet.android.config"
+    },
+    "directory_structure": {
+      "before": "app/src/main/kotlin/com/hiddify/hiddify/",
+      "after": "app/src/main/kotlin/net/marfanet/android/",
+      "subdirectories": [
+        "core/",
+        "service/",
+        "ui/",
+        "data/",
+        "util/",
+        "config/",
+        "xray/"
+      ]
+    },
+    "migration_steps": [
+      {
+        "step": 1,
+        "action": "Create new package directory structure",
+        "command": "mkdir -p app/src/main/kotlin/net/marfanet/android/{core,service,ui,data,util,config,xray}"
+      },
+      {
+        "step": 2,
+        "action": "Move Kotlin files to new package structure",
+        "script": "move_kotlin_files.sh"
+      },
+      {
+        "step": 3,
+        "action": "Update package declarations in all Kotlin files",
+        "regex_replace": {
+          "pattern": "package com\\.hiddify\\.hiddify",
+          "replacement": "package net.marfanet.android"
+        }
+      },
+      {
+        "step": 4,
+        "action": "Update import statements",
+        "regex_replace": {
+          "pattern": "import com\\.hiddify\\.hiddify",
+          "replacement": "import net.marfanet.android"
+        }
+      }
+    ]
+  },
+  "application_id": {
+    "gradle_config": {
+      "file": "app/build.gradle",
+      "changes": [
+        {
+          "property": "applicationId",
+          "old_value": "com.hiddify.hiddify",
+          "new_value": "net.marfanet.android",
+          "location": "android.defaultConfig"
+        },
+        {
+          "property": "namespace",
+          "old_value": "com.hiddify.hiddify",
+          "new_value": "net.marfanet.android",
+          "location": "android"
+        }
+      ]
+    },
+    "manifest_updates": {
+      "file": "app/src/main/AndroidManifest.xml",
+      "changes": [
+        {
+          "attribute": "package",
+          "old_value": "com.hiddify.hiddify",
+          "new_value": "net.marfanet.android"
+        }
+      ]
+    },
+    "signing_config": {
+      "keystore_alias": "marfanet-release",
+      "keystore_file": "marfanet-release.keystore",
+      "considerations": [
+        "Generate new signing key for MarFaNet",
+        "Update CI/CD pipeline with new keystore",
+        "Plan app update strategy for existing users"
+      ]
+    }
+  },
+  "string_resources": {
+    "string_mappings": {
+      "app_name": {
+        "old_value": "Hiddify",
+        "new_value": "MarFaNet",
+        "files": [
+          "app/src/main/res/values/strings.xml"
+        ]
+      },
+      "app_full_name": {
+        "old_value": "HiddifyNG",
+        "new_value": "MarFaNet",
+        "files": [
+          "app/src/main/res/values/strings.xml"
+        ]
+      },
+      "app_description": {
+        "old_value": "Hiddify VPN Client",
+        "new_value": "MarFaNet VPN Client",
+        "files": [
+          "app/src/main/res/values/strings.xml"
+        ]
+      },
+      "service_name": {
+        "old_value": "Hiddify VPN Service",
+        "new_value": "MarFaNet VPN Service",
+        "files": [
+          "app/src/main/res/values/strings.xml"
+        ]
+      }
+    },
+    "localization_files": [
+      {
+        "language": "en",
+        "file": "app/src/main/res/values/strings.xml",
+        "strings_to_update": [
+          "app_name",
+          "app_description",
+          "notification_title",
+          "about_app_title",
+          "copyright_text"
+        ]
+      },
+      {
+        "language": "fa",
+        "file": "app/src/main/res/values-fa/strings.xml",
+        "strings_to_update": [
+          "app_name",
+          "app_description",
+          "notification_title",
+          "about_app_title"
+        ]
+      }
+    ],
+    "update_script": {
+      "script_name": "update_strings.py",
+      "description": "Automated script to update all string resources",
+      "functionality": [
+        "Parse all strings.xml files",
+        "Replace brand-specific strings",
+        "Maintain translation consistency",
+        "Generate change report"
+      ]
+    }
+  },
+  "icon_specifications": {
+    "icon_requirements": {
+      "launcher_icon": {
+        "name": "ic_launcher",
+        "formats": [
+          "PNG",
+          "Vector (XML)"
+        ],
+        "densities": {
+          "mdpi": "48x48px",
+          "hdpi": "72x72px",
+          "xhdpi": "96x96px",
+          "xxhdpi": "144x144px",
+          "xxxhdpi": "192x192px"
+        },
+        "adaptive_icon": {
+          "foreground": "ic_launcher_foreground.xml",
+          "background": "ic_launcher_background.xml",
+          "size": "108x108dp (with 72x72dp safe zone)"
+        }
+      },
+      "notification_icon": {
+        "name": "ic_notification",
+        "format": "Vector XML",
+        "color": "White (#FFFFFF)",
+        "style": "Simple, monochrome",
+        "size": "24x24dp"
+      }
+    },
+    "design_guidelines": {
+      "brand_colors": {
+        "primary": "#2196F3",
+        "primary_dark": "#1976D2",
+        "accent": "#03DAC6",
+        "background": "#FFFFFF",
+        "surface": "#F5F5F5"
+      },
+      "design_principles": [
+        "Clean and modern design",
+        "Network/connectivity theme",
+        "Professional appearance",
+        "High contrast for visibility"
+      ],
+      "logo_elements": [
+        "Network nodes or connection lines",
+        "Shield or security symbol",
+        "Globe or connectivity icon",
+        "Modern typography for 'MarFaNet'"
+      ]
+    },
+    "file_locations": {
+      "launcher_icons": [
+        "app/src/main/res/mipmap-mdpi/ic_launcher.png",
+        "app/src/main/res/mipmap-hdpi/ic_launcher.png",
+        "app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+        "app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+        "app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
+      ],
+      "adaptive_icons": [
+        "app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml",
+        "app/src/main/res/drawable/ic_launcher_foreground.xml",
+        "app/src/main/res/drawable/ic_launcher_background.xml"
+      ],
+      "notification_icons": [
+        "app/src/main/res/drawable/ic_notification.xml"
+      ]
+    },
+    "creation_tools": [
+      "Android Studio Image Asset Studio",
+      "Adobe Illustrator/Photoshop",
+      "Figma or Sketch",
+      "Online icon generators"
+    ]
+  },
+  "manifest_changes": {
+    "manifest_updates": {
+      "file": "app/src/main/AndroidManifest.xml",
+      "changes": [
+        {
+          "element": "manifest",
+          "attribute": "package",
+          "old_value": "com.hiddify.hiddify",
+          "new_value": "net.marfanet.android"
+        },
+        {
+          "element": "application",
+          "attribute": "android:label",
+          "old_value": "@string/app_name",
+          "new_value": "@string/app_name",
+          "note": "Update referenced string resource"
+        },
+        {
+          "element": "application",
+          "attribute": "android:icon",
+          "old_value": "@mipmap/ic_launcher",
+          "new_value": "@mipmap/ic_launcher",
+          "note": "Replace icon resources"
+        }
+      ]
+    },
+    "service_declarations": {
+      "vpn_service": {
+        "old_name": "com.hiddify.hiddify.service.HiddifyVpnService",
+        "new_name": "net.marfanet.android.service.MarFaNetVpnService",
+        "label_update": "MarFaNet VPN Service"
+      },
+      "tile_service": {
+        "old_name": "com.hiddify.hiddify.service.QuickToggleService",
+        "new_name": "net.marfanet.android.service.QuickToggleService",
+        "label_update": "MarFaNet Quick Toggle"
+      }
+    },
+    "activity_declarations": {
+      "main_activity": {
+        "old_name": "com.hiddify.hiddify.MainActivity",
+        "new_name": "net.marfanet.android.MainActivity",
+        "label_update": "@string/app_name"
+      },
+      "settings_activity": {
+        "old_name": "com.hiddify.hiddify.ui.SettingsActivity",
+        "new_name": "net.marfanet.android.ui.SettingsActivity",
+        "label_update": "MarFaNet Settings"
+      }
+    },
+    "provider_declarations": {
+      "file_provider": {
+        "authorities": "net.marfanet.android.fileprovider",
+        "update_required": true
+      }
+    }
+  },
+  "kotlin_code_changes": {
+    "class_renames": {
+      "HiddifyApplication": "MarFaNetApplication",
+      "HiddifyVpnService": "MarFaNetVpnService",
+      "HiddifyConfig": "MarFaNetConfig",
+      "HiddifyTunnel": "MarFaNetTunnel",
+      "HiddifyPreferences": "MarFaNetPreferences"
+    },
+    "constant_updates": {
+      "app_constants": {
+        "file": "app/src/main/kotlin/net/marfanet/android/Constants.kt",
+        "constants": [
+          {
+            "name": "APP_NAME",
+            "old_value": "\"Hiddify\"",
+            "new_value": "\"MarFaNet\""
+          },
+          {
+            "name": "APP_PACKAGE",
+            "old_value": "\"com.hiddify.hiddify\"",
+            "new_value": "\"net.marfanet.android\""
+          },
+          {
+            "name": "NOTIFICATION_CHANNEL_ID",
+            "old_value": "\"hiddify_vpn\"",
+            "new_value": "\"marfanet_vpn\""
+          }
+        ]
+      }
+    },
+    "shared_preferences": {
+      "preference_files": [
+        {
+          "old_name": "hiddify_prefs",
+          "new_name": "marfanet_prefs",
+          "migration_required": true
+        },
+        {
+          "old_name": "hiddify_config",
+          "new_name": "marfanet_config",
+          "migration_required": true
+        }
+      ],
+      "migration_strategy": {
+        "approach": "Copy old preferences to new files on first launch",
+        "implementation": "PreferencesMigration.kt",
+        "cleanup": "Remove old preference files after successful migration"
+      }
+    },
+    "database_changes": {
+      "room_database": {
+        "database_name": {
+          "old_value": "hiddify.db",
+          "new_value": "marfanet.db"
+        },
+        "migration_required": true,
+        "migration_version": "Bump database version and add migration"
+      }
+    },
+    "notification_channels": {
+      "vpn_channel": {
+        "channel_id": "marfanet_vpn_channel",
+        "channel_name": "MarFaNet VPN",
+        "channel_description": "MarFaNet VPN service notifications"
+      },
+      "update_channel": {
+        "channel_id": "marfanet_updates",
+        "channel_name": "MarFaNet Updates",
+        "channel_description": "MarFaNet app and rule updates"
+      }
+    }
+  },
+  "gradle_changes": {
+    "build_gradle_app": {
+      "file": "app/build.gradle",
+      "changes": [
+        {
+          "section": "android.defaultConfig",
+          "property": "applicationId",
+          "new_value": "\"net.marfanet.android\""
+        },
+        {
+          "section": "android.defaultConfig",
+          "property": "versionName",
+          "new_value": "\"1.0.0\"",
+          "note": "Reset version for new brand"
+        },
+        {
+          "section": "android.defaultConfig",
+          "property": "versionCode",
+          "new_value": "1",
+          "note": "Reset version code for new brand"
+        }
+      ]
+    },
+    "build_gradle_project": {
+      "file": "build.gradle",
+      "changes": [
+        {
+          "section": "project properties",
+          "property": "archivesBaseName",
+          "new_value": "\"marfanet-android\""
+        }
+      ]
+    },
+    "gradle_properties": {
+      "file": "gradle.properties",
+      "additions": [
+        "android.useAndroidX=true",
+        "android.enableJetifier=true",
+        "kotlin.code.style=official"
+      ]
+    },
+    "signing_config": {
+      "release_config": {
+        "keyAlias": "marfanet-release",
+        "keyPassword": "{{ keystore_password }}",
+        "storeFile": "marfanet-release.keystore",
+        "storePassword": "{{ keystore_password }}"
+      },
+      "debug_config": {
+        "keyAlias": "marfanet-debug",
+        "note": "Use debug keystore for development"
+      }
+    }
+  },
+  "asset_updates": {
+    "image_assets": {
+      "splash_screen": {
+        "files": [
+          "app/src/main/res/drawable/splash_background.xml"
+        ],
+        "updates": [
+          "Replace Hiddify logo with MarFaNet logo"
+        ]
+      },
+      "about_page": {
+        "files": [
+          "app/src/main/res/drawable/about_logo.xml"
+        ],
+        "updates": [
+          "Update logo and branding elements"
+        ]
+      },
+      "tutorial_images": {
+        "directory": "app/src/main/res/drawable/",
+        "files": [
+          "tutorial_*.png"
+        ],
+        "updates": [
+          "Update screenshots with MarFaNet branding"
+        ]
+      }
+    },
+    "text_assets": {
+      "privacy_policy": {
+        "file": "app/src/main/assets/privacy_policy.html",
+        "updates": [
+          "Replace Hiddify references with MarFaNet"
+        ]
+      },
+      "terms_of_service": {
+        "file": "app/src/main/assets/terms.html",
+        "updates": [
+          "Update legal entity and app name references"
+        ]
+      },
+      "about_text": {
+        "file": "app/src/main/assets/about.html",
+        "updates": [
+          "Update app description and credits"
+        ]
+      }
+    },
+    "configuration_assets": {
+      "default_configs": {
+        "directory": "app/src/main/assets/configs/",
+        "updates": [
+          "Update default server configurations if needed"
+        ]
+      },
+      "help_files": {
+        "directory": "app/src/main/assets/help/",
+        "updates": [
+          "Update help documentation with MarFaNet branding"
+        ]
+      }
+    }
+  },
+  "legal_updates": {
+    "copyright_notices": {
+      "source_files": {
+        "update_required": true,
+        "new_copyright": "Copyright \u00a9 2024 MarFaNet Team",
+        "files_to_update": [
+          "All Kotlin source files",
+          "README.md",
+          "LICENSE file",
+          "About dialog"
+        ]
+      }
+    },
+    "license_compliance": {
+      "open_source_licenses": {
+        "maintain_attribution": [
+          "Original Hiddify project attribution",
+          "Third-party library licenses",
+          "Xray core license compliance"
+        ],
+        "license_file": "app/src/main/assets/licenses.html"
+      }
+    },
+    "legal_documents": {
+      "privacy_policy": {
+        "file": "app/src/main/assets/privacy_policy.html",
+        "updates": [
+          "Update app name references",
+          "Update developer/company information",
+          "Ensure GDPR compliance",
+          "Update contact information"
+        ]
+      },
+      "terms_of_service": {
+        "file": "app/src/main/assets/terms.html",
+        "updates": [
+          "Update legal entity information",
+          "Update app name and functionality",
+          "Review and update terms as needed"
+        ]
+      }
+    },
+    "attribution_requirements": {
+      "hiddify_attribution": {
+        "required": true,
+        "text": "Based on Hiddify VPN (https://github.com/hiddify/hiddify-app)",
+        "location": "About page and source code headers"
+      },
+      "xray_attribution": {
+        "required": true,
+        "text": "Powered by Xray Core (https://github.com/XTLS/Xray-core)",
+        "location": "About page and legal notices"
+      }
+    }
+  },
+  "migration_checklist": [
+    {
+      "category": "Package Structure",
+      "tasks": [
+        {
+          "task": "Create new package directory structure",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "30 minutes"
+        },
+        {
+          "task": "Move all Kotlin files to new package structure",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "2 hours"
+        },
+        {
+          "task": "Update package declarations in all files",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "1 hour"
+        },
+        {
+          "task": "Update import statements throughout codebase",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "1 hour"
+        }
+      ]
+    },
+    {
+      "category": "Application Configuration",
+      "tasks": [
+        {
+          "task": "Update applicationId in build.gradle",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "5 minutes"
+        },
+        {
+          "task": "Update package attribute in AndroidManifest.xml",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "5 minutes"
+        },
+        {
+          "task": "Reset version codes and names",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_time": "5 minutes"
+        }
+      ]
+    },
+    {
+      "category": "Resources and Assets",
+      "tasks": [
+        {
+          "task": "Update string resources with new app name",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "30 minutes"
+        },
+        {
+          "task": "Create new launcher icons",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "4 hours"
+        },
+        {
+          "task": "Update notification icons",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_time": "1 hour"
+        },
+        {
+          "task": "Update splash screen and about page assets",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_time": "2 hours"
+        }
+      ]
+    },
+    {
+      "category": "Code Updates",
+      "tasks": [
+        {
+          "task": "Rename main classes (Application, Service, etc.)",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "1 hour"
+        },
+        {
+          "task": "Update constants and configuration values",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "30 minutes"
+        },
+        {
+          "task": "Update SharedPreferences names",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_time": "30 minutes"
+        },
+        {
+          "task": "Update database names and implement migration",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_time": "2 hours"
+        }
+      ]
+    },
+    {
+      "category": "Legal and Documentation",
+      "tasks": [
+        {
+          "task": "Update copyright notices in source files",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_time": "1 hour"
+        },
+        {
+          "task": "Update privacy policy and terms of service",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "2 hours"
+        },
+        {
+          "task": "Update README and documentation",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_time": "1 hour"
+        },
+        {
+          "task": "Ensure proper attribution to original projects",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "30 minutes"
+        }
+      ]
+    },
+    {
+      "category": "Testing and Validation",
+      "tasks": [
+        {
+          "task": "Compile and build app with new configuration",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "30 minutes"
+        },
+        {
+          "task": "Test app installation and basic functionality",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "1 hour"
+        },
+        {
+          "task": "Verify all resources display correctly",
+          "status": "pending",
+          "priority": "high",
+          "estimated_time": "30 minutes"
+        },
+        {
+          "task": "Test migration from old version (if applicable)",
+          "status": "pending",
+          "priority": "medium",
+          "estimated_time": "1 hour"
+        }
+      ]
+    }
+  ]
+}
