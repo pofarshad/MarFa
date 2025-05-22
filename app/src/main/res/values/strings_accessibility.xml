@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MarFaNet Accessibility Strings - P2-05 WCAG Compliance -->
+    
+    <!-- Connection Status Content Descriptions -->
+    <string name="accessibility_status_connected">Connected to VPN server</string>
+    <string name="accessibility_status_disconnected">Disconnected from VPN server</string>
+    <string name="accessibility_status_connecting">Connecting to VPN server</string>
+    <string name="accessibility_status_error">Connection error occurred</string>
+    
+    <!-- Button Content Descriptions -->
+    <string name="accessibility_connect_button">Connect to VPN</string>
+    <string name="accessibility_disconnect_button">Disconnect from VPN</string>
+    <string name="accessibility_server_select_button">Select VPN server</string>
+    <string name="accessibility_settings_button">Open settings</string>
+    <string name="accessibility_menu_button">Open navigation menu</string>
+    
+    <!-- Server List Content Descriptions -->
+    <string name="accessibility_server_item">VPN server %1$s, ping %2$d milliseconds</string>
+    <string name="accessibility_server_flag">Flag for %1$s</string>
+    <string name="accessibility_server_favorite">Add %1$s to favorites</string>
+    <string name="accessibility_server_premium">Premium server %1$s</string>
+    
+    <!-- Connection Stats Content Descriptions -->
+    <string name="accessibility_upload_speed">Upload speed: %1$s per second</string>
+    <string name="accessibility_download_speed">Download speed: %1$s per second</string>
+    <string name="accessibility_session_time">Session duration: %1$s</string>
+    <string name="accessibility_data_usage">Data used: %1$s</string>
+    
+    <!-- Settings Content Descriptions -->
+    <string name="accessibility_protocol_selection">Protocol selection: %1$s</string>
+    <string name="accessibility_auto_connect_toggle">Auto-connect on startup</string>
+    <string name="accessibility_kill_switch_toggle">VPN kill switch protection</string>
+    <string name="accessibility_dns_settings">Custom DNS settings</string>
+    
+    <!-- Theme and Appearance -->
+    <string name="accessibility_theme_toggle">Switch to %1$s theme</string>
+    <string name="accessibility_amoled_toggle">Enable pure black AMOLED theme</string>
+    
+    <!-- Status Indicators -->
+    <string name="accessibility_signal_strength">Signal strength: %1$d out of 5</string>
+    <string name="accessibility_battery_saver">Battery saver mode active</string>
+    <string name="accessibility_notification_icon">VPN notification icon</string>
+    
+    <!-- Navigation Content Descriptions -->
+    <string name="accessibility_tab_home">Home tab</string>
+    <string name="accessibility_tab_servers">Servers tab</string>
+    <string name="accessibility_tab_settings">Settings tab</string>
+    <string name="accessibility_tab_profile">Profile tab</string>
+    
+    <!-- Error and Alert Descriptions -->
+    <string name="accessibility_error_dialog">Error message dialog</string>
+    <string name="accessibility_warning_dialog">Warning message dialog</string>
+    <string name="accessibility_info_dialog">Information dialog</string>
+    
+    <!-- Loading States -->
+    <string name="accessibility_loading_servers">Loading server list</string>
+    <string name="accessibility_loading_connection">Establishing VPN connection</string>
+    <string name="accessibility_refreshing">Refreshing data</string>
+    
+    <!-- Interactive Elements -->
+    <string name="accessibility_expandable_card">Expandable card, double tap to toggle</string>
+    <string name="accessibility_slider_value">Slider value: %1$d percent</string>
+    <string name="accessibility_checkbox_checked">Checkbox checked</string>
+    <string name="accessibility_checkbox_unchecked">Checkbox unchecked</string>
+    
+    <!-- Semantic Role Descriptions -->
+    <string name="accessibility_role_switch">Toggle switch</string>
+    <string name="accessibility_role_slider">Slider control</string>
+    <string name="accessibility_role_progress">Progress indicator</string>
+    <string name="accessibility_role_chart">Data usage chart</string>
+    
+    <!-- State Announcements -->
+    <string name="accessibility_state_selected">Selected</string>
+    <string name="accessibility_state_expanded">Expanded</string>
+    <string name="accessibility_state_collapsed">Collapsed</string>
+    <string name="accessibility_state_loading">Loading</string>
+    <string name="accessibility_state_error">Error</string>
+    
+    <!-- Action Descriptions -->
+    <string name="accessibility_action_swipe_refresh">Swipe down to refresh</string>
+    <string name="accessibility_action_long_press">Long press for options</string>
+    <string name="accessibility_action_double_tap">Double tap to activate</string>
+    
+    <!-- MarFaNet Specific Features -->
+    <string name="accessibility_iran_routing">Iran smart routing enabled</string>
+    <string name="accessibility_gfw_knocker">GFW knocker active</string>
+    <string name="accessibility_xray_core">Xray core engine status</string>
+    <string name="accessibility_stealth_mode">Stealth mode active</string>
+</resources>
