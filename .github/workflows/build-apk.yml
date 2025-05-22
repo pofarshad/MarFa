@@ -79,7 +79,7 @@ jobs:
         
     - name: Upload Debug APK
       if: ${{ github.event.inputs.build_type == 'debug' || github.event_name != 'workflow_dispatch' }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: marfanet-debug-apk
         path: |
@@ -89,7 +89,7 @@ jobs:
         
     - name: Upload Release APK
       if: ${{ github.event.inputs.build_type == 'release' || github.event_name == 'workflow_dispatch' }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: marfanet-release-apk
         path: |

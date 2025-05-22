@@ -1,0 +1,111 @@
+# **Sprint 0 – MarFaNet v1.1.0 Planning & CI Remediation Guide**
+
+> **Purpose:** Kick‑off groundwork for **version 1.1.0** *and* fix two CI blockers that prevent artefact generation:
+>
+> 1. `./gradlew: No such file or directory` (missing/wrong‑path Gradle wrapper)
+> 2. **“Missing download info for `actions/upload-artifact@v3`”** (incorrect or discontinued action version).
+
+---
+
+## A • CI Blocker #1 – Gradle Wrapper Missing (Exit‑127)
+
+| Step                                                                                | Command / Action                                                                                            | Result                |
+| ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------- |
+|  A1                                                                                 | Generate wrapper locally if absent:                                                                         |                       |
+| `./gradle wrapper --gradle-version 8.6`                                             | Creates `gradlew`, `gradlew.bat`, wrapper JAR.                                                              |                       |
+|  A2                                                                                 | Commit + set execute bit:                                                                                   |                       |
+| `git add gradlew gradlew.bat gradle/wrapper && git update-index --chmod=+x gradlew` | CI can run `./gradlew`.                                                                                     |                       |
+|  A3                                                                                 | Ensure workflow runs from repo root **OR** set `working-directory` to root in every step that calls Gradle. | Prevents path errors. |
+
+---
+
+## B • CI Blocker #2 – Upload‑Artifact Action Missing
+
+### 1. Root Cause
+
+GitHub’s new immutable action format requires each action be referenced with an **exact version tag** or full **commit SHA**. The runner failed because the workflow still points to a deprecated version cache that no longer resolves.
+
+### 2. Resolution Steps
+
+```yaml
+# .github/workflows/ci.yml (snippet)
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: android-actions/setup-android@v3
+      - uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+      - name: Build & Security Scan
+        run: ./gradlew dependencyCheckAnalyze assembleRelease
+      - name: Upload APK artefact  # ← FIXED
+        uses: actions/upload-artifact@v4  # Upgrade to v4 (v3 is deprecated)
+        with:
+          name: marfanet-universal-release.apk
+          path: app/build/outputs/apk/release/app-release.apk
+```
+
+* **Key Change:** Replace `actions/upload-artifact@v3` with `@v4` *or* pin by SHA (e.g. `actions/upload-artifact@5a1c...`).
+* Re‑run workflow; artefact should appear under **Actions → Run → Artefacts**.
+
+---
+
+## C • Sprint 0 Timeline & Deliverables (unchanged)
+
+| Week | Milestone                 | Output                                                     |
+| ---- | ------------------------- | ---------------------------------------------------------- |
+|  W0  | **CI Green & Scope Lock** | Both blockers fixed; CI passes on `main`                   |
+|  W1  | UX + API Specs            | Wireframes + contracts (Split‑Tunnelling, Stats Overlay)   |
+|  W1  | Tech Spike                | WireGuard POC (connects to public node)                    |
+|  W2  | Build‑System Upgrade      | AGP 9 + Kotlin 2.0 compile OK; Compose compiler integrated |
+|  W2  | Sprint 1 Backlog          | Epics decomposed, pointed & ready                          |
+
+---
+
+## D • Feature Workstreams
+
+1. **STU‑001** – Split‑Tunnelling UI
+2. **WG‑002** – WireGuard Engine
+3. **RSO‑003** – Real‑Time Stats Overlay
+4. **CMP‑004** – Compose Migration
+
+---
+
+## E • Tooling Upgrades
+
+| Component | Current   | Target                         |
+| --------- | --------- | ------------------------------ |
+| AGP       |  8.x      |  9.0 Canary                    |
+| Kotlin    |  1.9      |  2.0 Beta (K2)                 |
+| Compose   |  1.6      |  2.0 Alpha                     |
+| CI Image  | Ubuntu 22 | + Java 21, gradle-build-action |
+
+*Branch: `tooling/upgrade-poc`; CI must remain green.*
+
+---
+
+## F • Success Criteria for Sprint 0
+
+1. CI passes; artefacts upload via `upload-artifact@v4`.
+2. Epics & estimates finalised; Figma wireframes approved.
+3. WireGuard POC outperforms Xray by ≥30 % throughput on 5 G.
+4. AGP 9 / Kotlin 2.0 merged with zero lint/detekt regressions.
+
+---
+
+## G • Risks / Watch‑Points
+
+* Gradle wrapper file permissions on Windows runners.
+* WireGuard licensing & Play policy (if future Play release considered).
+* K2 compiler warnings affecting kapt.
+
+---
+
+> **Immediate Action:** Commit Gradle wrapper & update GitHub Actions steps (use `upload-artifact@v4`). Re‑run CI, confirm artefact build, then proceed with Sprint 0 schedule.
