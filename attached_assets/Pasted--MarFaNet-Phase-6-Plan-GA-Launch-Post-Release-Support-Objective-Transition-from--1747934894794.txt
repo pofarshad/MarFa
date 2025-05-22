@@ -1,0 +1,101 @@
+# **MarFaNet — Phase 6 Plan: GA Launch & Post-Release Support**
+
+> **Objective:** Transition from successful public‑beta to General Availability (v1.0.0), publish artefacts, announce release, and establish post‑launch maintenance cadence.
+
+---
+
+## 1 • GA Readiness Checklist
+
+| Item                                       | Owner    | Status Gate                                               |
+| ------------------------------------------ | -------- | --------------------------------------------------------- |
+| Crash‑free sessions ≥ 95 % (7‑day rolling) | QA       | Firebase dashboard export signed                          |
+| ≤ 1 open Blocker, ≤ 2 open Major issues    | PM       | GitHub query `label:blocker,major state:open` == criteria |
+| Security audit pass                        | Security | OWASP DC + MobSF ≥ 90 score, 0 critical CVE               |
+| License & Privacy audit pass               | Legal    | SPDX + Exodus report archived                             |
+| Lint/Detekt warnings = 0                   | DevOps   | CI gate green                                             |
+| Accessibility check pass                   | UX       | Accessibility Scanner export archived                     |
+| Docs finalised                             | Docs     | README, CHANGELOG, TECH\_REPORT, PERF\_REPORT updated     |
+
+---
+
+## 2 • Release Actions
+
+### 2.1 Version & Tag
+
+* Bump `versionName` → **1.0.0** and `versionCode` +1 in *release/1.0.0* branch.
+* Tag: `git tag v1.0.0 && git push origin v1.0.0`.
+
+### 2.2 CI Pipeline (auto)
+
+1. **Build** Release APK (architecture splits + R8 full‑mode).
+2. **Sign** using keystore secrets.
+3. **Upload** artefacts to **GitHub Releases** under tag v1.0.0.
+4. **Publish Docs** to GitHub Pages `/marfanet/1.0.0`.
+5. **Generate SBOM** (CycloneDX) and attach to release.
+
+### 2.3 Store Distribution
+
+| Store           | Action                                                                                         | Timeline |
+| --------------- | ---------------------------------------------------------------------------------------------- | -------- |
+| **Google Play** | Promote *Closed Beta* track APK → *Production*; submit store listing updates & privacy policy. | T0       |
+| **F‑Droid**     | Submit metadata PR & signed APK for inclusion.                                                 | T+1d     |
+| **Direct**      | Provide SHA‑256‑signed `MarFaNet‑1.0.0‑universal.apk` on website.                              | T0       |
+
+---
+
+## 3 • Announcement & Marketing
+
+| Channel              | Content                                             | Owner     | Due  |
+| -------------------- | --------------------------------------------------- | --------- | ---- |
+| GitHub Release notes | Highlights, changelog, upgrade notes                | Docs      | T0   |
+| Blog Post            | Deep‑dive into Xray integration & performance gains | PM        | T0   |
+| Twitter/X & LinkedIn | Launch tweet‑thread, perf benchmark infographic     | Marketing | T0   |
+| Reddit r/AndroidVPN  | AMA post                                            | Community | T+1d |
+| Telegram channel     | Update with direct download + feature list          | Community | T0   |
+
+---
+
+## 4 • Post‑Launch Support Cadence
+
+| Release Type      | Frequency           | Branch                       | Criteria                                 |
+| ----------------- | ------------------- | ---------------------------- | ---------------------------------------- |
+| **Patch (1.0.x)** | As‑needed (bug‑fix) | `hotfix/*` → `release/1.0.x` | Blocker/Major only                       |
+| **Minor (1.x.0)** | \~8 weeks           | `develop`                    | New minor features, backwards‑compatible |
+| **Major (x.0.0)** | TBD                 | separate roadmap             | Breaking changes                         |
+
+Automated triage labels: `regression`, `security`, `enhancement`.
+
+---
+
+## 5 • Monitoring & Telemetry (post‑GA)
+
+* **Crashlytics** → alert threshold: 1 crash every 500 sessions.
+* **Datadog Synthetics** for endpoint uptime.
+* **Firebase Performance** for network RTT; anomaly alerts ±20 % baseline.
+
+---
+
+## 6 • Sunset Beta Channels
+
+* Close Public Beta GitHub release; archive betas in `releases/archives`.
+* Migrate Firebase *Closed Beta* testers to *Production* opt‑in.
+
+---
+
+## 7 • Acceptance Criteria — Phase 6 Complete
+
+1. Tag v1.0.0 release artefacts publicly available and checksums match.
+2. Google Play listing live; F‑Droid merge accepted.
+3. Website & social channels updated.
+4. All monitoring dashboards active with alerting configured.
+5. Internal post‑mortem meeting held + Phase 7 (maintenance roadmap) drafted.
+
+---
+
+**Next Immediate Steps**
+
+1. Merge `release/1.0.0` branch updates (version bump).
+2. Push tag v1.0.0 to trigger CI auto‑release.
+3. Prepare Play Console production rollout form & submit.
+
+> Once these steps are executed and artefacts confirmed, MarFaNet will be officially **General Availability** 🚀
