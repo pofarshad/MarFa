@@ -1,0 +1,122 @@
+name: AutoFixBot Dispatcher
+
+on:
+  workflow_run:
+    types: [completed]
+    workflows: [
+      "MarFaNet CI - Fixed Pipeline",
+      "Build MarFaNet APK", 
+      "Beta Release Deploy",
+      "Staged Production Rollout"
+    ]
+
+jobs:
+  notify-autofix-bot:
+    name: Notify AutoFixBot on Failure
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Log Failure Detection
+      run: |
+        echo "🚨 CI Failure Detected!"
+        echo "Workflow: ${{ github.event.workflow_run.name }}"
+        echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
+        echo "Run ID: ${{ github.event.workflow_run.id }}"
+        echo "Repository: ${{ github.event.workflow_run.repository.full_name }}"
+        echo "Branch: ${{ github.event.workflow_run.head_branch }}"
+        
+    - name: Call AutoFixBot Webhook
+      env:
+        AUTOFIXBOT_URL: ${{ secrets.AUTOFIXBOT_URL }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        if [ -z "$AUTOFIXBOT_URL" ]; then
+          echo "⚠️ AUTOFIXBOT_URL secret not configured - skipping notification"
+          echo "To enable AutoFixBot, add your Replit deployment URL to repository secrets"
+          exit 0
+        fi
+        
+        echo "📡 Calling AutoFixBot at: $AUTOFIXBOT_URL"
+        
+        # Create comprehensive payload for AutoFixBot
+        PAYLOAD=$(cat << 'EOF'
+        {
+          "action": "completed",
+          "workflow_run": {
+            "id": ${{ github.event.workflow_run.id }},
+            "name": "${{ github.event.workflow_run.name }}",
+            "conclusion": "${{ github.event.workflow_run.conclusion }}",
+            "head_branch": "${{ github.event.workflow_run.head_branch }}",
+            "head_sha": "${{ github.event.workflow_run.head_sha }}",
+            "html_url": "${{ github.event.workflow_run.html_url }}",
+            "repository": {
+              "full_name": "${{ github.event.workflow_run.repository.full_name }}",
+              "name": "${{ github.event.workflow_run.repository.name }}",
+              "owner": {
+                "login": "${{ github.event.workflow_run.repository.owner.login }}"
+              }
+            }
+          },
+          "installation": {
+            "id": "${{ github.event.installation.id }}"
+          }
+        }
+        EOF
+        )
+        
+        # Send webhook to AutoFixBot
+        RESPONSE=$(curl -s -w "\n%{http_code}" \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -H "X-GitHub-Event: workflow_run" \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          -d "$PAYLOAD" \
+          "$AUTOFIXBOT_URL/webhook" || echo -e "\n000")
+        
+        HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+        RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
+        
+        if [ "$HTTP_CODE" = "200" ]; then
+          echo "✅ AutoFixBot notification successful"
+          echo "Response: $RESPONSE_BODY"
+        else
+          echo "❌ AutoFixBot notification failed (HTTP $HTTP_CODE)"
+          echo "Response: $RESPONSE_BODY"
+          echo "Please check AutoFixBot deployment and webhook configuration"
+        fi
+        
+    - name: Create Failure Issue
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const title = `🚨 CI Failure: ${{ github.event.workflow_run.name }} (Run #${{ github.event.workflow_run.id }})`;
+          const body = `## Automated Failure Report
+          
+          A CI workflow has failed and requires attention.
+          
+          ### 📋 Failure Details
+          - **Workflow**: ${{ github.event.workflow_run.name }}
+          - **Branch**: ${{ github.event.workflow_run.head_branch }}
+          - **Commit**: ${{ github.event.workflow_run.head_sha }}
+          - **Run ID**: ${{ github.event.workflow_run.id }}
+          - **Started**: ${{ github.event.workflow_run.created_at }}
+          
+          ### 🔗 Resources
+          - [View Failed Run](${{ github.event.workflow_run.html_url }})
+          - [Repository](../tree/${{ github.event.workflow_run.head_branch }})
+          
+          ### 🤖 AutoFixBot Status
+          ${process.env.AUTOFIXBOT_URL ? '✅ AutoFixBot has been notified and will analyze this failure' : '⚠️ AutoFixBot not configured - manual investigation required'}
+          
+          ---
+          *This issue was automatically created by the MarFaNet CI failure detection system*`;
+          
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: title,
+            body: body,
+            labels: ['ci-failure', 'needs-investigation', 'automated']
+          });

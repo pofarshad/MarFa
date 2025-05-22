@@ -1,0 +1,119 @@
+# **AutoFixBot Deployment & Operational Guide**
+
+> *Goal:* Transition AutoFixBot from architecture concept to a fully‑operational service that listens to GitHub CI failures, generates AI‑driven patches, and opens PRs.
+
+---
+
+## 1 • Prerequisites
+
+| Item               | Detail                                                                           |
+| ------------------ | -------------------------------------------------------------------------------- |
+| GitHub Org / Repo  | `marfanet` (or your chosen org)                                                  |
+| Replit Pro account | Needed for outbound webhooks & secrets storage                                   |
+| OpenAI API key     | For LLM calls; store as `OPENAI_API_KEY`                                         |
+| Domain / HTTPS     | Replit provides HTTPS endpoint; ensure webhook IP allow‑list if firewall present |
+
+---
+
+## 2 • Create GitHub App
+
+1. Navigate to **Settings → Developer settings → GitHub Apps → New GitHub App**.
+2. App name: **MarFaNet‑AutoFixBot**.
+3. Permissions:
+
+   * **Actions** – *Read*
+   * **Contents** – *Read & write*
+   * **Pull requests** – *Read & write*
+   * **Issues** – *Read & write*
+4. Webhook URL: `https://<your-replit-app>.replit.app/webhook`
+5. Webhook secret: generate & note for Replit env var `GH_WEBHOOK_SECRET`.
+6. Generate private key → download `autofixbot.pem`.
+7. Install app on `marfanet` repository (All repositories or selected).
+
+---
+
+## 3 • Deploy Bot on Replit
+
+1. **Fork template repo** `https://github.com/autofixbot/template` (contains Probot framework).
+2. In Replit, create new **Node.js** project → import from GitHub.
+3. Add env vars:
+
+   ```
+   GH_APP_ID=123456
+   GH_PRIVATE_KEY="<contents of PEM, escaped>"
+   GH_WEBHOOK_SECRET=<secret>
+   OPENAI_API_KEY=<key>
+   ```
+4. Install dependencies: `npm install` (Probot, openai, @octokit/rest).
+5. **Run**; Replit will assign HTTPS URL. Confirm `/` returns status 200.
+
+---
+
+## 4 • Workflow Hook Configuration
+
+Add a dispatcher workflow `.github/workflows/dispatch_autofix.yml`:
+
+```yaml
+name: AutoFixBot Dispatcher
+on:
+  workflow_run:
+    types: [completed]
+
+jobs:
+  notify-bot:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call AutoFixBot
+        env:
+          BOT_URL: ${{ secrets.AUTOFIXBOT_URL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X POST "$BOT_URL" \
+               -H "X-GitHub-Event: workflow_run" \
+               -H "Content-Type: application/json" \
+               -d @<(echo '${{ toJson(github.event) }}')
+```
+
+Set `AUTOFIXBOT_URL` secret to your Replit endpoint.
+
+---
+
+## 5 • Bot Logic Highlights
+
+* Accepts signed webhook, extracts `run_id`.
+* Uses GitHub REST to fetch job logs; truncates to 4000 chars.
+* Sends prompt to OpenAI: returns either diff or markdown guidance.
+* Validates diff; applies via in‑memory git; pushes branch `autofix/<sha>`; opens draft PR.
+* Adds `autofix` label.
+
+---
+
+## 6 • Safety & Governance
+
+| Control       | Implementation                                               |
+| ------------- | ------------------------------------------------------------ |
+| Human Review  | PRs created as **draft**; cannot auto‑merge.                 |
+| File Scope    | Reject patches touching `*.keystore`, secrets, or >20 files. |
+| Rate Limit    | One AutoFix per workflow run; skip if previous PR open.      |
+| Observability | Logs to Replit console + optional Datadog.                   |
+
+---
+
+## 7 • Roll‑out Plan
+
+1. **Stage**: Enable on a fork; trigger a failing CI run; validate AutoFix PR.
+2. **Pilot**: Enable on `marfanet` main repo; restrict to `develop` branch.
+3. **Full**: Enable for all branches after 1‑week incident‑free.
+
+---
+
+## 8 • Maintenance
+
+* Rotate private key annually.
+* Monitor OpenAI usage limits; consider caching responses.
+* Update Probot & GitHub App permissions as APIs evolve.
+
+---
+
+Once deployed, every failed GitHub Actions run will auto‑generate a patch PR or guidance issue within minutes—closing the CI feedback loop nearly in real‑time.
