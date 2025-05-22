@@ -1,8 +1,8 @@
 // MarFaNet Android - Root Build Script
 
 plugins {
-    id("com.android.application") version "8.6.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.23" apply false
+    id("com.android.application") version "9.0.0-alpha01" apply false
+    id("org.jetbrains.kotlin.android") version "2.0.0-Beta3" apply false
     id("org.owasp.dependencycheck") version "9.0.9" apply false
 }
 
