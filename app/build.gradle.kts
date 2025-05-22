@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("org.owasp.dependencycheck") version "8.4.2"
+    id("jacoco")
 }
 
 android {
@@ -13,7 +15,7 @@ android {
         minSdk = 21
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0.0"
+        versionName = "1.0.0-rc1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,6 +31,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             // R8 full mode for performance
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -73,6 +76,15 @@ android {
             reset()
             include("arm64-v8a", "armeabi-v7a", "x86_64")
             isUniversalApk = false
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("keystore/marfanet-release.jks")
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
+            keyAlias = "marfanet"
+            keyPassword = System.getenv("KEY_PASSWORD")
         }
     }
 }
@@ -121,4 +133,48 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.work:work-testing:2.9.0")
+}
+
+// OWASP Dependency Check Configuration
+dependencyCheck {
+    format = "ALL"
+    outputDirectory = "build/reports"
+    analyzers {
+        assemblyEnabled = false
+        nuspecEnabled = false
+    }
+    data {
+        directory = "${rootProject.buildDir}/dependency-check-data"
+    }
+}
+
+// JaCoCo Test Coverage Configuration
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+    
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+    
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*",
+        "android/**/*.*"
+    )
+    
+    val debugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+    
+    val mainSrc = "${project.projectDir}/src/main/kotlin"
+    
+    sourceDirectories.setFrom(files(mainSrc))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(fileTree(buildDir) {
+        include("jacoco/testDebugUnitTest.exec")
+    })
 }

@@ -1,0 +1,53 @@
+site_name: MarFaNet Documentation
+site_description: Technical documentation for MarFaNet Android VPN application
+site_author: MarFaNet Development Team
+site_url: https://marfanet.github.io/android
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Changelog: CHANGELOG.md
+  - Technical Report: TECH_REPORT.md
+  - Performance Report: PERF_REPORT.md
+  - Reports:
+    - Coverage: reports/coverage/index.html
+    - Security: reports/dependency-check-report.html
+    - Benchmarks: reports/benchmark-results.html
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - mkdocs-jupyter
+
+extra:
+  version:
+    provider: mike
