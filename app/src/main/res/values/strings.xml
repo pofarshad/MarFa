@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MarFaNet</string>
+    <string name="app_version">v1.1.0-alpha1</string>
+    <string name="vpn_service_name">MarFaNet VPN</string>
+    <string name="notification_channel_name">MarFaNet VPN Service</string>
+    <string name="notification_channel_description">VPN connection status notifications</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="connecting">Connecting...</string>
+    <string name="split_tunneling">Split Tunneling</string>
+    <string name="wireguard_protocol">WireGuard</string>
+    <string name="xray_protocol">Xray</string>
+    <string name="stats_overlay">Real-time Stats</string>
+</resources>

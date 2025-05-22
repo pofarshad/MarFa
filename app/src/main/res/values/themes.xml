@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.MarFaNet" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/marfanet_primary</item>
+        <item name="colorOnPrimary">@color/marfanet_on_primary</item>
+        <item name="colorPrimaryContainer">@color/marfanet_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/marfanet_on_primary_container</item>
+        <item name="colorSecondary">@color/marfanet_secondary</item>
+        <item name="colorOnSecondary">@color/marfanet_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/marfanet_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/marfanet_on_secondary_container</item>
+        <item name="colorTertiary">@color/marfanet_tertiary</item>
+        <item name="colorOnTertiary">@color/marfanet_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/marfanet_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/marfanet_on_tertiary_container</item>
+        <item name="colorError">@color/marfanet_error</item>
+        <item name="colorErrorContainer">@color/marfanet_error_container</item>
+        <item name="colorOnError">@color/marfanet_on_error</item>
+        <item name="colorOnErrorContainer">@color/marfanet_on_error_container</item>
+        <item name="android:colorBackground">@color/marfanet_background</item>
+        <item name="colorOnBackground">@color/marfanet_on_background</item>
+        <item name="colorSurface">@color/marfanet_surface</item>
+        <item name="colorOnSurface">@color/marfanet_on_surface</item>
+        <item name="colorSurfaceVariant">@color/marfanet_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/marfanet_on_surface_variant</item>
+        <item name="colorOutline">@color/marfanet_outline</item>
+        <item name="colorOutlineVariant">@color/marfanet_outline_variant</item>
+        <item name="colorSurfaceInverse">@color/marfanet_inverse_surface</item>
+        <item name="colorOnSurfaceInverse">@color/marfanet_inverse_on_surface</item>
+        <item name="colorPrimaryInverse">@color/marfanet_inverse_primary</item>
+    </style>
+</resources>
