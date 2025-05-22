@@ -1,0 +1,193 @@
+syntax = "proto3";
+
+package marfanet.sync.v1;
+
+option go_package = "github.com/marfanet/cloud-sync/gen/go/sync/v1";
+
+import "google/protobuf/timestamp.proto";
+
+// MarFaNet Cloud Sync Service
+service SyncService {
+  // Authenticate and get access token
+  rpc Authenticate(AuthRequest) returns (AuthResponse);
+  
+  // Upload encrypted device manifest
+  rpc UploadManifest(UploadManifestRequest) returns (UploadManifestResponse);
+  
+  // Download latest manifests from other devices
+  rpc DownloadManifests(DownloadManifestsRequest) returns (DownloadManifestsResponse);
+  
+  // Sync configuration profiles
+  rpc SyncProfiles(SyncProfilesRequest) returns (SyncProfilesResponse);
+  
+  // Get sync status
+  rpc GetSyncStatus(GetSyncStatusRequest) returns (GetSyncStatusResponse);
+}
+
+// Authentication Messages
+message AuthRequest {
+  string device_id = 1;
+  string public_key = 2; // Device public key for E2E encryption
+  string proof_of_possession = 3; // Signed challenge
+}
+
+message AuthResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_in = 3;
+  string sync_endpoint = 4;
+}
+
+// Sync Envelope - Top-level encrypted container
+message SyncEnvelope {
+  string device_id = 1;
+  string encryption_algorithm = 2; // "XChaCha20-Poly1305" or "AES-GCM-256"
+  bytes encrypted_payload = 3; // Encrypted DeviceManifest
+  bytes nonce = 4;
+  bytes auth_tag = 5;
+  google.protobuf.Timestamp created_at = 6;
+  string payload_hash = 7; // SHA-256 of plaintext for integrity
+}
+
+// Device Manifest - Contains all device configuration
+message DeviceManifest {
+  string device_id = 1;
+  string device_name = 2;
+  string device_type = 3; // "android", "ios", "desktop", "browser"
+  string app_version = 4;
+  google.protobuf.Timestamp last_sync = 5;
+  
+  repeated VPNProfile profiles = 6;
+  UserPreferences preferences = 7;
+  repeated UsageStatistic usage_stats = 8;
+}
+
+// VPN Profile Configuration
+message VPNProfile {
+  string profile_id = 1;
+  string name = 2;
+  string protocol = 3; // "vmess", "vless", "trojan", "shadowsocks"
+  string server_address = 4;
+  int32 server_port = 5;
+  string user_id = 6;
+  bytes encrypted_credentials = 7; // Encrypted password/key
+  bool is_active = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+  
+  // Advanced configuration
+  string security = 11;
+  bool bypass_china = 12;
+  bool gfw_knock_enabled = 13;
+  string local_address = 14;
+  int32 mtu = 15;
+}
+
+// User Preferences
+message UserPreferences {
+  bool auto_connect = 1;
+  string preferred_protocol = 2;
+  bool kill_switch = 3;
+  bool bypass_lan = 4;
+  bool dns_over_vpn = 5;
+  string theme = 6; // "light", "dark", "auto"
+  string language = 7;
+  bool analytics_enabled = 8;
+  bool crash_reporting = 9;
+}
+
+// Usage Statistics
+message UsageStatistic {
+  string session_id = 1;
+  google.protobuf.Timestamp start_time = 2;
+  google.protobuf.Timestamp end_time = 3;
+  int64 bytes_sent = 4;
+  int64 bytes_received = 5;
+  string server_used = 6;
+  string protocol_used = 7;
+  int32 average_latency_ms = 8;
+  bool session_successful = 9;
+  string disconnect_reason = 10;
+}
+
+// Profile Diff - For incremental sync
+message ProfileDiff {
+  enum Operation {
+    CREATE = 0;
+    UPDATE = 1;
+    DELETE = 2;
+  }
+  
+  Operation operation = 1;
+  string profile_id = 2;
+  VPNProfile profile = 3; // Only for CREATE/UPDATE
+  google.protobuf.Timestamp timestamp = 4;
+  string device_id = 5; // Device that made the change
+}
+
+// Upload Manifest Request/Response
+message UploadManifestRequest {
+  SyncEnvelope envelope = 1;
+  bool force_overwrite = 2;
+}
+
+message UploadManifestResponse {
+  bool success = 1;
+  string message = 2;
+  google.protobuf.Timestamp server_timestamp = 3;
+  int32 conflict_count = 4;
+}
+
+// Download Manifests Request/Response
+message DownloadManifestsRequest {
+  google.protobuf.Timestamp since = 1; // Only return manifests newer than this
+  repeated string device_ids = 2; // Filter by specific devices (empty = all)
+}
+
+message DownloadManifestsResponse {
+  repeated SyncEnvelope manifests = 1;
+  google.protobuf.Timestamp server_timestamp = 2;
+  bool has_more = 3;
+  string next_page_token = 4;
+}
+
+// Sync Profiles Request/Response  
+message SyncProfilesRequest {
+  repeated ProfileDiff diffs = 1;
+  google.protobuf.Timestamp last_sync = 2;
+}
+
+message SyncProfilesResponse {
+  repeated ProfileDiff server_diffs = 1;
+  repeated ConflictResolution conflicts = 2;
+  google.protobuf.Timestamp new_sync_timestamp = 3;
+}
+
+// Conflict Resolution
+message ConflictResolution {
+  string profile_id = 1;
+  string winning_device_id = 2;
+  string losing_device_id = 3;
+  string resolution_strategy = 4; // "latest_wins", "manual_merge", "user_choice"
+  google.protobuf.Timestamp resolved_at = 5;
+}
+
+// Sync Status Request/Response
+message GetSyncStatusRequest {
+  // Empty - uses auth token for device identification
+}
+
+message GetSyncStatusResponse {
+  bool sync_enabled = 1;
+  google.protobuf.Timestamp last_sync = 2;
+  int32 total_devices = 3;
+  int32 total_profiles = 4;
+  repeated string connected_devices = 5;
+  int64 storage_used_bytes = 6;
+  int64 storage_limit_bytes = 7;
+  
+  // Health indicators
+  bool encryption_healthy = 8;
+  bool connectivity_healthy = 9;
+  repeated string recent_errors = 10;
+}

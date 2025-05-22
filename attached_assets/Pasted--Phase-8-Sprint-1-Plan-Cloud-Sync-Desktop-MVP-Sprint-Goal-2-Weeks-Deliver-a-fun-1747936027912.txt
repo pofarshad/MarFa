@@ -1,0 +1,64 @@
+# **Phase 8 – Sprint 1 Plan: Cloud Sync & Desktop MVP**
+
+## Sprint Goal (2 Weeks)
+
+Deliver a functional Cloud Sync Alpha service and a cross‑platform Desktop MVP (Windows/macOS/Linux) capable of establishing basic Xray connections using the shared Kotlin Multiplatform core.
+
+---
+
+### 1 • Cloud Sync Alpha (CS‑1/CS‑2)
+
+| Task ID | Description                                                                           | Assignee    | Est.   |
+| ------- | ------------------------------------------------------------------------------------- | ----------- | ------ |
+| CS‑1.1  | Finalise crypto spec (AES‑GCM 256 + XChaCha20‑Poly1305 fallback, HKDF key derivation) | Security    |  0.5 d |
+| CS‑1.2  | Draft Protocol Buffers schema (`SyncEnvelope`, `DeviceManifest`, `ProfileDiff`)       | Backend     |  0.5 d |
+| CS‑1.3  | Implement Go microservice skeleton (REST + gRPC) with DynamoDB adapter                | Backend     |  1.5 d |
+| CS‑1.4  | Add JWT/OAuth 2.1 PKCE auth layer + refresh‑token rotation                            | Backend     |  1 d   |
+| CS‑1.5  | KMP client library (`sync-client`) with offline‑first cache + end‑to‑end tests        | Mobile Core |  1 d   |
+| CS‑1.6  | CI pipeline for microservice (Docker build, unit tests, Snyk scan)                    | DevOps      |  0.5 d |
+
+**Acceptance:** Service deploys to staging (AWS us‑east‑1); `sync-client` passes encrypt‑→upload‑→download‑→decrypt round‑trip test.
+
+---
+
+### 2 • Desktop MVP (MP‑2 continuation)
+
+| Task ID | Description                                                                | Assignee         | Est.   |
+| ------- | -------------------------------------------------------------------------- | ---------------- | ------ |
+| DT‑1    | Set up KMP desktop target (JVM) + Compose Multiplatform window             | Desktop Dev      |  0.5 d |
+| DT‑2    | Integrate KMP shared core; expose `MarfaVpnController`                     | Desktop Dev      |  1 d   |
+| DT‑3    | Bundle Xray native binaries for x86\_64 & arm64 (macOS)                    | Desktop Dev      |  0.5 d |
+| DT‑4    | Basic UI (connect/disconnect, status, latency label)                       | UX + Desktop Dev |  1 d   |
+| DT‑5    | Produce self‑contained installers: • .dmg, • .exe (Setup MSI), • .AppImage | DevOps           |  1 d   |
+
+**Acceptance:** Desktop app connects to public test node, displays real‑time traffic stats, and quits gracefully.
+
+---
+
+### 3 • Sprint Logistics
+
+* **Start:** Monday (Week 1) — **End:** Friday (Week 2)
+* **Daily Stand‑up:** 10:00 UTC (Slack)
+* **Demo & Retro:** Friday 15:00 UTC Week 2 — record video & publish on Confluence.
+
+---
+
+### 4 • Risks & Mitigations
+
+| Risk                               | Mitigation                          |
+| ---------------------------------- | ----------------------------------- |
+| OAuth app‑store review delay       | Use staged‑rollout test creds first |
+| Desktop native lib incompatibility | Validate on 3 devices per OS early  |
+
+---
+
+### 5 • Definition of Done
+
+1. Cloud Sync round‑trip encrypted test green in CI.
+2. Desktop installers uploaded as CI artefacts.
+3. Sprint demo video published.
+4. No new Critical/High CVEs; lint/detekt clean.
+
+---
+
+*Prepared for sprint‑start approval.*
