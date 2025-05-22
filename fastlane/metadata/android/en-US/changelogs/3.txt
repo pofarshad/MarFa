@@ -1,0 +1,6 @@
+🔒 Security hardening with automated CVE monitoring and 24h response SLA
+🌐 Fixed IPv6-only network connectivity issues with smart DNS fallback  
+📊 Enhanced connection logging for better disconnect root-cause analysis
+🎨 Added pure black AMOLED theme option for improved battery life
+♿ Comprehensive accessibility improvements achieving 95%+ WCAG compliance
+🔧 Performance optimizations and reliability enhancements across all features
