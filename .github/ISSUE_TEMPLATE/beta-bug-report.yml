@@ -1,0 +1,152 @@
+name: 🐛 Beta Bug Report
+description: Report a bug found during MarFaNet beta testing
+title: "[BETA] "
+labels: ["bug", "v1.0.0-beta", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## MarFaNet Beta Bug Report
+        
+        Thank you for testing MarFaNet! Your feedback helps us build a better VPN app.
+        
+        **⚠️ For security vulnerabilities, please email security@marfanet.com instead**
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How severe is this bug?
+      options:
+        - Blocker (app crash on launch, data loss, security flaw)
+        - Major (feature malfunction, frequent crashes)
+        - Minor (cosmetic, low-impact glitches)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: beta-track
+    attributes:
+      label: Beta Track
+      description: Which beta version are you using?
+      options:
+        - Internal Test (Google Play Console)
+        - Closed Beta (Firebase App Distribution)
+        - Public Beta (GitHub Releases)
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: App Version
+      description: What version of MarFaNet are you using?
+      placeholder: "1.0.0-rc2-beta"
+    validations:
+      required: true
+
+  - type: input
+    id: device-info
+    attributes:
+      label: Device Information
+      description: Device model and Android version
+      placeholder: "Samsung Galaxy S21, Android 13"
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: Clear description of what happened
+      placeholder: "Describe the bug in detail..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Open MarFaNet
+        2. Connect to VPN
+        3. Wait 5 minutes
+        4. App crashes
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What should have happened?
+      placeholder: "App should maintain connection without crashing"
+    validations:
+      required: true
+
+  - type: textarea
+    id: crash-logs
+    attributes:
+      label: Crash Logs / Error Messages
+      description: Any error messages or crash logs you've seen
+      placeholder: "Paste any error messages here"
+
+  - type: dropdown
+    id: vpn-protocol
+    attributes:
+      label: VPN Protocol
+      description: Which protocol were you using when the bug occurred?
+      options:
+        - VMess
+        - VLESS
+        - Trojan
+        - Shadowsocks
+        - Not applicable
+        - Unknown
+
+  - type: checkboxes
+    id: performance-impact
+    attributes:
+      label: Performance Impact
+      description: Does this bug affect performance?
+      options:
+        - label: High CPU usage (>15%)
+        - label: High memory usage (>200MB)
+        - label: Battery drain (>3%/hour)
+        - label: Slow connection speed
+        - label: Connection drops/instability
+
+  - type: textarea
+    id: network-environment
+    attributes:
+      label: Network Environment
+      description: Network conditions when bug occurred
+      placeholder: |
+        - Network type: WiFi/Mobile
+        - Country/Region: 
+        - ISP restrictions: Yes/No
+        - Other details:
+
+  - type: checkboxes
+    id: testing-checklist
+    attributes:
+      label: Testing Checklist
+      description: Help us understand your testing scenario
+      options:
+        - label: Fresh app install
+        - label: App update from previous version
+        - label: 24-hour stress test
+        - label: Multiple protocol switching
+        - label: Background app usage
+        - label: Low battery conditions
+        - label: Poor network conditions
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that might help
+      placeholder: "Screenshots, device logs, or other relevant information"
