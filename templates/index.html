@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarFaNet - Android App Refactoring Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-mobile-alt me-2"></i>
+                MarFaNet Refactoring Dashboard
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/analysis">Analysis</a>
+                <a class="nav-link" href="/specifications">Specifications</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Project Overview -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-project-diagram me-2"></i>
+                            Project Overview
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">
+                            Transform Hiddify VPN app into MarFaNet with Xray core integration
+                        </p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Source Repository:</h6>
+                                <p><code>https://github.com/hiddify/hiddify-app/releases/tag/v2.5.7</code></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Target:</h6>
+                                <p>MarFaNet Android app with Xray core</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Requirements Matrix -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-tasks me-2"></i>
+                            Requirements Matrix (1-14)
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Requirement</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="requirements-table">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Replace Sing-box with latest stable Xray core</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(1)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Update libraries & code paths impacted by core swap</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(2)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Integrate gfw-knocker (default enabled)</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(3)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Remove standalone WARP / WARP+ toggles</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(4)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Re-brand to MarFaNet</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(5)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>Full code audit & bug fix</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(6)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>Support full Xray URL/link scheme</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(7)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>Update infrastructure & protocols</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(8)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>General performance optimisation</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(9)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>Improve connection speed</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(10)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>Eliminate random disconnects</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(11)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>12</td>
+                                        <td>Bundle Iran-routing rules & auto-update daily</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(12)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>13</td>
+                                        <td>Ping engine & lowest-latency auto-connect</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(13)">Analyze</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>14</td>
+                                        <td>Android 9 → latest compatibility</td>
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="analyzeRequirement(14)">Analyze</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Panel -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-search me-2"></i>Analysis</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Analyze Hiddify app structure and dependencies</p>
+                        <button class="btn btn-primary w-100" onclick="startAnalysis()">
+                            <i class="fas fa-play me-2"></i>Start Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cogs me-2"></i>Generate Specs</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Generate Xray integration specifications</p>
+                        <button class="btn btn-success w-100" onclick="generateSpecs()" disabled id="generate-specs-btn">
+                            <i class="fas fa-file-code me-2"></i>Generate Specs
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-download me-2"></i>Download</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Download complete specification package</p>
+                        <button class="btn btn-info w-100" onclick="downloadSpecs()" disabled id="download-btn">
+                            <i class="fas fa-download me-2"></i>Download Package
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Panel -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-chart-line me-2"></i>Progress</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress mb-3">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" id="overall-progress">
+                                0%
+                            </div>
+                        </div>
+                        <div id="progress-log" class="bg-light p-3 rounded" style="height: 200px; overflow-y: auto;">
+                            <p class="text-muted">Ready to start analysis...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5>Processing...</h5>
+                    <p id="loading-message">Analyzing Hiddify app structure...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
