@@ -1,0 +1,166 @@
+name: Build MarFaNet APK
+
+on:
+  push:
+    branches: [ main, develop, release/* ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type (debug or release)'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+        - debug
+        - release
+
+jobs:
+  build-apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: Cache Gradle Dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          gradle-${{ runner.os }}-
+          
+    - name: Make Gradlew Executable
+      run: chmod +x ./gradlew
+      
+    - name: Build Debug APK
+      if: ${{ github.event.inputs.build_type == 'debug' || github.event_name != 'workflow_dispatch' }}
+      run: ./gradlew assembleDebug
+      
+    - name: Build Release APK
+      if: ${{ github.event.inputs.build_type == 'release' || github.event_name == 'workflow_dispatch' }}
+      run: ./gradlew assembleRelease
+      
+    - name: Generate APK Info
+      run: |
+        echo "APK Build Information" > apk_info.txt
+        echo "===================" >> apk_info.txt
+        echo "Build Date: $(date -u)" >> apk_info.txt
+        echo "Commit: ${{ github.sha }}" >> apk_info.txt
+        echo "Branch: ${{ github.ref_name }}" >> apk_info.txt
+        echo "Build Type: ${{ github.event.inputs.build_type || 'release' }}" >> apk_info.txt
+        echo "" >> apk_info.txt
+        
+        # Find APK files and generate checksums
+        echo "APK Files:" >> apk_info.txt
+        find app/build/outputs/apk -name "*.apk" -type f | while read apk; do
+          echo "File: $(basename $apk)" >> apk_info.txt
+          echo "Size: $(du -h $apk | cut -f1)" >> apk_info.txt
+          echo "SHA256: $(sha256sum $apk | cut -d' ' -f1)" >> apk_info.txt
+          echo "Path: $apk" >> apk_info.txt
+          echo "---" >> apk_info.txt
+        done
+        
+        cat apk_info.txt
+        
+    - name: Upload Debug APK
+      if: ${{ github.event.inputs.build_type == 'debug' || github.event_name != 'workflow_dispatch' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: marfanet-debug-apk
+        path: |
+          app/build/outputs/apk/debug/*.apk
+          apk_info.txt
+        retention-days: 90
+        
+    - name: Upload Release APK
+      if: ${{ github.event.inputs.build_type == 'release' || github.event_name == 'workflow_dispatch' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: marfanet-release-apk
+        path: |
+          app/build/outputs/apk/release/*.apk
+          apk_info.txt
+        retention-days: 90
+        
+    - name: Comment on PR with APK Info
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          
+          let apkInfo = "APK build information not available";
+          try {
+            apkInfo = fs.readFileSync('apk_info.txt', 'utf8');
+          } catch (error) {
+            console.log('Could not read apk_info.txt:', error.message);
+          }
+          
+          const comment = `## 📱 MarFaNet APK Build Complete
+          
+          The APK has been successfully built for this pull request!
+          
+          ### 📥 Download Instructions
+          1. Go to the [Actions tab](../actions/runs/${{ github.run_id }})
+          2. Scroll down to **Artifacts** section
+          3. Download \`marfanet-release-apk\` or \`marfanet-debug-apk\`
+          4. Extract the ZIP file to get the APK
+          
+          ### 📋 Build Information
+          \`\`\`
+          ${apkInfo}
+          \`\`\`
+          
+          ### 📱 Installation
+          1. Enable "Install unknown apps" for your browser/file manager
+          2. Install the APK on your Android device (API 21+)
+          3. Test the features and report any issues
+          
+          ---
+          🤖 *Automated APK build from MarFaNet CI*`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+          
+    - name: Create Build Summary
+      run: |
+        echo "# 🚀 MarFaNet APK Build Complete!" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## 📱 Download Your APK" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "The APK has been built and is available as an artifact in this workflow run." >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📥 How to Download:" >> $GITHUB_STEP_SUMMARY
+        echo "1. Scroll down to the **Artifacts** section on this page" >> $GITHUB_STEP_SUMMARY
+        echo "2. Click on \`marfanet-release-apk\` to download" >> $GITHUB_STEP_SUMMARY
+        echo "3. Extract the ZIP file to get the APK" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📋 Build Details:" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        cat apk_info.txt >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📱 Installation Instructions:" >> $GITHUB_STEP_SUMMARY
+        echo "1. Transfer the APK to your Android device" >> $GITHUB_STEP_SUMMARY
+        echo "2. Enable \"Install unknown apps\" for your file manager" >> $GITHUB_STEP_SUMMARY
+        echo "3. Tap the APK file to install MarFaNet" >> $GITHUB_STEP_SUMMARY
+        echo "4. Enjoy your enhanced VPN experience! 🎉" >> $GITHUB_STEP_SUMMARY
