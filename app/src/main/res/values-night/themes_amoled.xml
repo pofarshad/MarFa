@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MarFaNet AMOLED Pure Black Theme -->
+    <style name="Theme.MarFaNet.AMOLED" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        
+        <!-- Background colors - Pure Black for AMOLED -->
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        
+        <!-- Surface colors - Pure Black -->
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        
+        <!-- Error colors -->
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/colorBackground</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
+        <!-- Navigation bar -->
+        <item name="android:navigationBarColor">@color/colorBackground</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        
+        <!-- Window properties -->
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:windowActivityTransitions">true</item>
+        
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/textPrimary</item>
+        <item name="android:textColorSecondary">@color/textSecondary</item>
+        <item name="android:textColorHint">@color/textHint</item>
+        
+        <!-- Button styles -->
+        <item name="materialButtonStyle">@style/Widget.MarFaNet.Button.AMOLED</item>
+        <item name="borderlessButtonStyle">@style/Widget.MarFaNet.Button.Borderless.AMOLED</item>
+        
+        <!-- Card styles -->
+        <item name="materialCardViewStyle">@style/Widget.MarFaNet.CardView.AMOLED</item>
+        
+        <!-- Switch styles -->
+        <item name="switchStyle">@style/Widget.MarFaNet.Switch.AMOLED</item>
+        
+        <!-- Progress bar styles -->
+        <item name="android:progressBarStyleHorizontal">@style/Widget.MarFaNet.ProgressBar.AMOLED</item>
+    </style>
+    
+    <!-- Button Styles for AMOLED -->
+    <style name="Widget.MarFaNet.Button.AMOLED" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/buttonBackground</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="strokeColor">@color/colorBorder</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+    
+    <style name="Widget.MarFaNet.Button.Borderless.AMOLED" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/marfanet_accent</item>
+    </style>
+    
+    <!-- Card Styles for AMOLED -->
+    <style name="Widget.MarFaNet.CardView.AMOLED" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/colorCard</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/colorBorder</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+    
+    <!-- Switch Styles for AMOLED -->
+    <style name="Widget.MarFaNet.Switch.AMOLED" parent="Widget.Material3.CompoundButton.Switch">
+        <item name="trackTint">@color/switchTrack</item>
+        <item name="thumbTint">@color/switchThumb</item>
+    </style>
+    
+    <!-- Progress Bar Styles for AMOLED -->
+    <style name="Widget.MarFaNet.ProgressBar.AMOLED" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressBackgroundTint">@color/progressBackground</item>
+        <item name="android:progressTint">@color/progressForeground</item>
+        <item name="android:indeterminateTint">@color/progressForeground</item>
+    </style>
+    
+    <!-- Connection Status Styles -->
+    <style name="Widget.MarFaNet.ConnectionCard.Connected.AMOLED" parent="Widget.MarFaNet.CardView.AMOLED">
+        <item name="strokeColor">@color/colorConnected</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+    
+    <style name="Widget.MarFaNet.ConnectionCard.Disconnected.AMOLED" parent="Widget.MarFaNet.CardView.AMOLED">
+        <item name="strokeColor">@color/colorDisconnected</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+    
+    <style name="Widget.MarFaNet.ConnectionCard.Connecting.AMOLED" parent="Widget.MarFaNet.CardView.AMOLED">
+        <item name="strokeColor">@color/colorConnecting</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+</resources>

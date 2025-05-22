@@ -1,0 +1,51 @@
+# **Patch 1.0.1 Progress Update & Next‑Step Checklist**
+
+*Date: 22 May 2025 – Day 2 of 10‑day hot‑fix sprint*
+
+---
+
+## 1 • Completed (✔)
+
+| ID    | Item                                                  | Status   |
+| ----- | ----------------------------------------------------- | -------- |
+| P0‑01 | Dependabot + OWASP DC pipeline, auto‑issue generation | **Done** |
+| —     | Version bump → **1.0.1 / versionCode 3**              | **Done** |
+
+---
+
+## 2 • In Progress (◑)
+
+| ID        | Task                                            | Owner    | ETA      |
+| --------- | ----------------------------------------------- | -------- | -------- |
+| **P1‑02** | IPv6‑only DoH fallback (SmartRoutingManager.kt) | Core Dev | Day 3 AM |
+
+---
+
+## 3 • Next 48‑Hour Priorities
+
+| Day         | Target                                               | Deliverable                                                                              |
+| ----------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **Day 3**   | **Finish P1‑02**                                     | All subscription updates succeed on IPv6 emulator; unit test `Ipv6FallbackTest.kt` green |
+| **Day 3–4** | **Implement P1‑03** (JSON connection logs)           | Schema `disconnect_reason`, log rotation; JUnit schema test                              |
+| **Day 4**   | **Add AMOLED theme (P2‑04)**                         | Toggle in Appearance; QA screenshots                                                     |
+| **Day 4**   | **Run Accessibility Scanner** + fix critical (P2‑05) | Report score ≥95; commit fixes                                                           |
+
+---
+
+## 4 • Risks & Mitigations
+
+* **DoH latency regression** → behind feature flag `exper_ipv6_doh`; can disable via remote config.
+* **AMOLED asset miss‑tint** → use theme overlay, vector icons.
+
+---
+
+## 5 • Definition of Done (Patch 1.0.1)
+
+1. All five items merged to `release/1.0.x` → CI green.
+2. Closed‑beta `1.0.1‑beta1` crash‑free ≥ 98 % for 48 h.
+3. Play staged rollout 100 % with no new regressions.
+4. CHANGELOG & docs updated; tag `v1.0.1` published.
+
+---
+
+*Proceed with tasks as scheduled; next checkpoint at Day 4 stand‑up.*

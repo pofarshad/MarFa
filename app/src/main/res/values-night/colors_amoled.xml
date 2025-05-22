@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MarFaNet AMOLED Pure Black Theme -->
+    <!-- Primary Colors -->
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryVariant">#0097A7</color>
+    <color name="colorOnPrimary">#000000</color>
+    
+    <!-- Secondary Colors -->
+    <color name="colorSecondary">#03DAC6</color>
+    <color name="colorSecondaryVariant">#018786</color>
+    <color name="colorOnSecondary">#000000</color>
+    
+    <!-- Background Colors - Pure Black for AMOLED -->
+    <color name="colorBackground">#000000</color>
+    <color name="colorOnBackground">#FFFFFF</color>
+    
+    <!-- Surface Colors - Pure Black -->
+    <color name="colorSurface">#000000</color>
+    <color name="colorOnSurface">#FFFFFF</color>
+    
+    <!-- Card and Panel Colors -->
+    <color name="colorCard">#111111</color>
+    <color name="colorPanel">#0A0A0A</color>
+    
+    <!-- Status Colors -->
+    <color name="colorConnected">#4CAF50</color>
+    <color name="colorDisconnected">#F44336</color>
+    <color name="colorConnecting">#FF9800</color>
+    
+    <!-- Text Colors -->
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textSecondary">#B3FFFFFF</color>
+    <color name="textHint">#66FFFFFF</color>
+    
+    <!-- Border and Divider Colors -->
+    <color name="colorDivider">#1A1A1A</color>
+    <color name="colorBorder">#222222</color>
+    
+    <!-- Error Colors -->
+    <color name="colorError">#CF6679</color>
+    <color name="colorOnError">#000000</color>
+    
+    <!-- MarFaNet Brand Colors -->
+    <color name="marfanet_accent">#00E5FF</color>
+    <color name="marfanet_secondary">#1DE9B6</color>
+    
+    <!-- Button Colors -->
+    <color name="buttonBackground">#1A1A1A</color>
+    <color name="buttonBackgroundPressed">#2A2A2A</color>
+    
+    <!-- Switch and Toggle Colors -->
+    <color name="switchTrack">#333333</color>
+    <color name="switchThumb">#00BCD4</color>
+    
+    <!-- Progress Colors -->
+    <color name="progressBackground">#1A1A1A</color>
+    <color name="progressForeground">#00E5FF</color>
+</resources>
