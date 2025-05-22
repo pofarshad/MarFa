@@ -1,0 +1,65 @@
+# **Sprint 1 – Phase 2 Task Board (Week 1–2 Continuation)**
+
+> *Objective:* Integrate the new Split‑Tunnelling DB/UI and WireGuard native core into the running VPN service, add protocol toggle, and build the first version of the real‑time Stats Overlay.
+>
+> *Outcome:* **APK `v1.1.0‑alpha1`** containing all three epics, ready for internal demo.
+
+---
+
+## 1 • Active Workstreams
+
+| Stream                       | Epic ID             | Branch                       | Lead          |
+| ---------------------------- | ------------------- | ---------------------------- | ------------- |
+| Split‑Tunnelling Integration | **STU‑004**         | `feature/stu-integration`    | Android Dev 2 |
+| WireGuard Settings & Bench   | **WG‑003 / WG‑004** | `feature/wg-toggle-bench`    | Network Dev   |
+| Stats Overlay Skeleton       | **RSO‑001/002/003** | `feature/rso-overlay`        | Android Dev 1 |
+| Compose Migration            | **CMP‑001**         | `feature/compose-homescreen` | UI Dev        |
+
+---
+
+## 2 • Tasks & Estimates
+
+| ID        | Description                                                    | Est.   | Status |
+| --------- | -------------------------------------------------------------- | ------ | ------ |
+| **STU‑4** | Inject per‑app rules into `XrayConfigBuilder` & test on device | 1 d    | ⏳      |
+| **WG‑3**  | Add Settings toggle + EngineFactory switching (Xray ⇆ WG)      | 0.5 d  | ⏳      |
+| **WG‑4**  | Throughput benchmark script (iperf3 over 5 G)                  | 0.5 d  | ⏳      |
+| **RSO‑1** | Request SYSTEM\_ALERT\_WINDOW permission gracefully            | 0.25 d | ⏳      |
+| **RSO‑2** | Implement stats polling coroutine (every 1 s)                  | 0.5 d  | ⏳      |
+| **RSO‑3** | Compose overlay UI with RTT + speed chips                      | 0.5 d  | ⏳      |
+| **CMP‑1** | Compose HomeScreen to Material 3 “You” colours                 | 1 d    | ⏳      |
+| **QA‑1**  | Instrumented tests for Split‑Tunnelling + WG session           | 0.5 d  | ⏳      |
+
+---
+
+## 3 • Timeline Snapshot
+
+```
+Day 4‑5  STU‑4  WG‑3  RSO‑1 RSO‑2
+Day 6‑7  RSO‑3  WG‑4  CMP‑1  QA‑1
+Day 8    Merge, CI green, build alpha1 APK
+```
+
+---
+
+## 4 • Definition of Done (Phase 2)
+
+* **Split‑Tunnelling**: Per‑app rules take effect; verify with `adb shell dumpsys connectivity vpn uidRules`.
+* **WireGuard**: Toggle works; benchmark shows ≥30 % throughput gain on Pixel 6 5 G.
+* **Stats Overlay**: Displays RTT & up/down speed live; dismissible.
+* **Compose Home**: No functional regressions; dark/light & RTL pass.
+* CI green; artefact `v1.1.0‑alpha1.apk` attaches to workflow.
+
+---
+
+## 5 • Risks & Mitigations
+
+| Risk                                       | Mitigation                                                             |
+| ------------------------------------------ | ---------------------------------------------------------------------- |
+| Overlay killed by OEM battery savers       | Use `TYPE_APPLICATION_OVERLAY` + request ignore‑battery‑optimizations. |
+| WireGuard permission issues on old devices | Fallback to Xray engine if WG init fails.                              |
+| Rule conflict with existing routes         | Add validation unit test checking duplicate match.                     |
+
+---
+
+> **Kick‑off:** Create the three feature branches and start with STU‑4 & WG‑3. Daily stand‑ups track progress.
