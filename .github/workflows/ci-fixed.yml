@@ -1,0 +1,170 @@
+name: MarFaNet CI - Fixed Pipeline
+
+on:
+  push:
+    branches: [ main, develop, release/* ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build & Test MarFaNet
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: Cache Gradle Dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+          
+    - name: Make Gradlew Executable
+      run: chmod +x ./gradlew
+      
+    - name: Run Security Scan
+      run: ./gradlew dependencyCheckAnalyze
+      
+    - name: Run Lint & Detekt
+      run: |
+        ./gradlew lintDebug
+        ./gradlew detekt
+        
+    - name: Run Unit Tests
+      run: ./gradlew testDebugUnitTest
+      
+    - name: Generate Test Coverage
+      run: ./gradlew jacocoTestReport
+      
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug
+      
+    - name: Build Release APK
+      if: startsWith(github.ref, 'refs/tags/')
+      run: ./gradlew assembleRelease
+      
+    - name: Generate Build Info
+      run: |
+        echo "# MarFaNet Build Information" > build_info.md
+        echo "**Build Date**: $(date -u)" >> build_info.md
+        echo "**Commit**: ${{ github.sha }}" >> build_info.md
+        echo "**Branch**: ${{ github.ref_name }}" >> build_info.md
+        echo "**Trigger**: ${{ github.event_name }}" >> build_info.md
+        echo "" >> build_info.md
+        
+        # Find and document APK files
+        echo "## APK Files" >> build_info.md
+        find app/build/outputs/apk -name "*.apk" -type f | while read apk; do
+          echo "- **$(basename $apk)**: $(du -h $apk | cut -f1)" >> build_info.md
+          echo "  - SHA256: \`$(sha256sum $apk | cut -d' ' -f1)\`" >> build_info.md
+        done
+        
+        cat build_info.md
+        
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: marfanet-debug-apk-${{ github.run_number }}
+        path: |
+          app/build/outputs/apk/debug/*.apk
+          build_info.md
+        retention-days: 90
+        
+    - name: Upload Release APK
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v4
+      with:
+        name: marfanet-release-apk-${{ github.ref_name }}
+        path: |
+          app/build/outputs/apk/release/*.apk
+          build_info.md
+        retention-days: 90
+        
+    - name: Upload Test Reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-reports-${{ github.run_number }}
+        path: |
+          app/build/reports/
+          app/build/test-results/
+        retention-days: 30
+        
+    - name: Comment on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          let buildInfo = "Build information not available";
+          try {
+            buildInfo = fs.readFileSync('build_info.md', 'utf8');
+          } catch (e) {
+            console.log('Could not read build info:', e.message);
+          }
+          
+          const comment = \`## 🚀 MarFaNet CI Build Complete!
+          
+          Your pull request has been successfully built and tested.
+          
+          ### 📥 Download APK
+          1. Go to [Actions](../actions/runs/\${{ github.run_id }})
+          2. Download \`marfanet-debug-apk-\${{ github.run_number }}\`
+          3. Extract and install on your Android device
+          
+          ### 📊 Build Details
+          \${buildInfo}
+          
+          ### ✅ Quality Checks
+          - Security scan completed
+          - Lint and code style checks passed
+          - Unit tests executed
+          - Test coverage generated
+          
+          Ready for testing! 🎉\`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: always()
+    
+    steps:
+    - name: Check Build Status
+      run: |
+        if [ "${{ needs.build-and-test.result }}" != "success" ]; then
+          echo "❌ Build failed - Quality gate blocked"
+          exit 1
+        fi
+        echo "✅ All quality checks passed!"
+        
+    - name: Release Gate
+      if: startsWith(github.ref, 'refs/tags/')
+      run: |
+        echo "🎉 Release build completed successfully!"
+        echo "Tag: ${{ github.ref_name }}"
+        echo "Ready for deployment pipeline activation"
