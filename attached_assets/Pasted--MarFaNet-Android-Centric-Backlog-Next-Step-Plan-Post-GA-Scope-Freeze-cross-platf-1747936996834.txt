@@ -1,0 +1,74 @@
+# **MarFaNet – Android‑Centric Backlog & Next‑Step Plan (Post‑GA)**
+
+> *Scope:* Freeze cross‑platform work temporarily and channel resources into polishing, hardening, and extending the **Android** application (v1.x) before revisiting iOS/Desktop tracks.
+
+---
+
+## 1 • Immediate Maintenance Tasks (Patch 1.0.1)
+
+| Priority | Task                       | Description                                                             | Owner       | ETA        |
+| -------- | -------------------------- | ----------------------------------------------------------------------- | ----------- | ---------- |
+| 🔴 P0    | **CVE Patch Pipeline**     | Monitor Xray & BoringSSL CVEs, issue hotfix within 48 h if found.       | Security    | Continuous |
+| 🟠 P1    | Automatic Rule Update Bug  | Occasional failure under IPv6‑only networks—add fallback IPv4 resolver. | Core        | 2 d        |
+| 🟠 P1    | Connection Watchdog Logger | Add structured JSON logs for disconnect root‑cause analysis.            | Core/DevOps | 1 d        |
+| 🟡 P2    | UI Polish (Dark‑AMOLED)    | Provide pure‑black theme option, tweak contrast on API 34.              | UX          | 2 d        |
+| 🟡 P2    | Accessibility Pass         | Run Accessibility Scanner; fix any critical issues.                     | UX          | 1 d        |
+
+---
+
+## 2 • Minor Release 1.1.0 (8‑week window)
+
+### 2.1 Feature Bucket
+
+| Epic                        | Description                                                                 | Acceptance                                                  |
+| --------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| **Split‑Tunnelling UI**     | Per‑app allow/deny list; stores rule set in Xray routing.                   | Users can toggle at least 3 apps; persists across restarts. |
+| **WireGuard Core Option**   | Bundle prebuilt WG kernel‑less userspace core; toggle in Settings → Engine. | Throughput test shows ≥ 30 % gain on 5 G.                   |
+| **Real‑Time Stats Overlay** | Floating overlay with RTT, throughput & bytes counter.                      | Overlay respects permission & QoS; hides on FTU.            |
+| **Material You / Compose**  | Migrate Home & Settings screens to Jetpack Compose.                         | No performance regression; RTL support.                     |
+
+### 2.2 Technical Debt & Infra
+
+* **Upgrade AGP ➜ 9.x** (Android 15 compatibility).
+* **Kotlin 2.0‑Beta adoption** with K2 compiler; fix warnings.
+* Enable **Baselining** for Lint to enforce new violations only.
+
+---
+
+## 3 • Beta & Roll‑out Strategy
+
+1. Develop on `develop` branch; feature flags behind `experimental_*` SharedPrefs.
+2. Publish **Closed Beta** track every 2 weeks.
+3. Release `1.1.0‑beta.3` after all epics hit QA green; gather metrics for 10 days.
+4. Promote to Production as **1.1.0** if crash‑free ≥ 97 %.
+
+---
+
+## 4 • Resource Allocation (8 weeks)
+
+| Role                | % Allocation |
+| ------------------- | ------------ |
+| Android Core Dev ×2 | 100 %        |
+| UX Designer         | 40 %         |
+| QA/Automation       | 60 %         |
+| DevOps              | 30 %         |
+| PM                  | 30 %         |
+
+---
+
+## 5 • Metrics of Success
+
+* Crash‑free sessions ≥ 98 % in 14‑day post‑release window.
+* User rating improves → 4.6 ★ (Play Store).
+* Split‑Tunnelling adoption ≥ 40 % of active users.
+* WireGuard mode selected by ≥ 25 % of devices on 5 G.
+
+---
+
+## 6 • Decision Gate for Resuming iOS/Desktop
+
+Resume cross‑platform roadmap once **1.1.0** metrics hit targets **and** backlog of Critical/Major Android issues ≤ 2.
+
+---
+
+> *Action:* Approve this Android‑focused backlog. Upon approval, convert tasks into GitHub Epics & Issues and start Patch 1.0.1 immediately.
