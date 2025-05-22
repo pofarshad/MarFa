@@ -1,0 +1,69 @@
+# **Sprint 0 – MarFaNet v1.1.0 Planning (Revised to Address CI/Gradle Wrapper Issues)**
+
+> **Purpose:** Finalise groundwork for **version 1.1.0** *and* resolve the “`./gradlew: No such file or directory`” problem that blocked the pre‑beta build.
+
+---
+
+## A • Immediate CI Hot‑Fix (Pre‑cursor to Sprint 0)
+
+| Step | Action                              | Detail                                                                                                                                                                    |
+| ---- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | **Ensure Gradle Wrapper Committed** | Verify `gradlew`, `gradlew.bat`, and `.gradle/wrapper/gradle-wrapper.jar` exist at repo root. If missing, run `./gradle wrapper --gradle-version 8.6` locally and commit. |
+| 2    | **Set Exec Permissions**            | `git update-index --chmod=+x gradlew` so CI can execute.                                                                                                                  |
+| 3    | **Workflow Working‑Dir**            | Update GitHub Actions `ci.yml`:                                                                                                                                           |
+
+````yaml
+- name: Build
+  run: ./gradlew dependencyCheckAnalyze
+  working-directory: ./app  # (or repo root)  
+``` |
+| 4 | **Cache Gradle** | Add `actions/setup-java` + `gradle-build-action` for speed & reliability. |
+| 5 | **Retry Build** | Re‑run the failed workflow; artefact should publish. |
+
+Once CI hot‑fix is merged and artefact uploads, tag `v1.0.1-beta2` if required.
+
+---
+## B • Sprint 0 Timeline & Deliverables (unchanged)
+| Week | Milestone | Output |
+|------|-----------|--------|
+| W0 | Kick‑off & CI green | Scope lock, team allocation, **CI passes on main** |
+| W1 | UX+API Specs | Wireframes + API contracts (Split‑Tunnelling, Stats Overlay) |
+| W1 | Tech Spike | WireGuard core POC (connects to public WG node) |
+| W2 | Build‑System Upgrade | AGP 9 + Kotlin 2.0 compile OK; Compose compiler plugin integrated |
+| W2 | Sprint 1 Backlog | All epics broken into issues, pointed |
+
+---
+## C • Feature Workstreams (recap)
+1. **Split‑Tunnelling UI** (Epic STU‑001)  
+2. **WireGuard Engine** (Epic WG‑002)  
+3. **Real‑Time Stats Overlay** (Epic RSO‑003)  
+4. **Compose Migration** (Epic CMP‑004)
+
+---
+## D • Build/Tooling Upgrades
+| Tool | Current | Target |
+|------|---------|--------|
+| AGP | 8.x | 9.0 Canary |
+| Kotlin | 1.9 | 2.0 Beta (K2) |
+| Compose | 1.6 | 2.0 Alpha |
+| CI Image | Ubuntu 22 | + Java 21, gradle-build-action |
+
+*Branch `tooling/upgrade-poc`; CI must stay green.*
+
+---
+## E • Success Criteria for Sprint 0
+1. CI builds without `gradlew` errors; artefacts upload on tag.
+2. Epics and estimates locked; UX in Figma approved.
+3. WireGuard POC benchmarks >30 % faster than Xray.
+4. AGP/Kotlin upgrade merged with zero lint/detekt regressions.
+
+---
+## F • Risks / Watch‑Points
+* **gradlew permissions** on Windows runners.
+* **WireGuard license & Play policy**.
+* **K2 compiler warnings** with kapt.
+
+---
+> **Next:** Merge CI hot‑fix, re‑run workflow, confirm artefact build, then commence Sprint 0 as per timeline.
+
+````
