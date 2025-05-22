@@ -1,0 +1,79 @@
+0s
+27s
+##[debug]Evaluating condition for step: 'Build Debug APK'
+##[debug]Evaluating: (success() && ((github.event.inputs.build_type == 'debug') || (github.event_name != 'workflow_dispatch')))
+##[debug]Evaluating And:
+##[debug]..Evaluating success:
+##[debug]..=> true
+##[debug]..Evaluating Or:
+##[debug]....Evaluating Equal:
+##[debug]......Evaluating Index:
+##[debug]........Evaluating Index:
+##[debug]..........Evaluating Index:
+##[debug]............Evaluating github:
+##[debug]............=> Object
+##[debug]............Evaluating String:
+##[debug]............=> 'event'
+##[debug]..........=> Object
+##[debug]..........Evaluating String:
+##[debug]..........=> 'inputs'
+##[debug]........=> null
+##[debug]......=> null
+##[debug]......Evaluating String:
+##[debug]......=> 'debug'
+##[debug]....=> false
+##[debug]....Evaluating NotEqual:
+##[debug]......Evaluating Index:
+##[debug]........Evaluating github:
+##[debug]........=> Object
+##[debug]........Evaluating String:
+##[debug]........=> 'event_name'
+##[debug]......=> 'push'
+##[debug]......Evaluating String:
+##[debug]......=> 'workflow_dispatch'
+##[debug]....=> true
+##[debug]..=> true
+##[debug]=> true
+##[debug]Expanded: (true && ((null == 'debug') || ('push' != 'workflow_dispatch')))
+##[debug]Result: true
+##[debug]Starting: Build Debug APK
+##[debug]Loading inputs
+##[debug]Loading env
+Run ./gradlew assembleDebug
+##[debug]/usr/bin/bash -e /home/runner/work/_temp/6b6bed15-2634-4ef7-96d1-1331010caf11.sh
+Downloading https://services.gradle.org/distributions/gradle-8.6-rc-1-bin.zip
+............10%.............20%............30%.............40%.............50%............60%.............70%.............80%............90%.............100%
+
+Welcome to Gradle 8.6-rc-1!
+
+Here are the highlights of this release:
+ - Support for running on Java 21
+ - Faster first use with Kotlin DSL
+ - Improved error and warning messages
+
+For more details see https://docs.gradle.org/8.6-rc-1/release-notes.html
+
+Starting a Gradle Daemon (subsequent builds will be faster)
+Configuration on demand is an incubating feature.
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file '/home/runner/work/MarFa/MarFa/build.gradle.kts' line: 3
+
+* What went wrong:
+Plugin [id: 'com.android.application', version: '9.0.0-alpha01', apply: false] was not found in any of the following sources:
+
+- Gradle Core Plugins (plugin is not in 'org.gradle' namespace)
+- Plugin Repositories (could not resolve plugin artifact 'com.android.application:com.android.application.gradle.plugin:9.0.0-alpha01')
+  Searched in the following repositories:
+    Gradle Central Plugin Repository
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 26s
+Error: Process completed with exit code 1.
