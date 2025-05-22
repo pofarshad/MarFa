@@ -203,7 +203,11 @@ if __name__ == '__main__':
     
     # Initialize database
     with app.app_context():
-        db.create_all()
+        try:
+            db.create_all()
+        except Exception as e:
+            print(f"Database initialization warning: {e}")
+            print("Continuing without database - using in-memory storage")
         
         # Create default project if none exists
         if not Project.query.first():
