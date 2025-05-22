@@ -1,0 +1,70 @@
+# **Phase 8 Kick‑off — Cross‑Platform Expansion & Ecosystem APIs**
+
+> *Purpose:* Activate the first optional growth phase after GA: extend MarFaNet beyond Android, introduce cloud‑sync, and expose public provisioning APIs.
+
+---
+
+## 1 • Strategic Objectives
+
+1. **Multi‑Platform Client Suite** – Deliver iOS, macOS, Windows, Linux desktop companions sharing a unified codebase where feasible (Rust + Flutter wrapper or Kotlin Multiplatform).
+2. **Secure Cloud Sync** – End‑to‑end encrypted storage of profiles, usage statistics, and user preferences across devices.
+3. **Public Config API (v1)** – REST + gRPC endpoints for automated subscription provisioning, node health status, and analytics webhooks.
+4. **Marketplace Integrations** – Browser extensions (Chrome, Firefox), automation hooks (IFTTT, Zapier) for quick‑toggle and rules injection.
+
+---
+
+## 2 • Work Breakdown Structure
+
+| ID    | Task                                                                  | Lead         | Est. |
+| ----- | --------------------------------------------------------------------- | ------------ | ---- |
+| MP‑1  | Define cross‑platform tech stack (KMP vs. Flutter vs. Rust+UI shells) | Architecture | 1 w  |
+| MP‑2  | Spike prototype on iOS (networking layer only)                        | Mobile       | 2 w  |
+| CS‑1  | Design crypto protocol for E2E sync (AES‑GCM + XChaCha20‑Poly1305)    | Security     | 1 w  |
+| CS‑2  | Implement Cloud Sync microservice (Go) + DynamoDB/Postgres            | Backend      | 3 w  |
+| API‑1 | Draft OpenAPI spec + protobuf for Config API                          | Backend      | 1 w  |
+| API‑2 | Build auth layer (OAuth 2.1, PKCE)                                    | Backend      | 2 w  |
+| MK‑1  | Browser extension skeleton (MV3)                                      | Front‑end    | 2 w  |
+| QA‑1  | Cross‑platform test harness (GitHub Actions matrix)                   | DevOps       | 1 w  |
+
+---
+
+## 3 • Milestones & Timeline (Indicative)
+
+| Milestone | Deliverable                            | Duration |
+| --------- | -------------------------------------- | -------- |
+| **M1**    | Tech‑stack decision, architecture docs | 2 w      |
+| **M2**    | iOS & Desktop MVP (connect/disconnect) | 4 w      |
+| **M3**    | Cloud Sync alpha + secure login        | 3 w      |
+| **M4**    | Public API v1 beta + SDK               | 4 w      |
+| **M5**    | Marketplace extensions beta            | 2 w      |
+| **M6**    | Phase 8 public beta (multi‑platform)   | 2 w      |
+
+Total ≈ 17 weeks.
+
+---
+
+## 4 • Risks & Mitigations
+
+| Risk                                | Likelihood | Impact | Mitigation                               |
+| ----------------------------------- | ---------- | ------ | ---------------------------------------- |
+| App Store VPN policy hurdles on iOS | Medium     | High   | Early legal review + compliance wrapper  |
+| Sync security breach                | Low        | High   | Regular pen‑testing, formal crypto audit |
+| API overuse / abuse                 | Medium     | Medium | Rate‑limits + API‑key quotas             |
+
+---
+
+## 5 • Budget & Resource Hint
+
+* **Team Size:** 2 mobile, 2 backend, 1 frontend, 1 DevOps, 0.5 PM, 0.5 Designer.
+* **CapEx:** Test devices (iPhone, Mac Mini, Surface), cloud infra (\~\$500/mo).
+
+---
+
+## 6 • Kick‑off Steps (Week 0)
+
+1. Approve Phase 8 scope & budget.
+2. Create branch `phase8/architecture-spike`.
+3. Schedule architecture workshop; output ADRs.
+4. Set up iOS & desktop CI runners.
+
+> *Phase 8 begins only after executive sign‑off on scope and resourcing.*
