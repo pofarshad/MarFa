@@ -257,31 +257,104 @@ function analyzeRequirement(id) {
     updateRequirementStatus(id, 'in-progress');
     
     const requirements = {
-        1: 'Analyzing Sing-box to Xray core replacement...',
-        2: 'Identifying impacted code paths...',
-        3: 'Designing gfw-knocker integration...',
-        4: 'Locating WARP/WARP+ components...',
-        5: 'Planning MarFaNet rebranding...',
-        6: 'Setting up code audit framework...',
-        7: 'Designing Xray URL scheme parser...',
-        8: 'Updating protocol infrastructure...',
-        9: 'Identifying performance optimizations...',
-        10: 'Analyzing connection speed improvements...',
-        11: 'Designing connection stability features...',
-        12: 'Planning Iran routing rules integration...',
-        13: 'Designing ping engine architecture...',
-        14: 'Updating Android compatibility layer...'
+        1: {
+            message: 'Analyzing Sing-box to Xray core replacement...',
+            details: 'Examining native library integration, JNI interfaces, and protocol compatibility',
+            duration: 3000
+        },
+        2: {
+            message: 'Identifying impacted code paths...',
+            details: 'Scanning codebase for Sing-box dependencies and connection handling',
+            duration: 2500
+        },
+        3: {
+            message: 'Designing gfw-knocker integration...',
+            details: 'Planning anti-censorship features and Iran-specific optimizations',
+            duration: 2000
+        },
+        4: {
+            message: 'Locating WARP/WARP+ components...',
+            details: 'Finding Cloudflare integration points and migration strategy',
+            duration: 2000
+        },
+        5: {
+            message: 'Planning MarFaNet rebranding...',
+            details: 'Asset replacement, package renaming, and UI updates',
+            duration: 2000
+        },
+        6: {
+            message: 'Setting up code audit framework...',
+            details: 'Establishing security scanning and quality gates',
+            duration: 2000
+        },
+        7: {
+            message: 'Designing Xray URL scheme parser...',
+            details: 'Creating robust configuration parser for multiple protocols',
+            duration: 2000
+        },
+        8: {
+            message: 'Updating protocol infrastructure...',
+            details: 'Modernizing connection handling and protocol support',
+            duration: 2000
+        },
+        9: {
+            message: 'Identifying performance optimizations...',
+            details: 'Memory management, battery efficiency, and speed improvements',
+            duration: 2000
+        },
+        10: {
+            message: 'Analyzing connection speed improvements...',
+            details: 'Protocol selection, server optimization, and caching strategies',
+            duration: 2000
+        },
+        11: {
+            message: 'Designing connection stability features...',
+            details: 'Auto-reconnection, failover mechanisms, and reliability enhancements',
+            duration: 2000
+        },
+        12: {
+            message: 'Planning Iran routing rules integration...',
+            details: 'Smart routing, geolocation-based optimization, and rule management',
+            duration: 2000
+        },
+        13: {
+            message: 'Designing ping engine architecture...',
+            details: 'Server monitoring, latency measurement, and health checking',
+            duration: 2000
+        },
+        14: {
+            message: 'Updating Android compatibility layer...',
+            details: 'API level support, device compatibility, and system integration',
+            duration: 2000
+        }
     };
     
-    const message = requirements[id] || 'Analyzing requirement...';
-    updateProgress(0, message);
+    const requirement = requirements[id] || {
+        message: 'Analyzing requirement...',
+        details: 'Processing analysis request',
+        duration: 2000
+    };
     
-    // Simulate analysis
+    updateProgress(0, requirement.message);
+    
+    // Progressive analysis simulation
+    setTimeout(() => {
+        updateProgress(30, requirement.details);
+    }, 500);
+    
+    setTimeout(() => {
+        updateProgress(60, 'Generating analysis report...');
+    }, requirement.duration * 0.6);
+    
+    setTimeout(() => {
+        updateProgress(90, 'Finalizing recommendations...');
+    }, requirement.duration * 0.8);
+    
     setTimeout(() => {
         updateRequirementStatus(id, 'completed');
         updateProgress(100, `Requirement ${id} analysis completed.`);
         showSuccessMessage(`Requirement ${id} analyzed successfully!`);
-    }, 2000);
+    }, requirement.duration);
 }
 
 // Health check
