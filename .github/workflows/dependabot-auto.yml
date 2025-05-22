@@ -1,0 +1,227 @@
+name: Dependabot Security Analysis
+
+on:
+  pull_request:
+    branches: [ main, develop, hotfix/* ]
+    paths: [ '**/build.gradle*', '**/gradle.properties', 'gradle/libs.versions.toml' ]
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 06:00 UTC
+
+jobs:
+  security-analysis:
+    name: OWASP Dependency Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Run OWASP Dependency Check
+      run: ./gradlew dependencyCheckAnalyze
+      
+    - name: Parse Vulnerability Report
+      id: parse-vulns
+      run: |
+        if [ -f app/build/reports/dependency-check-report.json ]; then
+          # Count vulnerabilities by severity
+          CRITICAL=$(jq '[.vulnerabilities[] | select(.severity == "CRITICAL")] | length' app/build/reports/dependency-check-report.json)
+          HIGH=$(jq '[.vulnerabilities[] | select(.severity == "HIGH")] | length' app/build/reports/dependency-check-report.json)
+          MEDIUM=$(jq '[.vulnerabilities[] | select(.severity == "MEDIUM")] | length' app/build/reports/dependency-check-report.json)
+          LOW=$(jq '[.vulnerabilities[] | select(.severity == "LOW")] | length' app/build/reports/dependency-check-report.json)
+          
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+          echo "medium=$MEDIUM" >> $GITHUB_OUTPUT
+          echo "low=$LOW" >> $GITHUB_OUTPUT
+          
+          # Determine alert level
+          if [ $CRITICAL -gt 0 ]; then
+            echo "alert_level=critical" >> $GITHUB_OUTPUT
+            echo "needs_hotfix=true" >> $GITHUB_OUTPUT
+          elif [ $HIGH -gt 0 ]; then
+            echo "alert_level=high" >> $GITHUB_OUTPUT
+            echo "needs_hotfix=true" >> $GITHUB_OUTPUT
+          else
+            echo "alert_level=none" >> $GITHUB_OUTPUT
+            echo "needs_hotfix=false" >> $GITHUB_OUTPUT
+          fi
+          
+          # Extract vulnerability details for critical/high
+          if [ $((CRITICAL + HIGH)) -gt 0 ]; then
+            jq '.vulnerabilities[] | select(.severity == "CRITICAL" or .severity == "HIGH") | {name: .name, severity: .severity, description: .description, references: [.references[0].url]}' app/build/reports/dependency-check-report.json > critical_high_vulns.json
+            echo "Found $((CRITICAL + HIGH)) Critical/High vulnerabilities"
+          fi
+        else
+          echo "❌ OWASP report not found"
+          exit 1
+        fi
+        
+    - name: Create Security Issue for Critical/High CVEs
+      if: steps.parse-vulns.outputs.needs_hotfix == 'true'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const critical = ${{ steps.parse-vulns.outputs.critical }};
+          const high = ${{ steps.parse-vulns.outputs.high }};
+          
+          let vulnDetails = "";
+          if (fs.existsSync('critical_high_vulns.json')) {
+            const vulns = fs.readFileSync('critical_high_vulns.json', 'utf8').split('\n').filter(line => line.trim());
+            vulnDetails = vulns.map(line => {
+              if (line.trim()) {
+                const vuln = JSON.parse(line);
+                return `### ${vuln.name} (${vuln.severity})
+          ${vuln.description}
+          **References**: ${vuln.references.join(', ')}`;
+              }
+            }).join('\n\n');
+          }
+          
+          const issueBody = `# 🚨 Security Alert: Critical/High CVEs Detected
+          
+          **Alert Generated**: ${new Date().toISOString()}
+          **Scan Trigger**: ${context.eventName}
+          **Branch**: ${context.ref}
+          
+          ## Vulnerability Summary
+          - 🔴 **Critical**: ${critical}
+          - 🟠 **High**: ${high}
+          - **Total Requiring Hotfix**: ${critical + high}
+          
+          ## Hotfix Requirements
+          
+          ### ⏰ Response Timeline
+          - **Critical CVEs**: Immediate response required (≤24h)
+          - **High CVEs**: Hotfix required within 48h
+          - **Target Release**: v1.0.1 patch
+          
+          ### 📋 Action Items
+          - [ ] **Triage**: Review vulnerability details and assess impact
+          - [ ] **Dependencies**: Identify affected libraries and available patches
+          - [ ] **Testing**: Verify fixes don't break functionality
+          - [ ] **Hotfix Branch**: Create \`hotfix/security-patch-${Date.now()}\`
+          - [ ] **Release**: Deploy via emergency patch process
+          - [ ] **Verification**: Confirm vulnerabilities resolved
+          
+          ## Vulnerability Details
+          
+          ${vulnDetails}
+          
+          ## 🔗 Resources
+          - [Full OWASP Report](../actions/runs/${context.runId})
+          - [MarFaNet Security Policy](../security/policy)
+          - [Emergency Patch Process](../wiki/Emergency-Patches)
+          
+          ---
+          **🤖 Auto-generated by MarFaNet Security Pipeline**
+          `;
+          
+          const { data: issue } = await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `🚨 SECURITY: ${critical + high} Critical/High CVEs - Hotfix Required`,
+            body: issueBody,
+            labels: ['security', 'critical', 'hotfix-required', 'P0'],
+            assignees: [] // Add security team members
+          });
+          
+          // Add priority label based on severity
+          if (critical > 0) {
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: ['priority-critical']
+            });
+          }
+          
+          console.log(`Created security issue #${issue.number}`);
+          
+    - name: Comment on PR with Security Summary
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const critical = ${{ steps.parse-vulns.outputs.critical }};
+          const high = ${{ steps.parse-vulns.outputs.high }};
+          const medium = ${{ steps.parse-vulns.outputs.medium }};
+          const low = ${{ steps.parse-vulns.outputs.low }};
+          
+          const total = critical + high + medium + low;
+          
+          let statusIcon = "✅";
+          let statusText = "No security issues";
+          let urgencyNote = "";
+          
+          if (critical > 0) {
+            statusIcon = "🚨";
+            statusText = "CRITICAL security issues found";
+            urgencyNote = "**⚠️ IMMEDIATE ACTION REQUIRED - Critical vulnerabilities detected!**";
+          } else if (high > 0) {
+            statusIcon = "⚠️";
+            statusText = "High severity issues found";
+            urgencyNote = "**⚠️ High priority security issues - Review required**";
+          } else if (medium > 0) {
+            statusIcon = "🟡";
+            statusText = "Medium severity issues found";
+          }
+          
+          const comment = `## ${statusIcon} Security Scan Results
+          
+          ${urgencyNote}
+          
+          | Severity | Count |
+          |----------|-------|
+          | 🔴 Critical | ${critical} |
+          | 🟠 High | ${high} |
+          | 🟡 Medium | ${medium} |
+          | ⚪ Low | ${low} |
+          | **Total** | **${total}** |
+          
+          ### Status: ${statusText}
+          
+          ${critical + high > 0 ? '🚨 **Blocking**: This PR introduces or fails to address Critical/High severity vulnerabilities.' : '✅ **Safe to merge**: No Critical or High severity vulnerabilities detected.'}
+          
+          <details>
+          <summary>View detailed security report</summary>
+          
+          For complete vulnerability details, check the [OWASP Dependency Check report](../actions/runs/${context.runId}).
+          
+          </details>
+          
+          ---
+          *🔒 MarFaNet Security Pipeline - Automated vulnerability scanning*`;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+          
+    - name: Upload Security Reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-scan-reports
+        path: |
+          app/build/reports/dependency-check-report.*
+          critical_high_vulns.json
+          
+    - name: Security Gate Check
+      if: steps.parse-vulns.outputs.needs_hotfix == 'true'
+      run: |
+        echo "🚨 SECURITY GATE FAILURE"
+        echo "Critical: ${{ steps.parse-vulns.outputs.critical }}"
+        echo "High: ${{ steps.parse-vulns.outputs.high }}"
+        echo ""
+        echo "This build is blocked due to Critical or High severity vulnerabilities."
+        echo "Please address security issues before proceeding."
+        exit 1
