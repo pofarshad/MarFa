@@ -3,10 +3,10 @@
  * Automatically captures failing GitHub Actions and generates fixes
  */
 
-const express = require('express');
-const crypto = require('crypto');
-const { Octokit } = require('@octokit/rest');
-const { createAppAuth } = require('@octokit/auth-app');
+import express from 'express';
+import crypto from 'crypto';
+import { Octokit } from '@octokit/rest';
+import { createAppAuth } from '@octokit/auth-app';
 
 const app = express();
 app.use(express.json());
@@ -437,4 +437,4 @@ app.listen(config.port, () => {
     console.log(`💚 Health check: /health`);
 });
 
-module.exports = app;
+export default app;

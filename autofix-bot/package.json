@@ -2,6 +2,7 @@
   "name": "marfanet-autofix-bot",
   "version": "1.0.0",
   "description": "AI-driven CI remediation pipeline for MarFaNet Android project",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
