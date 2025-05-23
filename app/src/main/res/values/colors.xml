@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- MarFaNet Brand Colors -->
-    <color name="marfanet_primary">#1976D2</color>
-    <color name="marfanet_on_primary">#FFFFFF</color>
-    <color name="marfanet_primary_container">#D3E3FD</color>
-    <color name="marfanet_on_primary_container">#001D36</color>
-    
-    <color name="marfanet_secondary">#575E71</color>
-    <color name="marfanet_on_secondary">#FFFFFF</color>
-    <color name="marfanet_secondary_container">#DBE2F9</color>
-    <color name="marfanet_on_secondary_container">#141B2C</color>
-    
-    <color name="marfanet_tertiary">#715573</color>
-    <color name="marfanet_on_tertiary">#FFFFFF</color>
-    <color name="marfanet_tertiary_container">#FBD7FC</color>
-    <color name="marfanet_on_tertiary_container">#29132D</color>
-    
-    <color name="marfanet_error">#BA1A1A</color>
-    <color name="marfanet_error_container">#FFDAD6</color>
-    <color name="marfanet_on_error">#FFFFFF</color>
-    <color name="marfanet_on_error_container">#410002</color>
-    
-    <color name="marfanet_background">#FEFBFF</color>
-    <color name="marfanet_on_background">#1B1B1F</color>
-    <color name="marfanet_surface">#FEFBFF</color>
-    <color name="marfanet_on_surface">#1B1B1F</color>
-    <color name="marfanet_surface_variant">#E1E2EC</color>
-    <color name="marfanet_on_surface_variant">#44474F</color>
-    <color name="marfanet_outline">#74777F</color>
-    <color name="marfanet_outline_variant">#C4C7CF</color>
-    <color name="marfanet_inverse_surface">#303033</color>
-    <color name="marfanet_inverse_on_surface">#F2F0F4</color>
-    <color name="marfanet_inverse_primary">#A8C8FA</color>
-    
-    <!-- Status Colors -->
-    <color name="connected_green">#4CAF50</color>
-    <color name="disconnected_red">#F44336</color>
-    <color name="connecting_orange">#FF9800</color>
+    <!-- Light Theme Colors -->
+    <color name="md_theme_light_primary">#006C4C</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#89F8C7</color>
+    <color name="md_theme_light_onPrimaryContainer">#002114</color>
+    <color name="md_theme_light_secondary">#4C6358</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#CFE9DA</color>
+    <color name="md_theme_light_onSecondaryContainer">#092016</color>
+    <color name="md_theme_light_tertiary">#3F6374</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#C2E8FC</color>
+    <color name="md_theme_light_onTertiaryContainer">#001F2A</color>
+    <color name="md_theme_light_error">#BA1A1A</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FFDAD6</color>
+    <color name="md_theme_light_onErrorContainer">#410002</color>
+    <color name="md_theme_light_outline">#707973</color>
+    <color name="md_theme_light_background">#FBFDF9</color>
+    <color name="md_theme_light_onBackground">#191C1A</color>
+    <color name="md_theme_light_surface">#FBFDF9</color>
+    <color name="md_theme_light_onSurface">#191C1A</color>
+
+    <!-- Dark Theme Colors -->
+    <color name="md_theme_dark_primary">#6CDBAB</color>
+    <color name="md_theme_dark_onPrimary">#003825</color>
+    <color name="md_theme_dark_primaryContainer">#005138</color>
+    <color name="md_theme_dark_onPrimaryContainer">#89F8C7</color>
+    <color name="md_theme_dark_secondary">#B3CCBE</color>
+    <color name="md_theme_dark_onSecondary">#1F352A</color>
+    <color name="md_theme_dark_secondaryContainer">#354B40</color>
+    <color name="md_theme_dark_onSecondaryContainer">#CFE9DA</color>
+    <color name="md_theme_dark_tertiary">#A6CCDF</color>
+    <color name="md_theme_dark_onTertiary">#073544</color>
+    <color name="md_theme_dark_tertiaryContainer">#254B5C</color>
+    <color name="md_theme_dark_onTertiaryContainer">#C2E8FC</color>
+    <color name="md_theme_dark_error">#FFB4AB</color>
+    <color name="md_theme_dark_onError">#690005</color>
+    <color name="md_theme_dark_errorContainer">#93000A</color>
+    <color name="md_theme_dark_onErrorContainer">#FFDAD6</color>
+    <color name="md_theme_dark_outline">#8B938C</color>
+    <color name="md_theme_dark_background">#191C1A</color>
+    <color name="md_theme_dark_onBackground">#E1E3DF</color>
+    <color name="md_theme_dark_surface">#191C1A</color>
+    <color name="md_theme_dark_onSurface">#E1E3DF</color>
 </resources>

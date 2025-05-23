@@ -1,0 +1,54 @@
+Let me help you fix your Material Design 3 theme configuration. Here's what's wrong:
+
+Missing Theme Attributes: Your themes.xml is too minimal and missing required Material3 color attributes
+Missing Night Theme: The values-night/themes.xml file is missing, which explains the night mode resource errors
+Here's how to fix it:
+
+First, update your app/src/main/res/values/themes.xml:
+
+app/src/main/res/values/themes.xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MarFaNet" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand colors -->
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+Create a new file app/src/main/res/values-night/themes.xml:
+
+app/src/main/res/values-night/themes.xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MarFaNet" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand colors -->
+        <item name="colorPrimary">@color/md_theme_dark_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
+Create color resources in app/src/main/res/values/colors.xml:
+
+app/src/main/res/values/colors.xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light Theme Colors -->
+    <color name="md_theme_light_primary">#006C4C</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#89F8C7</color>
+Also update your build.gradle.kts file with the latest Material3 version:
+Kotlin
+dependencies {
+    // ... other dependencies ...
+    
+    // Material 3
+    implementation("androidx.compose.material3:material3:1.2.0")
+    
+    // ... rest of dependencies ...
+}
+These changes will:
+
+Properly define both light and dark themes
+Include all necessary Material3 color attributes
+Set up a complete Material3 color system
+Fix the resource linking errors you're seeing
+After making these changes:
+
+Clean your project (./gradlew clean)
+Rebuild (./gradlew build)
+The colors I've provided are a nice green-based theme, but you can customize them using the Material Design 3 Theme Builder if you want different colors.
