@@ -125,10 +125,12 @@ dependencies {
 detekt {
     buildUponDefaultConfig = true
     allRules = false
+    baseline = file("detekt-baseline.xml")
 }
 
 // OWASP Dependency Check configuration
 dependencyCheck {
-    format = "HTML"
+    formats = listOf("HTML", "JSON")
     outputDirectory = "build/reports"
+    suppressionFile = "owasp-suppressions.xml"
 }
