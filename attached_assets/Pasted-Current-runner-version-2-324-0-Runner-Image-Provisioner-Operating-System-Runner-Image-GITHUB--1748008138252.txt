@@ -1,0 +1,203 @@
+Current runner version: '2.324.0'
+Runner Image Provisioner
+Operating System
+Runner Image
+GITHUB_TOKEN Permissions
+Secret source: Actions
+Prepare workflow directory
+Prepare all required actions
+Getting action download info
+Download immutable action package 'actions/checkout@v4'
+Download immutable action package 'actions/setup-java@v4'
+Download action repository 'gradle/actions@v3' (SHA:d9c87d481d55275bb5441eef3fe0e46805f9ef70)
+Download immutable action package 'actions/cache@v3'
+Download immutable action package 'actions/upload-artifact@v4'
+Complete job name: build
+1s
+Run actions/checkout@v4
+  with:
+    repository: pofarshad/MarFa
+    token: ***
+    ssh-strict: true
+    ssh-user: git
+    persist-credentials: true
+    clean: true
+    sparse-checkout-cone-mode: true
+    fetch-depth: 1
+    fetch-tags: false
+    show-progress: true
+    lfs: false
+    submodules: false
+    set-safe-directory: true
+Syncing repository: pofarshad/MarFa
+Getting Git version info
+  Working directory is '/home/runner/work/MarFa/MarFa'
+  /usr/bin/git version
+  git version 2.49.0
+Temporarily overriding HOME='/home/runner/work/_temp/7748ac01-8bae-4a40-9fd1-8d007b9ae5a4' before making global git config changes
+Adding repository directory to the temporary git global config as a safe directory
+/usr/bin/git config --global --add safe.directory /home/runner/work/MarFa/MarFa
+Deleting the contents of '/home/runner/work/MarFa/MarFa'
+Initializing the repository
+Disabling automatic garbage collection
+Setting up auth
+Fetching the repository
+Determining the checkout info
+/usr/bin/git sparse-checkout disable
+/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Checking out the ref
+/usr/bin/git log -1 --format=%H
+ad4dbdf85713b5cdbcceae98681ffc8df3b4bb74
+0s
+Run actions/setup-java@v4
+  with:
+    distribution: temurin
+    java-version: 17
+    java-package: jdk
+    check-latest: false
+    server-id: github
+    server-username: GITHUB_ACTOR
+    server-password: GITHUB_TOKEN
+    overwrite-settings: true
+    job-status: success
+    token: ***
+Installed distributions
+Creating settings.xml with server-id: github
+Writing to /home/runner/.m2/settings.xml
+2s
+Run gradle/actions/setup-gradle@v3
+Merged default JDK locations into /home/runner/.m2/toolchains.xml
+Restore Gradle state from cache
+1s
+Run actions/cache@v3
+  with:
+    path: ~/.gradle/caches
+  ~/.gradle/wrapper
+  
+    key: Linux-gradle-e109718fa7149d56a771abcca4daaa80d53a20a4bc08b038a80d225c2e4602c1
+    restore-keys: Linux-gradle-
+  
+    enableCrossOsArchive: false
+    fail-on-cache-miss: false
+    lookup-only: false
+  env:
+    JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.15-6/x64
+    JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.15-6/x64
+    GRADLE_ACTION_ID: gradle/actions/setup-gradle
+    GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+    GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+    DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+    DEVELOCITY_AUTO_INJECTION_CUSTOM_VALUE: gradle-actions
+    GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+Cache not found for input keys: Linux-gradle-e109718fa7149d56a771abcca4daaa80d53a20a4bc08b038a80d225c2e4602c1, Linux-gradle-
+0s
+Run chmod +x gradlew
+2m 18s
+Run ./gradlew build
+  ./gradlew build
+  shell: /usr/bin/bash -e {0}
+  env:
+    JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.15-6/x64
+    JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.15-6/x64
+    GRADLE_ACTION_ID: gradle/actions/setup-gradle
+    GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+    GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+    DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+    DEVELOCITY_AUTO_INJECTION_CUSTOM_VALUE: gradle-actions
+    GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+Downloading https://services.gradle.org/distributions/gradle-8.6-rc-1-bin.zip
+............10%.............20%............30%.............40%.............50%............60%.............70%.............80%............90%.............100%
+Welcome to Gradle 8.6-rc-1!
+Here are the highlights of this release:
+ - Support for running on Java 21
+ - Faster first use with Kotlin DSL
+ - Improved error and warning messages
+For more details see https://docs.gradle.org/8.6-rc-1/release-notes.html
+Starting a Gradle Daemon (subsequent builds will be faster)
+Configuration on demand is an incubating feature.
+> Configure project :
+w: file:///home/runner/work/MarFa/MarFa/build.gradle.kts:7:24: 'getter for buildDir: File!' is deprecated. Deprecated in Java
+> Configure project :app
+WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated.
+The current default is 'false'.
+It will be removed in version 9.0 of the Android Gradle plugin.
+You can resolve this warning in Android Studio via `Refactor` > `Migrate BuildConfig to Gradle Build Files`
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources FAILED
+ERROR: [mipmap-hdpi-v4/ic_launcher] /home/runner/work/MarFa/MarFa/app/src/main/res/mipmap-hdpi/ic_launcher.png [mipmap-hdpi-v4/ic_launcher] /home/runner/work/MarFa/MarFa/app/src/main/res/mipmap-hdpi/ic_launcher.xml: Resource and asset merger: Duplicate resources
+FAILURE: Build failed with an exception.
+* What went wrong:
+Execution failed for task ':app:mergeDebugResources'.
+> [mipmap-hdpi-v4/ic_launcher] /home/runner/work/MarFa/MarFa/app/src/main/res/mipmap-hdpi/ic_launcher.png	[mipmap-hdpi-v4/ic_launcher] /home/runner/work/MarFa/MarFa/app/src/main/res/mipmap-hdpi/ic_launcher.xml: Error: Duplicate resources
+* Try:
+4 actionable tasks: 4 executed
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+BUILD FAILED in 2m 17s
+Error: Process completed with exit code 1.
+0s
+0s
+0s
+0s
+Run echo "## 🚀 MarFaNet Build Results" >> $GITHUB_STEP_SUMMARY
+  
+0s
+5s
+Post job cleanup.
+In post-action step
+Stopping all Gradle daemons before saving Gradle User Home state
+Stopping Gradle daemons for /home/runner/.gradle/wrapper/dists/gradle-8.6-rc-1-bin/3i5g2mfvh982rgxgr7mlgentf/gradle-8.6-rc-1
+/home/runner/.gradle/wrapper/dists/gradle-8.6-rc-1-bin/3i5g2mfvh982rgxgr7mlgentf/gradle-8.6-rc-1/bin/gradle --stop
+Stopping Daemon(s)
+1 Daemon stopped
+Caching Gradle state
+  Caching generated-gradle-jars with path '/home/runner/.gradle/caches/8.6-rc-1/generated-gradle-jars/gradle-api-8.6-rc-1.jar' and cache key: gradle-generated-gradle-jars-v1-f989647cdb7b40d347b3960c8775d6b4
+  Caching wrapper-zips with path '/home/runner/.gradle/wrapper/dists/gradle-8.6-rc-1-bin/3i5g2mfvh982rgxgr7mlgentf' and cache key: gradle-wrapper-zips-v1-0138b4a7acd3a15d048727c1784ce4b2
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Caching dependencies with path '/home/runner/.gradle/caches/modules-*/files-*/*/*/*/*' and cache key: gradle-dependencies-v1-12098d141c3cbf734879d796b5a51052
+  Caching instrumented-jars with path '/home/runner/.gradle/caches/jars-*/*/' and cache key: gradle-instrumented-jars-v1-12b0d1f781dfcd321f2cc4207847788a
+  Caching kotlin-dsl with path '/home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/
+  /home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/' and cache key: gradle-kotlin-dsl-v1-9d45871f299bb657ac6e57ae5be1854b
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Caching transforms with path '/home/runner/.gradle/caches/transforms-4/*/
+  /home/runner/.gradle/caches/*/transforms/*/' and cache key: gradle-transforms-v1-671a5cbe64262f00fff1e4c93f6d2adc
+  Failed to save cache entry with path '/home/runner/.gradle/caches/jars-*/*/' and key: gradle-instrumented-jars-v1-12b0d1f781dfcd321f2cc4207847788a: ReserveCacheError: Unable to reserve cache with key gradle-instrumented-jars-v1-12b0d1f781dfcd321f2cc4207847788a, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Failed to save cache entry with path '/home/runner/.gradle/caches/8.6-rc-1/generated-gradle-jars/gradle-api-8.6-rc-1.jar' and key: gradle-generated-gradle-jars-v1-f989647cdb7b40d347b3960c8775d6b4: ReserveCacheError: Unable to reserve cache with key gradle-generated-gradle-jars-v1-f989647cdb7b40d347b3960c8775d6b4, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Failed to save cache entry with path '/home/runner/.gradle/wrapper/dists/gradle-8.6-rc-1-bin/3i5g2mfvh982rgxgr7mlgentf' and key: gradle-wrapper-zips-v1-0138b4a7acd3a15d048727c1784ce4b2: ReserveCacheError: Unable to reserve cache with key gradle-wrapper-zips-v1-0138b4a7acd3a15d048727c1784ce4b2, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Failed to save cache entry with path '/home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/
+  /home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/' and key: gradle-kotlin-dsl-v1-9d45871f299bb657ac6e57ae5be1854b: ReserveCacheError: Unable to reserve cache with key gradle-kotlin-dsl-v1-9d45871f299bb657ac6e57ae5be1854b, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Failed to save cache entry with path '/home/runner/.gradle/caches/modules-*/files-*/*/*/*/*' and key: gradle-dependencies-v1-12098d141c3cbf734879d796b5a51052: ReserveCacheError: Unable to reserve cache with key gradle-dependencies-v1-12098d141c3cbf734879d796b5a51052, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Failed to save cache entry with path '/home/runner/.gradle/caches/transforms-4/*/
+  /home/runner/.gradle/caches/*/transforms/*/' and key: gradle-transforms-v1-671a5cbe64262f00fff1e4c93f6d2adc: ReserveCacheError: Unable to reserve cache with key gradle-transforms-v1-671a5cbe64262f00fff1e4c93f6d2adc, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Caching Gradle User Home with cache key: gradle-home-v1|Linux|build[5df42585ae8f8da228c604b8b4e8707c]-ad4dbdf85713b5cdbcceae98681ffc8df3b4bb74
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Failed to save cache entry with path '/home/runner/.gradle/caches,/home/runner/.gradle/notifications,/home/runner/.gradle/.setup-gradle' and key: gradle-home-v1|Linux|build[5df42585ae8f8da228c604b8b4e8707c]-ad4dbdf85713b5cdbcceae98681ffc8df3b4bb74: ReserveCacheError: Unable to reserve cache with key gradle-home-v1|Linux|build[5df42585ae8f8da228c604b8b4e8707c]-ad4dbdf85713b5cdbcceae98681ffc8df3b4bb74, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+Generating Job Summary
+Completed post-action step
+0s
+Post job cleanup.
+0s
+Post job cleanup.
+/usr/bin/git version
+git version 2.49.0
+Temporarily overriding HOME='/home/runner/work/_temp/d2975867-7ad7-41bf-a0b1-067542da7990' before making global git config changes
+Adding repository directory to the temporary git global config as a safe directory
+/usr/bin/git config --global --add safe.directory /home/runner/work/MarFa/MarFa
+/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+http.https://github.com/.extraheader
+/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
