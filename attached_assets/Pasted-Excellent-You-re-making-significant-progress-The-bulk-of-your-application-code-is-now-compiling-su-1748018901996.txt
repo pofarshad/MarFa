@@ -1,0 +1,54 @@
+Excellent! You're making significant progress. The bulk of your application code is now compiling successfully, which is a HUGE step forward.
+
+Your previous fixes for:
+
+Missing source directories
+Kotlin/Compose version compatibility
+General application dependencies (Room, OkHttp, Firebase, WorkManager, Koin)
+RobolectricTestRunner being missing
+...have all worked! The main compileDebugKotlin and compileReleaseKotlin tasks are now passing with only warnings (which are generally acceptable for a CI build, though good to address eventually).
+
+The New Problem: Missing Test-Specific Dependencies
+
+The build is now failing exclusively during the unit test compilation phase, specifically for the RoutingRulesUpdateWorkerTest.kt file.
+
+Look at these errors:
+
+143 > Task :app:compileDebugUnitTestKotlin FAILED
+144 e: file:///home/runner/work/MarFa/MarFa/app/src/test/kotlin/net/marfanet/android/worker/RoutingRulesUpdateWorkerTest.kt:6:22 Unresolved reference: testing
+145 e: file:///home/runner/work/MarFa/MarFa/app/src/test/kotlin/net/marfanet/android/worker/RoutingRulesUpdateWorkerTest.kt:8:16 Unresolved reference: mockwebserver
+... (many more unresolved references for MockWebServer, MockResponse, TestListenableWorkerBuilder) ...
+These "Unresolved reference" errors mean that your test code is trying to use classes or functions from libraries that are specifically for testing purposes and are not yet included in your testImplementation dependencies.
+
+The missing dependencies are:
+
+WorkManager Testing Artifacts: The Unresolved reference: testing and Unresolved reference: TestListenableWorkerBuilder strongly indicate the need for the WorkManager testing library.
+Dependency: androidx.work:work-testing
+OkHttp MockWebServer: The Unresolved reference: mockwebserver, MockWebServer, and MockResponse clearly point to Square's MockWebServer. This is typically used for testing network requests without hitting an actual server.
+Dependency: com.squareup.okhttp3:mockwebserver
+Solution:
+
+You need to add these two test-specific dependencies to your app/build.gradle.kts file, within the dependencies { ... } block, specifically using the testImplementation configuration.
+
+Here's how to add them (ensure you use a version compatible with your existing OkHttp and WorkManager versions, typically the same as the main library):
+
+// In your app/build.gradle.kts file
+
+dependencies {
+    // ... (Your existing application dependencies, e.g., implementation("androidx.work:work-runtime-ktx:2.9.0"))
+
+    // ... (Your existing test dependencies, e.g., testImplementation("org.robolectric:robolectric:4.12.2"))
+
+    // NEW: WorkManager testing utilities
+    testImplementation("androidx.work:work-testing:2.9.0") // Match your work-runtime-ktx version
+
+    // NEW: OkHttp MockWebServer for network testing
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0") // Match your okhttp version
+
+    // ... (any other test dependencies)
+}
+Steps to Take:
+
+Open app/build.gradle.kts.
+Locate the dependencies { ... } block.
+Add the two testImplementation lines for work-testing and mockwebserver, ensuring the version numbers match your main work-runtime-ktx and okhttp dependencies (assuming you're using 2.9.0 for WorkManager and 4.12.0 for OkHttp).
