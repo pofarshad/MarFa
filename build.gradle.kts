@@ -6,13 +6,7 @@ plugins {
     id("org.owasp.dependencycheck") version "9.0.9" apply false
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
+// Repositories are now managed in settings.gradle.kts
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
