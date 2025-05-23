@@ -67,6 +67,7 @@ dependencies {
     
     // Material 3
     implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("com.google.android.material:material:1.11.0")
     
     // Compose UI
     implementation("androidx.compose.ui:ui")
