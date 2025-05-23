@@ -1,0 +1,75 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      
+    - name: Cache Gradle Dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    
+    - name: Grant Execute Permission for Gradlew
+      run: chmod +x gradlew
+      
+    - name: Build MarFaNet APK
+      run: ./gradlew build
+      
+    - name: Run Tests
+      run: ./gradlew test
+      
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: marfanet-debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
+        retention-days: 30
+        
+    - name: Upload Release APK (if exists)
+      uses: actions/upload-artifact@v4
+      if: hashFiles('app/build/outputs/apk/release/app-release.apk') != ''
+      with:
+        name: marfanet-release-apk
+        path: app/build/outputs/apk/release/app-release.apk
+        retention-days: 30
+        
+    - name: Build Summary
+      if: always()
+      run: |
+        echo "## 🚀 MarFaNet Build Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Build Status**: $([ ${{ job.status }} = 'success' ] && echo '✅ Success' || echo '❌ Failed')" >> $GITHUB_STEP_SUMMARY
+        echo "**Android Gradle Plugin**: 8.2.2 (Stable)" >> $GITHUB_STEP_SUMMARY
+        echo "**Kotlin Version**: 1.9.23" >> $GITHUB_STEP_SUMMARY
+        echo "**Target SDK**: 34" >> $GITHUB_STEP_SUMMARY
+        echo "**Version**: 1.1.0-alpha1" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ -f app/build/outputs/apk/debug/app-debug.apk ]; then
+          echo "📱 **Debug APK Generated Successfully**" >> $GITHUB_STEP_SUMMARY
+          echo "Download from Artifacts section above" >> $GITHUB_STEP_SUMMARY
+        fi
