@@ -82,7 +82,7 @@ fun MarFaNetMainScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
-                    imageVector = if (isConnected) Icons.Default.Shield else Icons.Default.ShieldOff,
+                    imageVector = if (isConnected) Icons.Default.Security else Icons.Default.Block,
                     contentDescription = null,
                     tint = if (isConnected) Color(0xFF4CAF50) else Color(0xFFF44336),
                     modifier = Modifier.size(64.dp)
@@ -145,12 +145,12 @@ fun MarFaNetMainScreen() {
         ) {
             FeatureCard(
                 title = "Split Tunnel",
-                icon = Icons.Default.Apps,
+                icon = Icons.Default.Menu,
                 modifier = Modifier.weight(1f)
             )
             FeatureCard(
                 title = "Stats",
-                icon = Icons.Default.Speed,
+                icon = Icons.Default.Dashboard,
                 modifier = Modifier.weight(1f)
             )
         }

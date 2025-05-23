@@ -1,0 +1,62 @@
+Okay, let's look at this new build log. It seems the AI agent's assessment that "I've successfully fixed all three critical build issues" was, unfortunately, not entirely accurate based on the build's output.
+
+We still have critical failures preventing a green build, and they fall into two main categories:
+
+Problem 1: Unresolved Reference for ShieldOff (Still persisting!)
+This is the primary blocker for any job that compiles your application code (meaning the "Lint & Static Analysis" job and the "Unit & Instrumentation Tests" job).
+
+e: file:///home/runner/work/MarFa/MarFa/app/src/main/kotlin/net/marfanet/android/MainActivity.kt:85:92 Unresolved reference: ShieldOff
+What it means:
+Your MainActivity.kt code is trying to use an icon called ShieldOff. While the AI agent stated it added the Material Icons dependency (material-icons-extended), this specific icon (or the entire set) is still not found by the compiler.
+
+Possible Causes & Solutions:
+
+Dependency not correctly added/synced: Double-check your app/build.gradle.kts file.
+
+Ensure a line like implementation("androidx.compose.material:material-icons-extended:1.X.X") truly exists under dependencies { ... }.
+Crucially: The 1.X.X version must match your main Jetpack Compose UI library version (e.g., if you're using androidx.compose.ui:ui:1.5.8, then use material-icons-extended:1.5.8).
+Incorrect import in MainActivity.kt: Make sure MainActivity.kt has the correct import statement for ShieldOff. It usually is something like:
+
+import androidx.compose.material.icons.filled.ShieldOff // Or .outlined.ShieldOff depending on which style you want
+If you're using Filled from material-icons-extended, it should be androidx.compose.material.icons.filled.ShieldOff. If it's a "custom" icon, then a different dependency might be needed.
+
+Clean Build/Sync Issue: Sometimes, a previous failed build can leave artifacts. A "clean build" in your local Android Studio (Build -> Clean Project, then Build -> Rebuild Project) or clearing Gradle caches could help, but for CI, it's usually a fresh clone each time.
+
+Recommendation: Verify the material-icons-extended dependency version and the import statement in MainActivity.kt.
+
+Problem 2: upload-artifact@v3 still failing in Security Scan
+This is the exact same error we saw in the previous build run. The AI agent claimed to fix "all three critical build issues," but this one clearly remains.
+
+Error: Missing download info for actions/upload-artifact@v3
+What it means:
+The GitHub Actions workflow for your "Security Vulnerability Scan" job is still configured to use version 3 of the upload-artifact action, which is causing issues.
+
+Solution:
+You need to identify the specific YAML file that defines your "Security Vulnerability Scan" job.
+
+Go to your GitHub repository on the web.
+Navigate to the .github/workflows/ directory.
+Look for all .yml files. It's very likely that your security scan is defined in a separate .yml file, or simply a different job block within your main build .yml that the AI overlooked.
+In that specific .yml file (or job block), find all instances of uses: actions/upload-artifact@v3 and change them to uses: actions/upload-artifact@v4.
+Problem 3: JaCoCo setup looks better, but outcome is inconclusive
+The previous error "Task 'jacocoTestReport' not found" is gone, and the command has correctly been changed to createDebugCoverageReport (which is typically the right one for Android).
+
+However, because the compileDebugKotlin task fails:
+
+No code gets compiled.
+No tests can run.
+No test reports or JaCoCo coverage reports can be generated.
+Therefore, the logs show: Warning: No files were found with the provided path: app/build/reports/tests/ app/build/reports/jacoco/. No artifacts will be uploaded. This is a consequence of the compile error, not a separate problem. We can assume the JaCoCo setup is likely correct, but won't know for sure until the compilation error is fixed.
+
+Immediate Next Steps (in order of priority):
+
+Focus on the ShieldOff Unresolved reference.
+
+Verify the material-icons-extended dependency in app/build.gradle.kts (correct version, correct implementation line).
+Verify the import statement for ShieldOff in MainActivity.kt.
+This is your absolute top priority, as it's preventing compilation.
+Fix the upload-artifact@v3 issue in the Security Scan job.
+
+Find the relevant workflow file/job and update actions/upload-artifact@v3 to actions/upload-artifact@v4.
+This is a straightforward fix for a separate job that's currently failing.
+Once you address these two core problems, then we can re-evaluate the full build log.
