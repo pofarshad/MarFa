@@ -26,11 +26,9 @@
         
         <!-- Status bar -->
         <item name="android:statusBarColor">@color/colorBackground</item>
-        <item name="android:windowLightStatusBar">false</item>
         
         <!-- Navigation bar -->
         <item name="android:navigationBarColor">@color/colorBackground</item>
-        <item name="android:windowLightNavigationBar">false</item>
         
         <!-- Window properties -->
         <item name="android:windowBackground">@color/colorBackground</item>
