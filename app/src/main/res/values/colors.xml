@@ -45,4 +45,38 @@
     <color name="md_theme_dark_onBackground">#E1E3DF</color>
     <color name="md_theme_dark_surface">#191C1A</color>
     <color name="md_theme_dark_onSurface">#E1E3DF</color>
+
+    <!-- Base colors for AMOLED theme compatibility -->
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryVariant">#0097A7</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#03DAC6</color>
+    <color name="colorSecondaryVariant">#018786</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorBackground">#FBFDF9</color>
+    <color name="colorOnBackground">#191C1A</color>
+    <color name="colorSurface">#FBFDF9</color>
+    <color name="colorOnSurface">#191C1A</color>
+    <color name="colorError">#BA1A1A</color>
+    <color name="colorOnError">#FFFFFF</color>
+    
+    <!-- MarFaNet specific colors -->
+    <color name="colorCard">#FFFFFF</color>
+    <color name="colorPanel">#F5F5F5</color>
+    <color name="colorConnected">#4CAF50</color>
+    <color name="colorDisconnected">#F44336</color>
+    <color name="colorConnecting">#FF9800</color>
+    <color name="textPrimary">#191C1A</color>
+    <color name="textSecondary">#707973</color>
+    <color name="textHint">#B0B0B0</color>
+    <color name="colorDivider">#E0E0E0</color>
+    <color name="colorBorder">#CCCCCC</color>
+    <color name="marfanet_accent">#00BCD4</color>
+    <color name="marfanet_secondary">#4CAF50</color>
+    <color name="buttonBackground">#F5F5F5</color>
+    <color name="buttonBackgroundPressed">#E0E0E0</color>
+    <color name="switchTrack">#CCCCCC</color>
+    <color name="switchThumb">#00BCD4</color>
+    <color name="progressBackground">#E0E0E0</color>
+    <color name="progressForeground">#00BCD4</color>
 </resources>
