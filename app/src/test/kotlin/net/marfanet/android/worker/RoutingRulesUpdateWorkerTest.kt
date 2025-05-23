@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.*
 import androidx.work.testing.TestListenableWorkerBuilder
+import androidx.work.testing.WorkManagerTestInitHelper
 import androidx.work.workDataOf
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
@@ -26,6 +27,10 @@ class RoutingRulesUpdateWorkerTest {
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
+        
+        // Initialize WorkManager for testing
+        WorkManagerTestInitHelper.initializeTestWorkManager(context)
+        
         mockWebServer = MockWebServer()
         mockWebServer.start()
         
@@ -194,28 +199,20 @@ class RoutingRulesUpdateWorkerTest {
     }
     
     @Test
-    fun `periodic work scheduling works correctly`() = runBlocking {
+    fun `periodic work scheduling works correctly`() {
+        // Schedule the periodic work
         RoutingRulesUpdateWorker.schedulePeriodicUpdate(context)
         
         val workManager = WorkManager.getInstance(context)
+        val workInfos = workManager.getWorkInfosForUniqueWork(
+            RoutingRulesUpdateWorker.WORK_NAME
+        ).get()
         
-        // Use try-catch to handle potential WorkManager initialization issues in test environment
-        try {
-            val workInfos = workManager.getWorkInfosForUniqueWork(
-                RoutingRulesUpdateWorker.WORK_NAME
-            ).get(5, java.util.concurrent.TimeUnit.SECONDS) // Add timeout
-            
-            assertFalse("Work should be scheduled", workInfos.isEmpty())
-            
-            val workInfo = workInfos.first()
-            assertEquals("Work should be enqueued", WorkInfo.State.ENQUEUED, workInfo.state)
-            assertTrue("Work should have routing_rules tag", workInfo.tags.contains("routing_rules"))
-        } catch (e: Exception) {
-            // In test environment, WorkManager might not be fully initialized
-            // Just verify that no exception was thrown during scheduling
-            android.util.Log.d("Test", "WorkManager scheduling test completed with exception: ${e.message}")
-            assertTrue("Scheduling should complete without throwing", true)
-        }
+        assertFalse("Work should be scheduled", workInfos.isEmpty())
+        
+        val workInfo = workInfos.first()
+        assertEquals("Work should be enqueued", WorkInfo.State.ENQUEUED, workInfo.state)
+        assertTrue("Work should have routing_rules tag", workInfo.tags.contains("routing_rules"))
     }
     
     private fun calculateSHA256(file: File): String {
