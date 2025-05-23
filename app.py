@@ -192,6 +192,50 @@ def health_check():
         'version': '1.0.0'
     })
 
+@app.route('/webhook', methods=['POST'])
+def github_webhook():
+    """AutoFixBot webhook handler for GitHub CI failures"""
+    try:
+        print('🎯 AutoFixBot webhook received')
+        event_type = request.headers.get('X-GitHub-Event', 'unknown')
+        print(f'📋 Event type: {event_type}')
+        
+        data = request.get_json() or {}
+        action = data.get('action')
+        
+        # Handle different GitHub webhook events
+        if event_type == 'workflow_run' and action == 'completed':
+            workflow_run = data.get('workflow_run', {})
+            if workflow_run.get('conclusion') == 'failure':
+                repo_info = workflow_run.get('repository', {})
+                owner = repo_info.get('owner', {}).get('login', 'unknown')
+                repo_name = repo_info.get('name', 'unknown')
+                workflow_name = workflow_run.get('name', 'unknown')
+                print(f'🚨 CI FAILURE DETECTED: {workflow_name} in {owner}/{repo_name}')
+                return 'AutoFixBot: CI failure detected and logged', 200
+                
+        elif event_type == 'check_run' and action == 'completed':
+            check_run = data.get('check_run', {})
+            if check_run.get('conclusion') == 'failure':
+                repo_info = check_run.get('repository', {})
+                owner = repo_info.get('owner', {}).get('login', 'unknown')
+                repo_name = repo_info.get('name', 'unknown')
+                check_name = check_run.get('name', 'unknown')
+                print(f'🚨 CHECK FAILURE DETECTED: {check_name} in {owner}/{repo_name}')
+                return 'AutoFixBot: Check failure detected and logged', 200
+                
+        elif event_type == 'ping':
+            print('🏓 Webhook ping received - AutoFixBot is connected!')
+            return 'AutoFixBot webhook connected successfully!', 200
+            
+        else:
+            print(f'ℹ️ Ignoring {event_type} event with action: {action}')
+            return f'Ignored: {event_type} event', 200
+            
+    except Exception as e:
+        print(f'❌ Webhook error: {str(e)}')
+        return f'Webhook error: {str(e)}', 500
+
 if __name__ == '__main__':
     # Ensure required directories exist
     os.makedirs('analysis', exist_ok=True)
