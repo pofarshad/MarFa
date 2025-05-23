@@ -1,0 +1,121 @@
+name: Test Build - CI Pipeline Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type (debug/release)'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+
+jobs:
+  test-build:
+    name: Test CI Pipeline
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+        
+    - name: Cache Gradle dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          gradle-${{ runner.os }}-
+    
+    - name: Build Debug APK
+      if: github.event.inputs.build_type == 'debug'
+      run: ./gradlew assembleDebug
+      
+    - name: Build Release APK (unsigned)
+      if: github.event.inputs.build_type == 'release'
+      run: ./gradlew assembleRelease
+      
+    - name: Run Lint
+      run: ./gradlew lintDebug
+      continue-on-error: true
+      
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: marfanet-${{ github.event.inputs.build_type }}-apk
+        path: app/build/outputs/apk/${{ github.event.inputs.build_type }}/*.apk
+        retention-days: 7
+        
+    - name: Upload Build Reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: build-reports
+        path: |
+          app/build/reports/
+          app/build/outputs/logs/
+        retention-days: 3
+        
+    - name: Notify AutoFixBot
+      if: failure()
+      run: |
+        if [ -z "$AUTOFIXBOT_URL" ]; then
+          echo "⚠️ AUTOFIXBOT_URL secret not configured - skipping notification"
+          echo "To enable AutoFixBot, add your Replit deployment URL to repository secrets"
+        else
+          echo "📡 Calling AutoFixBot at: $AUTOFIXBOT_URL"
+          curl -X POST "$AUTOFIXBOT_URL/webhook" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "action": "completed",
+              "workflow_run": {
+                "id": "${{ github.run_id }}",
+                "name": "${{ github.workflow }}",
+                "conclusion": "failure",
+                "repository": {
+                  "owner": {"login": "${{ github.repository_owner }}"},
+                  "name": "${{ github.event.repository.name }}",
+                  "full_name": "${{ github.repository }}"
+                }
+              },
+              "installation": {"id": 12345}
+            }' || echo "❌ AutoFixBot notification failed"
+        fi
+      env:
+        AUTOFIXBOT_URL: ${{ secrets.AUTOFIXBOT_URL }}
+        
+    - name: Build Summary
+      if: always()
+      run: |
+        echo "## 🚀 MarFaNet Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Build Type**: ${{ github.event.inputs.build_type }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+        echo "**Run ID**: ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f app/build/outputs/apk/${{ github.event.inputs.build_type }}/app-${{ github.event.inputs.build_type }}.apk ]; then
+          echo "✅ **APK Generated Successfully**" >> $GITHUB_STEP_SUMMARY
+          echo "📱 **APK Path**: \`app/build/outputs/apk/${{ github.event.inputs.build_type }}/\`" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ **APK Generation Failed**" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Next Steps**:" >> $GITHUB_STEP_SUMMARY
+        echo "- Download APK from Artifacts section" >> $GITHUB_STEP_SUMMARY
+        echo "- Test on physical device" >> $GITHUB_STEP_SUMMARY
+        echo "- Add signing credentials for release builds" >> $GITHUB_STEP_SUMMARY

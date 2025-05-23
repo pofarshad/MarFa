@@ -17,7 +17,7 @@ args = "MarFaNet Dashboard"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "AutoFixBot"
+args = "Enhanced AutoFixBot"
 
 [[workflows.workflow]]
 name = "MarFaNet Dashboard"
@@ -29,7 +29,7 @@ args = "python app.py"
 waitForPort = 5000
 
 [[workflows.workflow]]
-name = "AutoFixBot"
+name = "Enhanced AutoFixBot"
 author = "agent"
 
 [[workflows.workflow.tasks]]
@@ -61,7 +61,7 @@ rina6RILS7WTlReOJbpnNG08zd5q6g/FnZyEMvdfo/qdvYInZXXkb7WG9HyBNmVn
 e6eAqAECgYEAyrXYE9q8Ap25UKTpb+iqCvHlodtai8Bt05LQtR5wLmehXfRAPFGz
 NXh3BX2kyPFOg025pSG7g3lVziENi9kn85dzIOSlWwPGvMRU9nAwhd8ye9nVyXdW
 2EovNdgHySwcVEzPOiQL/OKx7tgs84aRZY6TW/2oVMwUnKjve7BsQJk=
------END RSA PRIVATE KEY-----\" GITHUB_WEBHOOK_SECRET=\"7548540889:AAF8ldE2rJS1eU9bqzjW6VMnDQv6PXVCqKE\" node server.js"""
+-----END RSA PRIVATE KEY-----\" GITHUB_WEBHOOK_SECRET=\"7548540889:AAF8ldE2rJS1eU9bqzjW6VMnDQv6PXVCqKE\" node enhanced-server.js"""
 waitForPort = 3000
 
 [deployment]

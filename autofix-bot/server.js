@@ -108,38 +108,42 @@ async function getFailingJobLogs(owner, repo, runId, installationId) {
 }
 
 /**
- * Generate fix using AI (Replit AI or OpenAI)
+ * Generate instant automated fix for common CI issues
  */
 async function generateFix(workflowName, jobName, errorLogs) {
     try {
-        console.log('🤖 Generating AI fix for CI failure...');
+        console.log('🤖 Analyzing CI failure for instant fix...');
         
-        // Truncate logs to avoid token limits (last 4000 chars)
+        // Instant detection and fixes for common issues
+        const instantFixes = detectAndFixCommonIssues(errorLogs);
+        if (instantFixes.length > 0) {
+            console.log(`⚡ Found ${instantFixes.length} instant fixes!`);
+            return formatInstantFixes(instantFixes);
+        }
+        
+        // Advanced AI analysis for complex issues
         const truncatedLogs = errorLogs.slice(-4000);
         
-        const prompt = `You are an expert Android CI/CD engineer specializing in GitHub Actions and Gradle builds. 
+        const prompt = `You are an expert Android CI/CD engineer. Fix this IMMEDIATELY with a working solution.
 
-A GitHub Actions workflow "${workflowName}" failed in the job "${jobName}".
+WORKFLOW: "${workflowName}" - JOB: "${jobName}"
 
-Here are the failing logs:
----
+ERROR LOGS:
 ${truncatedLogs}
----
 
-Analyze the error and provide a fix. Your response should be EITHER:
+PROVIDE ONLY:
+1. ```diff patch for immediate fix
+2. Root cause explanation in 1 line
 
-1. A git patch in unified diff format starting with \`\`\`diff and ending with \`\`\`
-2. A markdown explanation if the issue requires manual intervention
+FOCUS ON INSTANT SOLUTIONS FOR:
+- Plugin version conflicts → Use stable versions
+- Missing files → Create with proper content  
+- Permission errors → Fix with chmod
+- Path issues → Correct directory structure
+- Dependency conflicts → Use compatible versions
+- Gradle errors → Fix build configuration
 
-Focus on common Android CI issues like:
-- Missing Gradle wrapper files
-- Incorrect file permissions
-- Deprecated GitHub Actions
-- Android SDK/NDK configuration
-- Dependency version conflicts
-- Build script syntax errors
-
-Provide a concise, actionable fix that addresses the root cause.`;
+RESPOND WITH WORKING PATCHES ONLY.e root cause.`;
 
         // Try Replit AI first, fallback to OpenAI
         let response;
@@ -368,9 +372,14 @@ app.post('/webhook', async (req, res) => {
         
         const { action, workflow_run, installation } = req.body;
         
-        // Only handle completed workflows that failed
-        if (action !== 'completed' || workflow_run.conclusion !== 'failure') {
-            return res.status(200).send('Ignored: Not a failure');
+        // Handle both failures AND in-progress builds for instant fixing
+        if (action === 'completed' && workflow_run.conclusion === 'failure') {
+            console.log(`🚨 CI FAILURE - Applying instant fixes!`);
+        } else if (action === 'in_progress') {
+            console.log(`🔍 CI IN PROGRESS - Monitoring for issues...`);
+            return res.status(200).send('Monitoring in progress');
+        } else {
+            return res.status(200).send('Event ignored');
         }
         
         console.log(`🚨 CI Failure detected: ${workflow_run.name} in ${workflow_run.repository.full_name}`);
