@@ -1,0 +1,61 @@
+name: Webhook Test - AutoFixBot Demo
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'webhook-test-trigger.md'
+
+jobs:
+  test-autofixbot:
+    name: Test AutoFixBot Webhook Integration
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Intentional Failure Test
+      run: |
+        echo "🧪 Testing AutoFixBot webhook integration..."
+        echo "This step will fail to trigger AutoFixBot"
+        exit 1
+        
+    - name: Notify AutoFixBot (on failure)
+      if: failure()
+      run: |
+        echo "📡 Calling AutoFixBot webhook..."
+        curl -X POST "${{ secrets.AUTOFIXBOT_URL || 'http://localhost:3000' }}/webhook" \
+          -H "Content-Type: application/json" \
+          -H "X-GitHub-Delivery: test-delivery-123" \
+          -H "X-GitHub-Event: workflow_run" \
+          -d '{
+            "action": "completed",
+            "workflow_run": {
+              "id": "${{ github.run_id }}",
+              "name": "${{ github.workflow }}",
+              "conclusion": "failure",
+              "run_number": ${{ github.run_number }},
+              "repository": {
+                "owner": {"login": "${{ github.repository_owner }}"},
+                "name": "${{ github.event.repository.name }}",
+                "full_name": "${{ github.repository }}"
+              }
+            },
+            "installation": {"id": 12345}
+          }' || echo "❌ AutoFixBot webhook call failed"
+          
+    - name: Test Summary
+      if: always()
+      run: |
+        echo "## 🧪 AutoFixBot Webhook Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Test Purpose**: Verify Enhanced AutoFixBot webhook integration" >> $GITHUB_STEP_SUMMARY
+        echo "**Expected**: AutoFixBot should receive webhook and log the failure" >> $GITHUB_STEP_SUMMARY
+        echo "**Status**: Test completed - check AutoFixBot logs" >> $GITHUB_STEP_SUMMARY
