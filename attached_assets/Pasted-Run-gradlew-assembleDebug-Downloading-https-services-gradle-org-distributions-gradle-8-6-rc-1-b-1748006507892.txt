@@ -1,0 +1,67 @@
+Run ./gradlew assembleDebug
+Downloading https://services.gradle.org/distributions/gradle-8.6-rc-1-bin.zip
+............10%.............20%............30%.............40%.............50%............60%.............70%.............80%............90%.............100%
+Welcome to Gradle 8.6-rc-1!
+Here are the highlights of this release:
+ - Support for running on Java 21
+ - Faster first use with Kotlin DSL
+ - Improved error and warning messages
+For more details see https://docs.gradle.org/8.6-rc-1/release-notes.html
+Starting a Gradle Daemon (subsequent builds will be faster)
+Configuration on demand is an incubating feature.
+> Configure project :
+w: file:///home/runner/work/MarFa/MarFa/build.gradle.kts:7:24: 'getter for buildDir: File!' is deprecated. Deprecated in Java
+> Configure project :app
+WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated.
+The current default is 'false'.
+It will be removed in version 9.0 of the Android Gradle plugin.
+You can resolve this warning in Android Studio via `Refactor` > `Migrate BuildConfig to Gradle Build Files`
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:packageDebugResources
+> Task :app:mergeDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeExtDexDebug
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:mergeLibDexDebug
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:processDebugResources FAILED
+FAILURE: Build failed with an exception.
+* What went wrong:
+Execution failed for task ':app:processDebugResources'.
+> A failure occurred while executing com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask$TaskAction
+   > Android resource linking failed
+     ERROR: /home/runner/work/MarFa/MarFa/app/src/main/AndroidManifest.xml:11:5-32:19: AAPT: error: resource xml/data_extraction_rules (aka net.marfanet.android:xml/data_extraction_rules) not found.
+         
+     ERROR: /home/runner/work/MarFa/MarFa/app/src/main/AndroidManifest.xml:11:5-32:19: AAPT: error: resource xml/backup_rules (aka net.marfanet.android:xml/backup_rules) not found.
+         
+     ERROR: /home/runner/work/MarFa/MarFa/app/src/main/AndroidManifest.xml:11:5-32:19: AAPT: error: resource mipmap/ic_launcher_round (aka net.marfanet.android:mipmap/ic_launcher_round) not found.
+         
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+BUILD FAILED in 3m 8s
+23 actionable tasks: 23 executed
+Error: Process completed with exit code 1.
