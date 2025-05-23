@@ -21,36 +21,40 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
         
-    - name: Setup Gradle with Enhanced Caching
-      uses: gradle/actions/setup-gradle@v4
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      
+    - name: Cache Gradle Dependencies
+      uses: actions/cache@v3
       with:
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-        gradle-home-cache-cleanup: false
-        cache-disabled: false
-        gradle-version: wrapper
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
     
     - name: Grant Execute Permission for Gradlew
       run: chmod +x gradlew
       
     - name: Build MarFaNet APK
-      run: ./gradlew build --no-daemon --no-build-cache
+      run: ./gradlew build
       
     - name: Run Tests
-      run: ./gradlew test --no-daemon
+      run: ./gradlew test
       
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
-      if: success()
       with:
-        name: marfanet-debug-apk-${{ github.run_number }}
+        name: marfanet-debug-apk
         path: app/build/outputs/apk/debug/app-debug.apk
         retention-days: 30
         
     - name: Upload Release APK (if exists)
       uses: actions/upload-artifact@v4
-      if: success() && hashFiles('app/build/outputs/apk/release/app-release.apk') != ''
+      if: hashFiles('app/build/outputs/apk/release/app-release.apk') != ''
       with:
-        name: marfanet-release-apk-${{ github.run_number }}
+        name: marfanet-release-apk
         path: app/build/outputs/apk/release/app-release.apk
         retention-days: 30
         
