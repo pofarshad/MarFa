@@ -342,16 +342,39 @@ async function getFailingJobLogs(owner, repo, runId, octokit) {
 app.post('/webhook', async (req, res) => {
     try {
         console.log('🎯 AutoFixBot webhook received');
+        console.log('📋 Event type:', req.headers['x-github-event']);
         
-        const { action, workflow_run, installation } = req.body;
+        const eventType = req.headers['x-github-event'];
+        const { action, workflow_run, check_run, installation } = req.body;
         
-        // Only handle completed workflows that failed
-        if (action !== 'completed' || workflow_run.conclusion !== 'failure') {
-            return res.status(200).send('Ignored: Not a CI failure');
+        // Handle workflow_run events (CI failures)
+        if (eventType === 'workflow_run' && action === 'completed' && workflow_run.conclusion === 'failure') {
+            const { owner, repo } = workflow_run.repository;
+            console.log(`🚨 CI FAILURE DETECTED: ${workflow_run.name} in ${owner.login}/${repo.name}`);
+        }
+        // Handle check_run events (individual job failures)
+        else if (eventType === 'check_run' && action === 'completed' && check_run.conclusion === 'failure') {
+            const { owner, repo } = check_run.repository;
+            console.log(`🚨 CHECK FAILURE DETECTED: ${check_run.name} in ${owner.login}/${repo.name}`);
+        }
+        // Handle ping events (webhook setup confirmation)
+        else if (eventType === 'ping') {
+            console.log('🏓 Webhook ping received - AutoFixBot is connected!');
+            return res.status(200).send('AutoFixBot webhook connected successfully!');
+        }
+        // Ignore other events
+        else {
+            console.log(`ℹ️  Ignoring ${eventType} event with action: ${action}`);
+            return res.status(200).send(`Ignored: ${eventType} event`);
         }
         
-        const { owner, repo } = workflow_run.repository;
-        console.log(`🚨 CI FAILURE DETECTED: ${workflow_run.name} in ${owner.login}/${repo.name}`);
+        // For actual failures, continue with existing logic
+        const targetRepo = workflow_run?.repository || check_run?.repository;
+        if (!targetRepo) {
+            return res.status(200).send('No repository information found');
+        }
+        
+        const { owner, repo } = targetRepo;
         
         // Setup GitHub API
         const octokit = new Octokit({
