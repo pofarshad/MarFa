@@ -123,10 +123,7 @@ dependencies {
 
 // Detekt configuration
 detekt {
-    buildUponDefaultConfig = true
-    allRules = false
     baseline = file("detekt-baseline.xml")
-    config = files("$rootDir/detekt.yml")
 }
 
 // OWASP Dependency Check configuration
