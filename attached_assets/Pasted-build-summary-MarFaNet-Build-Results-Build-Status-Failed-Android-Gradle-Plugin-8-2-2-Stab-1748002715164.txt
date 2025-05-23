@@ -1,0 +1,99 @@
+build summary
+🚀 MarFaNet Build Results
+Build Status: ❌ Failed
+Android Gradle Plugin: 8.2.2 (Stable)
+Kotlin Version: 1.9.23
+Target SDK: 34
+Version: 1.1.0-alpha1
+
+Deprecation warnings
+This job uses deprecated functionality from the gradle/actions/setup-gradle action. Follow the links for upgrade details.
+The `gradle-home-cache-cleanup` input parameter has been replaced by `cache-cleanup`
+Gradle Build Results
+Gradle Root Project	Requested Tasks	Gradle Version	Build Outcome	Build Scan®
+MarFaNet	build	8.6	❌	Build Scan not published
+Caching for Gradle actions was enabled - expand for details
+Cache was enabled. Action attempted to both restore and save the Gradle User Home.
+Cache cleanup was disabled via action parameter. No cleanup of Gradle User Home was performed.
+Count	Total Size (Mb)	Total Time (ms)
+Entries Restored	7	478	13114
+Entries Saved	3	1	1589
+Cache Entry Details
+    Entry: Gradle User Home
+    Requested Key : gradle-home-v1|Linux-X64|build[5df42585ae8f8da228c604b8b4e8707c]-e174e29e6f70ea5cc07d175fdfa7b3a54234c93c
+    Restored  Key : gradle-home-v1|Linux-X64|build[5df42585ae8f8da228c604b8b4e8707c]-a6c6d573b8a95c125e4753cad7453da59f46671c
+              Size: 0 MB (440966 B)
+              Time: 312 ms
+              (Entry restored: partial match found)
+    Saved     Key : gradle-home-v1|Linux-X64|build[5df42585ae8f8da228c604b8b4e8707c]-e174e29e6f70ea5cc07d175fdfa7b3a54234c93c
+              Size: 0 MB (436115 B)
+              Time: 194 ms
+              (Entry saved)
+---
+Entry: /home/runner/.gradle/caches/8.6/generated-gradle-jars/gradle-api-8.6.jar
+    Requested Key : gradle-generated-gradle-jars-v1-724640d9b6d38238f67abd00073cebeb
+    Restored  Key : gradle-generated-gradle-jars-v1-724640d9b6d38238f67abd00073cebeb
+              Size: 35 MB (36900565 B)
+              Time: 1954 ms
+              (Entry restored: exact match found)
+    Saved     Key : 
+              Size: 
+              Time: 
+              (Entry not saved: contents unchanged)
+---
+Entry: /home/runner/.gradle/wrapper/dists/gradle-8.6-bin/afr5mpiioh2wthjmwnkmdsd5w
+    Requested Key : gradle-wrapper-zips-v1-61c267d33d913e95c956e860b86f9705
+    Restored  Key : gradle-wrapper-zips-v1-61c267d33d913e95c956e860b86f9705
+              Size: 126 MB (132222418 B)
+              Time: 2364 ms
+              (Entry restored: exact match found)
+    Saved     Key : 
+              Size: 
+              Time: 
+              (Entry not saved: contents unchanged)
+---
+Entry: /home/runner/.gradle/caches/modules-*/files-*/*/*/*/*
+    Requested Key : gradle-dependencies-v1-6fa0315c989ae1d82f3998e3e2a68e13
+    Restored  Key : gradle-dependencies-v1-6fa0315c989ae1d82f3998e3e2a68e13
+              Size: 184 MB (192801546 B)
+              Time: 2566 ms
+              (Entry restored: exact match found)
+    Saved     Key : 
+              Size: 
+              Time: 
+              (Entry not saved: contents unchanged)
+---
+Entry: /home/runner/.gradle/caches/jars-*/*/
+    Requested Key : gradle-instrumented-jars-v1-50c635fc7f2fc6303e9994d0361bf773
+    Restored  Key : gradle-instrumented-jars-v1-50c635fc7f2fc6303e9994d0361bf773
+              Size: 0 MB (83792 B)
+              Time: 1375 ms
+              (Entry restored: exact match found)
+    Saved     Key : gradle-instrumented-jars-v1-c81e73f88652e488158cd0104ed8f5a5
+              Size: 0 MB (84107 B)
+              Time: 704 ms
+              (Entry saved)
+---
+Entry: /home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/
+/home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/
+    Requested Key : gradle-kotlin-dsl-v1-01be2b9c2b2ab344b860f755b6e5aaed
+    Restored  Key : gradle-kotlin-dsl-v1-01be2b9c2b2ab344b860f755b6e5aaed
+              Size: 0 MB (102475 B)
+              Time: 1481 ms
+              (Entry restored: exact match found)
+    Saved     Key : gradle-kotlin-dsl-v1-3c44201b73036c60e548827e23ba958b
+              Size: 0 MB (99605 B)
+              Time: 691 ms
+              (Entry saved)
+---
+Entry: /home/runner/.gradle/caches/transforms-4/*/
+/home/runner/.gradle/caches/*/transforms/*/
+    Requested Key : gradle-transforms-v1-b87059d838dd20ada6f9ffa6f5c8beea
+    Restored  Key : gradle-transforms-v1-b87059d838dd20ada6f9ffa6f5c8beea
+              Size: 133 MB (139167980 B)
+              Time: 3062 ms
+              (Entry restored: exact match found)
+    Saved     Key : 
+              Size: 
+              Time: 
+              (Entry not saved: contents unchanged)
