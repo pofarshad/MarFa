@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MarFaNet AMOLED Theme - API 27+ specific attributes -->
+    <style name="Theme.MarFaNet.AMOLED" parent="Theme.Material3.DynamicColors.Dark">
+        <!-- Navigation bar - API 27+ only -->
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>
