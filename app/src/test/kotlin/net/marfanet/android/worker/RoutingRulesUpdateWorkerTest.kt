@@ -82,7 +82,9 @@ class RoutingRulesUpdateWorkerTest {
             .setBody(testData)
             .setResponseCode(200))
         
+        val inputData = workDataOf("test_url" to mockWebServer.url("/").toString())
         val worker = TestListenableWorkerBuilder<RoutingRulesUpdateWorker>(context)
+            .setInputData(inputData)
             .build()
         
         val result = worker.doWork()
@@ -101,7 +103,9 @@ class RoutingRulesUpdateWorkerTest {
             .setResponseCode(500)
             .setBody("Internal Server Error"))
         
+        val inputData = workDataOf("test_url" to mockWebServer.url("/").toString())
         val worker = TestListenableWorkerBuilder<RoutingRulesUpdateWorker>(context)
+            .setInputData(inputData)
             .setRunAttemptCount(1) // First retry attempt
             .build()
         
@@ -117,7 +121,9 @@ class RoutingRulesUpdateWorkerTest {
             .setResponseCode(404)
             .setBody("Not Found"))
         
+        val inputData = workDataOf("test_url" to mockWebServer.url("/").toString())
         val worker = TestListenableWorkerBuilder<RoutingRulesUpdateWorker>(context)
+            .setInputData(inputData)
             .setRunAttemptCount(3) // Max attempts reached
             .build()
         
@@ -140,7 +146,9 @@ class RoutingRulesUpdateWorkerTest {
             .setBody(testData)
             .setResponseCode(200))
         
+        val inputData = workDataOf("test_url" to mockWebServer.url("/").toString())
         val worker = TestListenableWorkerBuilder<RoutingRulesUpdateWorker>(context)
+            .setInputData(inputData)
             .build()
         
         val result = worker.doWork()
@@ -157,7 +165,9 @@ class RoutingRulesUpdateWorkerTest {
             .setBody(testData)
             .setResponseCode(200))
         
+        val inputData = workDataOf("test_url" to mockWebServer.url("/").toString())
         val worker = TestListenableWorkerBuilder<RoutingRulesUpdateWorker>(context)
+            .setInputData(inputData)
             .build()
         
         val result = worker.doWork()
