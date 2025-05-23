@@ -2,7 +2,7 @@
 
 plugins {
     id("com.android.application") version "8.2.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.23" apply false
+    id("org.jetbrains.kotlin.android") version "1.9.21" apply false
     id("org.owasp.dependencycheck") version "9.0.9" apply false
 }
 
