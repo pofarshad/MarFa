@@ -1,0 +1,45 @@
+GitHub Actions Cache Error – Detailed Diagnostic Prompt
+
+1. Problem Summary
+Your workflow attempted to restore and save multiple Gradle caches, but encountered the following issues:
+
+Cache not restored:
+For key gradle-home-v1|Linux|build[5df42585ae8f8da228c604b8b4e8707c]-be4a88a71d4c9228cd47e76310ada7300421eab1, the cache was not restored.
+Error: Cache service responded with 422 (Unprocessable Entity).
+Cache not saved:
+For all keys, the cache was not saved because “entry with key already exists”.
+2. Root Causes & Explanation
+
+422 Error on Restore:
+The requested cache key does not exist in the cache backend, or the key is malformed/invalid.
+Entry Not Saved:
+GitHub Actions caching is content-addressable; once a cache with a given key exists, it cannot be overwritten.
+Attempting to save with the same key (when contents are unchanged) will always skip saving.
+3. What You Should Check
+
+Ensure your cache keys are unique and deterministic, e.g., include file hashes or dependency lock file checksums.
+For the gradle-home-v1 key, verify that the cache actually exists for this key. If not, the first run will always miss and subsequent runs can use the cache.
+If you want to refresh/update a cache, increment the version component in your key (e.g., gradle-home-v2...).
+Review the structure of your cache keys for typos or dynamic values that might change between runs, causing cache misses.
+4. Actionable Recommendations
+
+Confirm cache key versioning and uniqueness logic in your workflow YAML.
+Clean up unused/expired caches at https://github.com/pofarshad/MarFa/actions/caches.
+For Gradle in CI, consider using the official setup-gradle action for best caching practices:
+GitHub Docs: Gradle Caching
+Add debugging steps (e.g., print cache keys/restore status) to your workflow for better traceability.
+5. Reference Example:
+
+YAML
+- name: Cache Gradle
+  uses: actions/cache@v4
+  with:
+    path: |
+      ~/.gradle/caches
+      ~/.gradle/wrapper
+    key: gradle-home-v2-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+    restore-keys: |
+      gradle-home-v2-${{ runner.os }}-
+      gradle-home-v2-
+Summary:
+You are not losing any build artifacts, but cache efficiency is suboptimal. Adjust your cache keys and review workflow logic for better reuse and reliability.
