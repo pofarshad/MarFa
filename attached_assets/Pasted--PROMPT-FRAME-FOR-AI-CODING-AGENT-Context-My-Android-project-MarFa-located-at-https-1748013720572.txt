@@ -1,0 +1,40 @@
+### PROMPT FRAME FOR AI CODING AGENT
+
+**Context:**
+My Android project, "MarFa," located at `https://github.com/pofarshad/MarFa`, is failing its continuous integration (CI) build on GitHub Actions. The build log indicates a failure during the APK compilation step.
+
+**Problem Description:**
+The build fails during the `Build MarFaNet APK` step, specifically within the `compileDebugKotlin` task. The primary error displayed repeatedly is:
+file or directory '/home/runner/work/MarFa/MarFa/app/src/debug/kotlin', not found
+file or directory '/home/runner/work/MarFa/MarFa/app/src/debug/java', not found
+file or directory '/home/runner/work/MarFa/MarFa/app/src/main/java', not found
+
+This is followed by a `Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details`. The overall result is `BUILD FAILED` and `Error: Process completed with exit code 1.`.
+
+**Observed Behavior:**
+The build environment searches for source code directories with a duplicated repository name component in the path (e.g., `MarFa/MarFa`). This leads to the "file or directory not found" errors, preventing successful compilation and APK generation.
+
+**Expected Behavior:**
+The GitHub Actions workflow should successfully build the Android application, compile all Kotlin and Java sources, and generate the `app-debug.apk` file.
+
+**Hypothesis/Suspected Cause:**
+The most probable cause is an incorrect repository structure in relation to how GitHub Actions clones the repository.
+1.  **Repository Nesting:** GitHub Actions clones repositories into `/home/runner/work/<repo_name>/<repo_name>/`. In this case, `/home/runner/work/MarFa/MarFa/`.
+2.  If the actual root of the Android project (where `settings.gradle`, the project-level `build.gradle`, and the `app/` module are located) is *itself* inside a folder named `MarFa` within the Git repository, it creates an extra nesting level. The build process then incorrectly looks for `app/src` within `/home/runner/work/MarFa/MarFa/` instead of `/home/runner/work/MarFa/`.
+3.  **Missing Empty Source Directories:** It's also possible that standard empty `java` or `kotlin` source directories (e.g., `app/src/main/java`, `app/src/debug/java`, `app/src/debug/kotlin`) are genuinely missing from the repository, even if code is primarily in Kotlin. Gradle typically expects these to exist.
+
+**Relevant Files/Locations for Inspection:**
+*   **GitHub Repository:** `https://github.com/pofarshad/MarFa` (For analyzing the actual file structure).
+*   **GitHub Actions Workflow File:** Look for files under `https://github.com/pofarshad/MarFa/tree/main/.github/workflows/` (e.g., `android.yml` or similar).
+*   **Project Gradle Files:** `settings.gradle` and `app/build.gradle` within the repository.
+*   **Source Code Directories:** `app/src/main/kotlin`, `app/src/main/java`, `app/src/debug/kotlin`, `app/src/debug/java`.
+
+**Instructions/Request for AI Agent:**
+1.  **Analyze the repository structure** available at the provided URL.
+2.  **Confirm the nesting issue:** Determine if the Android project root (containing `app/`, `settings.gradle`, etc.) is indeed inside an extra `MarFa` directory within the Git repository.
+3.  **Check for missing source directories:** Verify if `app/src/main/java`, `app/src/debug/java`, or `app/src/debug/kotlin` are absent.
+4.  **Propose a solution:**
+    *   **If nesting is the issue:** Advise on the best way to correct the repository's file structure (e.g., `git mv` operations to flatten it) and/or suggest modifications to the GitHub Actions workflow file to include `working-directory` for the `checkout` step or subsequent Gradle commands (though flattening the repo is usually preferred).
+    *   **If missing directories are the issue:** Provide instructions to create the necessary empty source directories.
+    *   **Provide concrete steps/code:** Output specific CLI commands for Git/directory manipulation, or code snippets for modifying the GitHub Actions workflow file (`.yml`).
+5.  **Explain the proposed fix** and why it addresses the `file or directory not found` errors.
