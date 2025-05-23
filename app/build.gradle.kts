@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("jacoco")
+    id("io.gitlab.arturbosch.detekt")
+    id("org.owasp.dependencycheck")
 }
 
 android {
@@ -117,4 +119,16 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+}
+
+// Detekt configuration
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+}
+
+// OWASP Dependency Check configuration
+dependencyCheck {
+    format = "HTML"
+    outputDirectory = "build/reports"
 }
