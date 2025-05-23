@@ -1,0 +1,112 @@
+Post job cleanup.
+In post-action step
+Stopping all Gradle daemons before saving Gradle User Home state
+Stopping Gradle daemons for /home/runner/.gradle/wrapper/dists/gradle-8.6-rc-1-bin/3i5g2mfvh982rgxgr7mlgentf/gradle-8.6-rc-1
+/home/runner/.gradle/wrapper/dists/gradle-8.6-rc-1-bin/3i5g2mfvh982rgxgr7mlgentf/gradle-8.6-rc-1/bin/gradle --stop
+Stopping Daemon(s)
+1 Daemon stopped
+Forcing cache cleanup.
+Cleaning up caches before 1748000627726
+Provision Gradle 8.14.1
+  Warning: Restore Gradle distribution 8.14.1 failed: Error: Cache service responded with 422
+  Gradle distribution 8.14.1 not found in cache. Will download.
+  Downloaded https://services.gradle.org/distributions/gradle-8.14.1-bin.zip to /home/runner/gradle-installations/downloads/gradle-8.14.1-bin.zip (size 137394055)
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Save Gradle distribution 8.14.1 failed: ReserveCacheError: Unable to reserve cache with key gradle-8.14.1, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  /usr/bin/unzip -o -q /home/runner/gradle-installations/downloads/gradle-8.14.1-bin.zip
+  Extracted Gradle 8.14.1 to /home/runner/gradle-installations/installs/gradle-8.14.1
+  Provisioned Gradle executable /home/runner/gradle-installations/installs/gradle-8.14.1/bin/gradle
+/home/runner/gradle-installations/installs/gradle-8.14.1/bin/gradle -g /home/runner/.gradle -I init.gradle --info --no-daemon --no-scan --build-cache -DGITHUB_DEPENDENCY_GRAPH_ENABLED=false noop
+Initialized native services in: /home/runner/.gradle/native
+Initialized jansi services in: /home/runner/.gradle/native
+Welcome to Gradle 8.14.1!
+Here are the highlights of this release:
+ - Java 24 support
+ - GraalVM Native Image toolchain selection
+ - Enhancements to test reporting
+ - Build Authoring improvements
+For more details see https://docs.gradle.org/8.14.1/release-notes.html
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.14.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Starting process 'Gradle build daemon'. Working directory: /home/runner/.gradle/daemon/8.14.1 Command: /usr/lib/jvm/temurin-17-jdk-amd64/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED -XX:MaxMetaspaceSize=384m -XX:+HeapDumpOnOutOfMemoryError -Xms256m -Xmx512m -Dfile.encoding=UTF-8 -Duser.country -Duser.language=en -Duser.variant -cp /home/runner/gradle-installations/installs/gradle-8.14.1/lib/gradle-daemon-main-8.14.1.jar -javaagent:/hom
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 0.975 secs.
+The client will now receive all logging from the daemon (pid: 2441). The daemon log file: /home/runner/.gradle/daemon/8.14.1/daemon-2441.out.log
+Daemon will be stopped at the end of the build 
+Using 4 worker leases.
+Received JVM installation metadata from '/usr/lib/jvm/temurin-17-jdk-amd64': {JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64, JAVA_VERSION=17.0.15, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.15+6, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.15+6, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+Watching the file system is configured to be enabled if available
+Now considering [/home/runner/work/_temp/dummy-cleanup-project] as hierarchies to watch
+File system watching is active
+Caching disabled for Groovy DSL script compilation (cp_init) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling initialization script '/home/runner/work/_temp/dummy-cleanup-project/init.gradle' using SubsetScriptTransformer.
+Caching disabled for Groovy DSL script compilation (init) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling initialization script '/home/runner/work/_temp/dummy-cleanup-project/init.gradle' using BuildScriptTransformer.
+Caching disabled for Groovy DSL script compilation (cp_init) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling initialization script '/home/runner/.gradle/init.d/gradle-actions.build-result-capture.init.gradle' using SubsetScriptTransformer.
+Caching disabled for Groovy DSL script compilation (init) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling initialization script '/home/runner/.gradle/init.d/gradle-actions.build-result-capture.init.gradle' using BuildScriptTransformer.
+Caching disabled for Groovy DSL script compilation (cp_init) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling initialization script '/home/runner/.gradle/init.d/gradle-actions.github-dependency-graph.init.gradle' using SubsetScriptTransformer.
+Caching disabled for Groovy DSL script compilation (init) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling initialization script '/home/runner/.gradle/init.d/gradle-actions.github-dependency-graph.init.gradle' using BuildScriptTransformer.
+Caching disabled for Groovy DSL script compilation (cp_init) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling initialization script '/home/runner/.gradle/init.d/gradle-actions.inject-develocity.init.gradle' using SubsetScriptTransformer.
+Caching disabled for Groovy DSL script compilation (init) because:
+  Build cache is disabled
+  Not worth caching.
+Compiling initialization script '/home/runner/.gradle/init.d/gradle-actions.inject-develocity.init.gradle' using BuildScriptTransformer.
+Starting Build
+FAILURE: Build failed with an exception.
+* Where:
+Initialization script '/home/runner/work/_temp/dummy-cleanup-project/init.gradle' line: 8
+* What went wrong:
+Cannot get the value of write-only property 'removeUnusedEntriesOlderThan' for object of type org.gradle.api.internal.cache.DefaultCacheConfigurations$DefaultCacheResourceConfiguration.
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+BUILD FAILED in 6s
+Error: Gradle build failed: see console output for details
+Caching Gradle state
+  Caching generated-gradle-jars with path '/home/runner/.gradle/caches/8.6-rc-1/generated-gradle-jars/gradle-api-8.6-rc-1.jar' and cache key: gradle-generated-gradle-jars-v1-f989647cdb7b40d347b3960c8775d6b4
+  Caching wrapper-zips with path '/home/runner/.gradle/wrapper/dists/gradle-8.6-rc-1-bin/3i5g2mfvh982rgxgr7mlgentf' and cache key: gradle-wrapper-zips-v1-0138b4a7acd3a15d048727c1784ce4b2
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Caching dependencies with path '/home/runner/.gradle/caches/modules-*/files-*/*/*/*/*' and cache key: gradle-dependencies-v1-6fa0315c989ae1d82f3998e3e2a68e13
+  Caching instrumented-jars with path '/home/runner/.gradle/caches/jars-*/*/' and cache key: gradle-instrumented-jars-v1-ad25cd7bd88403c8c3a0a10d0c520f84
+  Caching kotlin-dsl with path '/home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/
+  /home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/' and cache key: gradle-kotlin-dsl-v1-e95ee3dfa926da0b0f3c0e8fdeb542d0
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Caching groovy-dsl with path '/home/runner/.gradle/caches/*/groovy-dsl/*/' and cache key: gradle-groovy-dsl-v1-858cd47c8417f19f6e0f2942c9e74958
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Failed to save cache entry with path '/home/runner/.gradle/caches/jars-*/*/' and key: gradle-instrumented-jars-v1-ad25cd7bd88403c8c3a0a10d0c520f84: ReserveCacheError: Unable to reserve cache with key gradle-instrumented-jars-v1-ad25cd7bd88403c8c3a0a10d0c520f84, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Failed to save cache entry with path '/home/runner/.gradle/wrapper/dists/gradle-8.6-rc-1-bin/3i5g2mfvh982rgxgr7mlgentf' and key: gradle-wrapper-zips-v1-0138b4a7acd3a15d048727c1784ce4b2: ReserveCacheError: Unable to reserve cache with key gradle-wrapper-zips-v1-0138b4a7acd3a15d048727c1784ce4b2, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Failed to save cache entry with path '/home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/
+  /home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/' and key: gradle-kotlin-dsl-v1-e95ee3dfa926da0b0f3c0e8fdeb542d0: ReserveCacheError: Unable to reserve cache with key gradle-kotlin-dsl-v1-e95ee3dfa926da0b0f3c0e8fdeb542d0, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Failed to save cache entry with path '/home/runner/.gradle/caches/*/groovy-dsl/*/' and key: gradle-groovy-dsl-v1-858cd47c8417f19f6e0f2942c9e74958: ReserveCacheError: Unable to reserve cache with key gradle-groovy-dsl-v1-858cd47c8417f19f6e0f2942c9e74958, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Failed to save cache entry with path '/home/runner/.gradle/caches/8.6-rc-1/generated-gradle-jars/gradle-api-8.6-rc-1.jar' and key: gradle-generated-gradle-jars-v1-f989647cdb7b40d347b3960c8775d6b4: ReserveCacheError: Unable to reserve cache with key gradle-generated-gradle-jars-v1-f989647cdb7b40d347b3960c8775d6b4, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Caching transforms with path '/home/runner/.gradle/caches/transforms-4/*/
+  /home/runner/.gradle/caches/*/transforms/*/' and cache key: gradle-transforms-v1-034c463898ea45961d9c04dc5d60fef0
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt
+  Failed to save cache entry with path '/home/runner/.gradle/caches/modules-*/files-*/*/*/*/*' and key: gradle-dependencies-v1-6fa0315c989ae1d82f3998e3e2a68e13: ReserveCacheError: Unable to reserve cache with key gradle-dependencies-v1-6fa0315c989ae1d82f3998e3e2a68e13, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Failed to save cache entry with path '/home/runner/.gradle/caches/transforms-4/*/
+  /home/runner/.gradle/caches/*/transforms/*/' and key: gradle-transforms-v1-034c463898ea45961d9c04dc5d60fef0: ReserveCacheError: Unable to reserve cache with key gradle-transforms-v1-034c463898ea45961d9c04dc5d60fef0, another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+  Caching Gradle User Home with cache key: gradle-home-v1|Linux|build[5df42585ae8f8da228c604b8b4e8707c]-f8265bdc5648ab4152bdcf1a4890fde791d2061c
+  /usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/MarFa/MarFa --files-from manifest.txt --use-compress-program zstdmt

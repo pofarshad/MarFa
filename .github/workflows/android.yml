@@ -22,32 +22,35 @@ jobs:
         java-version: '17'
         
     - name: Setup Gradle with Enhanced Caching
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        gradle-home-cache-cleanup: true
+        gradle-home-cache-cleanup: false
+        cache-disabled: false
+        gradle-version: wrapper
     
     - name: Grant Execute Permission for Gradlew
       run: chmod +x gradlew
       
     - name: Build MarFaNet APK
-      run: ./gradlew build
+      run: ./gradlew build --no-daemon --no-build-cache
       
     - name: Run Tests
-      run: ./gradlew test
+      run: ./gradlew test --no-daemon
       
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
+      if: success()
       with:
-        name: marfanet-debug-apk
+        name: marfanet-debug-apk-${{ github.run_number }}
         path: app/build/outputs/apk/debug/app-debug.apk
         retention-days: 30
         
     - name: Upload Release APK (if exists)
       uses: actions/upload-artifact@v4
-      if: hashFiles('app/build/outputs/apk/release/app-release.apk') != ''
+      if: success() && hashFiles('app/build/outputs/apk/release/app-release.apk') != ''
       with:
-        name: marfanet-release-apk
+        name: marfanet-release-apk-${{ github.run_number }}
         path: app/build/outputs/apk/release/app-release.apk
         retention-days: 30
         

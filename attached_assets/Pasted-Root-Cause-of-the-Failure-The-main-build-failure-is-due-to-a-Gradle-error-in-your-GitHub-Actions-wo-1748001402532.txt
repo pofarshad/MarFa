@@ -1,0 +1,58 @@
+Root Cause of the Failure
+The main build failure is due to a Gradle error in your GitHub Actions workflow:
+
+Code
+FAILURE: Build failed with an exception.
+* Where:
+Initialization script '/home/runner/work/_temp/dummy-cleanup-project/init.gradle' line: 8
+* What went wrong:
+Cannot get the value of write-only property 'removeUnusedEntriesOlderThan' for object of type org.gradle.api.internal.cache.DefaultCacheConfigurations$DefaultCacheResourceConfiguration.
+What this means
+The error is triggered by an initialization script (init.gradle) used during a "post-job cleanup" step of your GitHub Action.
+The script is trying to read the value of a write-only property: removeUnusedEntriesOlderThan on a Gradle internal object. In Gradle, some properties can only be set, not read.
+This usually means the script or an action you’re using is not compatible with this version of Gradle, or is incorrectly implemented.
+Additional Observations
+1. Caching warnings and errors
+You are seeing multiple warnings like:
+
+Code
+ReserveCacheError: Unable to reserve cache with key ... another job may be creating this cache. More details: This legacy service is shutting down, effective April 15, 2025.
+These are not the cause of your build failure, but they do point to a coming problem:
+GitHub is sunsetting its legacy cache service. You should update your caching actions to use the new service: See details and migration instructions
+These errors are warnings about caching and do not break your build directly.
+2. Gradle version
+You are using both Gradle 8.6-rc-1 and Gradle 8.14.1 in your workflow.
+There may be a version mismatch or an outdated script not compatible with Gradle 8.14.1.
+How to Fix
+A. Fix the Gradle init script error
+Locate the script
+The error is in: /home/runner/work/_temp/dummy-cleanup-project/init.gradle, line 8.
+If you’re using a third-party GitHub Action for Gradle or custom scripts, update them to the latest version.
+If this is your own script, check any line that refers to removeUnusedEntriesOlderThan.
+Do not try to read this property
+Set this property if needed, but never read it.
+Example (OK):
+Groovy
+cacheConfig.removeUnusedEntriesOlderThan = 30
+Example (problematic!):
+Groovy
+println cacheConfig.removeUnusedEntriesOlderThan // <-- Do not do this
+Update Gradle Action
+Ensure you are using the latest gradle/actions and that any referenced scripts/plugins are compatible with your Gradle version.
+B. Update GitHub Actions Cache
+Migrate your workflow to use the new cache service before April 15, 2025.
+Update actions to use the latest actions/cache.
+Super Prompt Summary
+Your build failed because your Gradle initialization script tried to read a write-only property (removeUnusedEntriesOlderThan). This is not permitted and causes the build to fail. Fix the script so it only sets this property, not reads it.
+
+Secondary warnings about cache service deprecation do not cause the build to fail, but you should update your workflow soon to use the new GitHub cache service.
+
+References:
+
+Gradle documentation: Build Cache
+GitHub Actions Cache service migration
+Actionable steps:
+
+Fix the init.gradle script to stop reading write-only properties.
+Update any actions or scripts for Gradle to be compatible with Gradle 8.14.1.
+Migrate to the new GitHub Actions cache service.
