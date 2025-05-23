@@ -37,6 +37,17 @@ jobs:
     - name: Grant Execute Permission for Gradlew
       run: chmod +x gradlew
       
+    - name: Debug - List Project Structure
+      run: |
+        echo "=== Project Root Contents ==="
+        ls -la
+        echo "=== App Module Structure ==="
+        ls -la app/src/
+        echo "=== Main Source Directory ==="
+        ls -la app/src/main/
+        echo "=== Debug Source Directory ==="
+        ls -la app/src/debug/ || echo "Debug directory not found"
+        
     - name: Build MarFaNet APK
       run: ./gradlew build
       
