@@ -1,0 +1,56 @@
+Here’s how I’d decide—and what I’d do next—given where we are and the goals you’ve set.
+
+Strategy	When to pick it	Concrete actions right now	Why it helps
+A. Let the local build finish (one-time warm-up)	You need an immediate smoke-test before pushing, and you’re on a reasonably fast machine (≥16 GB RAM, SSD).	• Keep the console open—first-time dependency download can easily be 5-10 min.
+• Add --scan to ./gradlew assembleDebug so Gradle Build Scan tells you where time went.	Once the cache is populated, subsequent local builds drop to <1 min; handy for rapid feature tweaks.
+B. Push and let GitHub Actions build (recommended)	You’re comfortable letting CI be the single source of truth and you’ve already wired AutoFixBot for rapid feedback.	• Commit & push the ci/module-structure-fix branch.
+• CI will build on beefy GitHub runners; first pass ≈ 5–7 min.
+• AutoFixBot will PR any fix it can infer; you just review & merge.	Keeps your laptop free, guarantees the same environment as future release builds, and every green run is an artefact you can share.
+C. Hybrid—light local validation, heavy CI	You want basic local confidence but don’t need the full APK.	• Run ./gradlew help or ./gradlew :app:compileDebugKotlin (fast, no packaging).
+• Push once these pass.	Catches obvious syntax/config errors locally, delegates heavy lifting to CI.
+
+Why I lean toward Option B right now
+You already fixed the module layout and wrapper path—the key blockers CI was tripping on.
+
+GitHub cache priming: once CI downloads the Android SDK and Gradle dependencies, subsequent runs re-use the cache, so future PRs will build in ~2 minutes.
+
+AutoFixBot is designed to shine in this path—your human review remains the safety net.
+
+Extra CI speed tweaks (do once, reap forever)
+Gradle build-cache & dependency cache actions
+
+yaml
+Copy
+Edit
+- uses: gradle/actions/setup-gradle@v3
+- uses: actions/cache@v3
+  with:
+    path: ~/.gradle/caches
+    key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+Split the workflow: one job for static analysis (lint detekt), one for assembleRelease; they run in parallel.
+
+Enable configuration-on-demand & build-cache in gradle.properties
+
+ini
+Copy
+Edit
+org.gradle.configureondemand=true
+org.gradle.caching=true
+Immediate next step I’d take
+bash
+Copy
+Edit
+git checkout ci/module-structure-fix   # if not already
+git add .
+git commit -m "ci: final module layout and manifest alignment"
+git push -u origin ci/module-structure-fix
+Then open the PR and watch:
+
+CI/CD Pipeline → should finish < 7 min, running lint/detekt/tests.
+
+Build APK → artefact MarfaNet-1.1.0-alpha1-universal.apk appears.
+
+AutoFixBot → comments or PR if something still needs patching.
+
+Once all checks are green, squash-merge and tag v1.1.0-alpha1.
+That will publish the release draft automatically, and you can paste the announcement you finalised.

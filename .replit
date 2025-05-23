@@ -14,20 +14,11 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "MarFaNet Dashboard"
+args = "Enhanced AutoFixBot"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Enhanced AutoFixBot"
-
-[[workflows.workflow]]
-name = "MarFaNet Dashboard"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python app.py"
-waitForPort = 5000
+args = "MarFaNet Dashboard"
 
 [[workflows.workflow]]
 name = "Enhanced AutoFixBot"
@@ -64,6 +55,15 @@ NXh3BX2kyPFOg025pSG7g3lVziENi9kn85dzIOSlWwPGvMRU9nAwhd8ye9nVyXdW
 2EovNdgHySwcVEzPOiQL/OKx7tgs84aRZY6TW/2oVMwUnKjve7BsQJk=
 -----END RSA PRIVATE KEY-----\" GITHUB_WEBHOOK_SECRET=\"7548540889:AAF8ldE2rJS1eU9bqzjW6VMnDQv6PXVCqKE\" node enhanced-server.js"""
 waitForPort = 3000
+
+[[workflows.workflow]]
+name = "MarFaNet Dashboard"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python app.py"
+waitForPort = 5000
 
 [deployment]
 run = ["sh", "-c", "python app.py"]
