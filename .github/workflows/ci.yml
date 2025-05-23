@@ -71,7 +71,7 @@ jobs:
       uses: gradle/gradle-build-action@v2
       
     - name: Run Unit Tests
-      run: ./gradlew testDebugUnitTest jacocoTestReport
+      run: ./gradlew testDebugUnitTest createDebugCoverageReport
       
     - name: Upload Test Results
       if: always()
