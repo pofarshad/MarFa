@@ -61,8 +61,11 @@ class RoutingRulesUpdateWorker(
             val rulesFile = File(rulesDir, RULES_FILENAME)
             val tempFile = File(rulesDir, "$RULES_FILENAME.tmp")
 
+            // Use test URL from input data if provided, otherwise use default
+            val downloadUrl = inputData.getString("test_url") ?: RULES_URL
+            
             // Download rules file
-            downloadFile(RULES_URL, tempFile)
+            downloadFile(downloadUrl, tempFile)
 
             // Validate file integrity
             val downloadedHash = calculateSHA256(tempFile)

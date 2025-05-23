@@ -1,0 +1,47 @@
+Here's what you should focus on next, ranging from immediate priorities to future development:
+
+1. Immediate Priority: Get Your First Working APK!
+Action: In your GitHub Actions workflow, after the testDebugUnitTest task, you should typically have a task (or a series of tasks) that assembles the debug or release APK.
+Look for tasks like :app:assembleDebug or :app:bundleRelease (or similar for .apk generation if not already done automatically by build).
+Why: You've built all the components successfully. It's time to get a tangible output. This will allow you to:
+Manually test the app on a device or emulator. This is crucial to verify that the core functionality you've integrated (split-tunneling, WireGuard, real-time stats overlay) actually works from an end-user perspective.
+Share the APK with others for early feedback.
+Celebrate! You've earned it.
+2. Next Critical Step: Fix the Failing Tests
+Action: As discussed, the tests are failing due to AssertionError and IllegalStateException within RoutingRulesUpdateWorkerTest.kt.
+Local Debugging: This is where you, as the human developer, shine.
+Open the project in Android Studio.
+Navigate to app/src/test/kotlin/net/marfanet/android/worker/RoutingRulesUpdateWorkerTest.kt.
+Set breakpoints at the lines indicated in the log (151, 69, 130, 46 for AssertionError and 185 for IllegalStateException).
+Run the tests in debug mode (right-click on the test file or method and select "Debug").
+Step through the code, inspect variable values, and understand why the actual result isn't matching the expected result, or why an illegal state is being reached.
+Possible causes for test failures:
+Bugs in your application logic: The RoutingRulesUpdateWorker might not be behaving as expected.
+Outdated test logic: The tests might be written for the original "Hiddify" behavior and haven't been updated to reflect the "MarFaNet" specifications (e.g., changes to routing rules, file handling, network interaction).
+Incorrect test setup/mocking: Your tests might not be properly setting up the environment for the Worker, leading to unexpected behavior.
+Why: Passing tests are your first line of defense against bugs. They ensure that your features work as intended and that future changes don't break existing functionality (prevent regressions). A green CI build is a strong indicator of code quality and stability.
+3. Quality Improvements (Ongoing):
+Address Old Warnings:
+w: file:///home/runner/work/MarFa/MarFa/build.gradle.kts:8:24: 'getter for buildDir: File!' is deprecated. (Resolve buildDir usage)
+WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated. (Migrate BuildConfig)
+'scaledDensity: Float' is deprecated. Deprecated in Java (Update usage of scaledDensity in AccessibilityManager.kt)
+Parameter 'response' is never used, could be renamed to _ (Minor cleanup in RuleUpdateManager.kt)
+'versionCode: Int' is deprecated. (Update usage of versionCode)
+These won't break your build immediately, but it's good practice to keep your codebase free of deprecations and warnings.
+Improve CI Caching:
+Recall the Failed to save cache entry... This legacy service is shutting down, effective April 15, 2025. warnings from GitHub Actions. This indicates your Gradle cache isn't effectively working.
+Action: Investigate and update your actions/cache steps in your GitHub Actions workflow to use the latest recommended practices. This will significantly speed up future CI builds.
+Code Review and Refactoring: Once the tests are green, consider reviewing the RoutingRulesUpdateWorker and related code. Are there ways to make it more readable, efficient, or maintainable?
+4. Feature Development:
+Once you have a stable, passing build and tests that provide confidence, then you can fully dive into developing new features for MarFaNet:
+
+Split-tunneling capabilities: Implement and refine these.
+WireGuard improvements: Continue to optimize and integrate.
+Real-time stats overlay: Enhance its functionality and presentation.
+Any other planned features for MarFaNet v1.1.0-alpha1.
+In summary:
+
+Generate and Manually Test the APK.
+Locally Debug and Fix the Failing Tests (this is your immediate technical challenge).
+Address outstanding Warnings and CI Caching.
+Then, Continue Developing New Features!

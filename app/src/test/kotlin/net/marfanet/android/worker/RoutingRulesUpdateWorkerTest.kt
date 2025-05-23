@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.*
 import androidx.work.testing.TestListenableWorkerBuilder
+import androidx.work.workDataOf
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -50,7 +51,9 @@ class RoutingRulesUpdateWorkerTest {
             .setBody(testData)
             .setResponseCode(200))
         
+        val inputData = workDataOf("test_url" to mockWebServer.url("/").toString())
         val worker = TestListenableWorkerBuilder<RoutingRulesUpdateWorker>(context)
+            .setInputData(inputData)
             .build()
         
         val result = worker.doWork()
