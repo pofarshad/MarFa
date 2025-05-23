@@ -2,61 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <!-- Baseline generated for MarFaNet v1.1.0-alpha1 -->
-    <!-- This temporarily suppresses all current code quality issues -->
-    <ID>TooManyFunctions:MainActivity.kt$MainActivity</ID>
-    <ID>ComplexMethod:MainActivity.kt$MainActivity$onCreate</ID>
-    <ID>LongMethod:MainActivity.kt$MainActivity$onCreate</ID>
-    <ID>LongParameterList:MainActivity.kt$MainActivity</ID>
-    <ID>MagicNumber:MainActivity.kt$MainActivity</ID>
-    <ID>FunctionNaming:MainActivity.kt</ID>
-    <ID>ClassNaming:MainActivity.kt</ID>
-    <ID>VariableNaming:MainActivity.kt</ID>
-    <ID>PropertyNaming:MainActivity.kt</ID>
-    <ID>PackageNaming:MainActivity.kt</ID>
-    <ID>TopLevelPropertyNaming:MainActivity.kt</ID>
-    <ID>EnumNaming:MainActivity.kt</ID>
-    <ID>ObjectPropertyNaming:MainActivity.kt</ID>
-    <ID>ConstructorParameterNaming:MainActivity.kt</ID>
-    <ID>ForbiddenComment:MainActivity.kt</ID>
-    <ID>MaxLineLength:MainActivity.kt</ID>
-    <ID>NoTabs:MainActivity.kt</ID>
-    <ID>TrailingWhitespace:MainActivity.kt</ID>
-    <ID>FinalNewline:MainActivity.kt</ID>
-    <ID>MultiLineIfElse:MainActivity.kt</ID>
-    <ID>SpacingBetweenPackageAndImports:MainActivity.kt</ID>
-    <ID>SpacingAroundKeyword:MainActivity.kt</ID>
-    <ID>SpacingAroundOperators:MainActivity.kt</ID>
-    <ID>SpacingAroundParens:MainActivity.kt</ID>
-    <ID>SpacingAroundAngleBrackets:MainActivity.kt</ID>
-    <ID>SpacingAroundCurly:MainActivity.kt</ID>
-    <ID>SpacingAroundDot:MainActivity.kt</ID>
-    <ID>SpacingAroundDoubleColon:MainActivity.kt</ID>
-    <ID>SpacingAroundUnaryOperators:MainActivity.kt</ID>
-    <ID>SpacingAroundComma:MainActivity.kt</ID>
-    <ID>SpacingAroundRange:MainActivity.kt</ID>
-    <ID>ImportOrdering:MainActivity.kt</ID>
-    <ID>Filename:MainActivity.kt</ID>
-    <ID>MatchingDeclarationName:MainActivity.kt</ID>
-    <ID>ClassOrdering:MainActivity.kt</ID>
-    <ID>WildcardImport:MainActivity.kt</ID>
-    <ID>ForbiddenImport:MainActivity.kt</ID>
-    <ID>NewLineAtEndOfFile:MainActivity.kt</ID>
-    <ID>IndentationSize:MainActivity.kt</ID>
-    <ID>ParameterWrapping:MainActivity.kt</ID>
-    <ID>ChainWrapping:MainActivity.kt</ID>
-    <ID>ArgumentListWrapping:MainActivity.kt</ID>
-    <ID>Wrapping:MainActivity.kt</ID>
-    <ID>SpacingBetweenDeclarationsWithComments:MainActivity.kt</ID>
-    <ID>SpacingBetweenDeclarationsWithAnnotations:MainActivity.kt</ID>
-    <ID>AnnotationOnSeparateLine:MainActivity.kt</ID>
-    <ID>AnnotationSpacing:MainActivity.kt</ID>
-    <ID>BlockCommentInitialStarAlignment:MainActivity.kt</ID>
-    <ID>CommentSpacing:MainActivity.kt</ID>
-    <ID>CommentWrapping:MainActivity.kt</ID>
-    <ID>DiscouragedCommentLocation:MainActivity.kt</ID>
-    <ID>KdocWrapping:MainActivity.kt</ID>
-    <ID>StringTemplate:MainActivity.kt</ID>
-    <ID>StringTemplateIndent:MainActivity.kt</ID>
+    <!-- MarFaNet v1.1.0-alpha1 Detekt Baseline -->
+    <!-- Temporarily suppresses existing code quality issues -->
   </CurrentIssues>
 </SmellBaseline>
