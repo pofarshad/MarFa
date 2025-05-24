@@ -6,6 +6,9 @@ plugins {
     id("jacoco")
     id("io.gitlab.arturbosch.detekt")
     id("org.owasp.dependencycheck")
+    id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -32,7 +35,8 @@ android {
         debug {
             isMinifyEnabled = false
             isDebuggable = true
-            isTestCoverageEnabled = true
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
         }
     }
 
@@ -47,7 +51,7 @@ android {
 
     buildFeatures {
         compose = true
-        buildConfig = false
+        buildConfig = true
     }
 
     composeOptions {
@@ -103,9 +107,16 @@ dependencies {
     // AndroidX WorkManager
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     
-    // Dependency Injection (Koin)
-    implementation("io.insert-koin:koin-android:3.5.3")
-    implementation("io.insert-koin:koin-androidx-workmanager:3.5.3")
+    // Dependency Injection (Hilt)
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+    implementation("androidx.hilt:hilt-work:1.1.0")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
+    
+    // Kotlin Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     
     // Testing
     testImplementation("junit:junit:4.13.2")
