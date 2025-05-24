@@ -112,6 +112,15 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.50")
     implementation("androidx.hilt:hilt-work:1.1.0")
     kapt("androidx.hilt:hilt-compiler:1.1.0")
+    // For Hilt testing
+    testImplementation("com.google.dagger:hilt-android-testing:2.50")
+    kaptTest("com.google.dagger:hilt-android-compiler:2.50") // For unit tests
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.50")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.50") // For instrumented tests
+
+    // AssistedInject for Dagger
+    implementation("com.squareup.inject:assisted-inject-annotations-dagger2:0.6.0")
+    kapt("com.squareup.inject:assisted-inject-processor-dagger2:0.6.0")
     
     // Kotlin Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
@@ -136,7 +145,10 @@ dependencies {
 
 // Detekt configuration
 detekt {
+    config = files("detekt.yml")
     baseline = file("detekt-baseline.xml")
+    buildUponDefaultConfig = true
+    allRules = false
 }
 
 // OWASP Dependency Check configuration

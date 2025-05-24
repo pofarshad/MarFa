@@ -292,20 +292,22 @@ class XrayCore @Inject constructor(
         val streamSettings = if (profile.network == "ws") {
             StreamSettings(
                 network = "ws",
-                security = if (profile.tls) "tls" else "none",
+                security = if (profile.tls == true) "tls" else "none",
                 wsSettings = mapOf(
-                    "path" to profile.path,
-                    "headers" to mapOf("Host" to profile.host)
+                    "path" to kotlinx.serialization.json.JsonPrimitive(profile.path ?: ""),
+                    "headers" to kotlinx.serialization.json.JsonObject(mapOf(
+                        "Host" to kotlinx.serialization.json.JsonPrimitive(profile.host ?: "")
+                    ))
                 ),
-                tlsSettings = if (profile.tls) mapOf(
-                    "serverName" to profile.sni,
-                    "allowInsecure" to profile.allowInsecure
+                tlsSettings = if (profile.tls == true) mapOf(
+                    "serverName" to kotlinx.serialization.json.JsonPrimitive(profile.sni ?: ""),
+                    "allowInsecure" to kotlinx.serialization.json.JsonPrimitive(profile.allowInsecure == true)
                 ) else null
             )
         } else {
             StreamSettings(
-                network = profile.network,
-                security = if (profile.tls) "tls" else "none"
+                network = profile.network ?: "tcp",
+                security = if (profile.tls == true) "tls" else "none"
             )
         }
         

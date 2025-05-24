@@ -27,7 +27,7 @@ import org.junit.runners.Suite
     SubscriptionParserTest::class,
     RoutingRulesUpdateWorkerTest::class
 )
-class MarFaNetTestSuite {
+class TestSuite {
     
     companion object {
         const val TEST_SUITE_VERSION = "1.1.0-alpha1"
@@ -70,30 +70,6 @@ class MarFaNetTestSuite {
          *    - Network failure handling
          *    - Periodic scheduling
          *    - Progress reporting
-         */
-    }
-}
-
-/**
- * Integration test suite for UI and end-to-end testing
- */
-@RunWith(Suite::class)
-@Suite.SuiteClasses(
-    MainActivityUITest::class
-)
-class MarFaNetUITestSuite {
-    
-    companion object {
-        /**
-         * UI Test coverage:
-         * 
-         * 1. Main Activity UI (MainActivityUITest)
-         *    - Connection state visualization
-         *    - Button interactions
-         *    - Real-time status updates
-         *    - Statistics display
-         *    - Navigation elements
-         *    - Error state handling
          */
     }
 }

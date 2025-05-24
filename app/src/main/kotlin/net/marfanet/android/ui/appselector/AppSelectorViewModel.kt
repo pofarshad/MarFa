@@ -48,12 +48,12 @@ class AppSelectorViewModel : ViewModel() {
         }
     }
     
-    fun updateRuleType(packageName: String, ruleType: AppRule.RuleType) {
+    fun updateRuleType(packageName: String, action: String) {
         viewModelScope.launch {
             val currentState = _uiState.value
             val updatedApps = currentState.allApps.map { app ->
                 if (app.packageName == packageName) {
-                    app.copy(ruleType = ruleType)
+                    app.copy(action = action)
                 } else {
                     app
                 }
@@ -73,14 +73,14 @@ class AppSelectorViewModel : ViewModel() {
             try {
                 // Sample apps for demonstration
                 val sampleApps = listOf(
-                    AppRule("com.android.chrome", "Chrome Browser", false),
-                    AppRule("com.whatsapp", "WhatsApp", false),
-                    AppRule("com.instagram.android", "Instagram", false),
-                    AppRule("com.telegram.messenger", "Telegram", false),
-                    AppRule("com.spotify.music", "Spotify", false),
-                    AppRule("com.netflix.mediaclient", "Netflix", false),
-                    AppRule("com.twitter.android", "Twitter", false),
-                    AppRule("com.facebook.katana", "Facebook", false)
+                    AppRule("1", "com.android.chrome", "Chrome Browser", "direct"),
+                    AppRule("2", "com.whatsapp", "WhatsApp", "direct"),
+                    AppRule("3", "com.instagram.android", "Instagram", "direct"),
+                    AppRule("4", "com.telegram.messenger", "Telegram", "direct"),
+                    AppRule("5", "com.spotify.music", "Spotify", "direct"),
+                    AppRule("6", "com.netflix.mediaclient", "Netflix", "direct"),
+                    AppRule("7", "com.twitter.android", "Twitter", "direct"),
+                    AppRule("8", "com.facebook.katana", "Facebook", "direct")
                 )
                 
                 _uiState.value = _uiState.value.copy(

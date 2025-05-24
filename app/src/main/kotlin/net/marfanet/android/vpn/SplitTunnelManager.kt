@@ -30,15 +30,15 @@ class SplitTunnelManager @Inject constructor(
         val enabledRules = getEnabledRules()
         
         val bypassApps = enabledRules
-            .filter { it.ruleType == AppRule.RuleType.BYPASS }
+            .filter { it.action == "bypass" }
             .map { it.packageName }
             
         val tunnelApps = enabledRules
-            .filter { it.ruleType == AppRule.RuleType.TUNNEL }
+            .filter { it.action == "tunnel" }
             .map { it.packageName }
             
         val blockedApps = enabledRules
-            .filter { it.ruleType == AppRule.RuleType.BLOCK }
+            .filter { it.action == "block" }
             .map { it.packageName }
         
         return XrayRoutingConfig(
