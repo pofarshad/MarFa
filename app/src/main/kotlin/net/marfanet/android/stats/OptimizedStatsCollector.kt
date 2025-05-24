@@ -22,8 +22,8 @@ class OptimizedStatsCollector @Inject constructor(
     private val batteryManager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
     private val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
     
-    private val _statsFlow = MutableStateFlow(VpnStats())
-    val statsFlow: StateFlow<VpnStats> = _statsFlow.asStateFlow()
+    private val _statsFlow = MutableStateFlow(VpnStatsModel())
+    val statsFlow: StateFlow<VpnStatsModel> = _statsFlow.asStateFlow()
     
     // Adaptive polling intervals based on battery and performance
     private var currentPollInterval = DEFAULT_POLL_INTERVAL
@@ -71,7 +71,7 @@ class OptimizedStatsCollector @Inject constructor(
     /**
      * Collect current VPN statistics with memory optimization
      */
-    private suspend fun collectStats(): VpnStats = withContext(Dispatchers.IO) {
+    private suspend fun collectStats(): VpnStatsModel = withContext(Dispatchers.IO) {
         val currentTime = System.currentTimeMillis()
         
         // Measure network speeds efficiently
@@ -84,7 +84,7 @@ class OptimizedStatsCollector @Inject constructor(
             _statsFlow.value.rtt
         }
         
-        VpnStats(
+        VpnStatsModel(
             rtt = rtt,
             uploadSpeed = uploadSpeed,
             downloadSpeed = downloadSpeed,
@@ -97,7 +97,7 @@ class OptimizedStatsCollector @Inject constructor(
     /**
      * Adapt polling interval based on conditions
      */
-    private fun adaptPollingInterval(stats: VpnStats) {
+    private fun adaptPollingInterval(stats: VpnStatsModel) {
         // Adjust based on battery level
         if (stats.batteryLevel <= BATTERY_THRESHOLD || stats.isLowPowerMode) {
             currentPollInterval = maxOf(currentPollInterval, 2000L)

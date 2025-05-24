@@ -13,8 +13,8 @@ import kotlin.system.measureTimeMillis
  */
 class VpnStatsCollector {
     
-    private val _statsState = MutableStateFlow(VpnStats())
-    val statsState: StateFlow<VpnStats> = _statsState.asStateFlow()
+    private val _statsState = MutableStateFlow(VpnStatsModel())
+    val statsState: StateFlow<VpnStatsModel> = _statsState.asStateFlow()
     
     private var collectionJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -50,12 +50,12 @@ class VpnStatsCollector {
     /**
      * Collect current VPN statistics
      */
-    private suspend fun collectCurrentStats(): VpnStats {
+    private suspend fun collectCurrentStats(): VpnStatsModel {
         return withContext(Dispatchers.IO) {
             val rtt = measureRtt()
             val (uploadSpeed, downloadSpeed) = measureSpeeds()
             
-            VpnStats(
+            VpnStatsModel(
                 rtt = rtt,
                 uploadSpeed = uploadSpeed,
                 downloadSpeed = downloadSpeed,

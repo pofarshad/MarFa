@@ -4,7 +4,7 @@ package net.marfanet.android.stats
  * VPN Statistics Data Model
  * Shared data class for VPN statistics across different collectors
  */
-data class VpnStats(
+data class VpnStatsModel(
     val rtt: Long = 0L,
     val uploadSpeed: Long = 0L,
     val downloadSpeed: Long = 0L,
