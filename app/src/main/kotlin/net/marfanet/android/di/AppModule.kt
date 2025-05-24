@@ -8,7 +8,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import net.marfanet.android.logging.ConnectionLogger
 import net.marfanet.android.stats.OptimizedStatsCollector
+import net.marfanet.android.stats.VpnStatsCollector
 import net.marfanet.android.vpn.ConnectionManager
+import net.marfanet.android.xray.XrayCore
+import net.marfanet.android.xray.XrayConfigBuilder
 import javax.inject.Singleton
 
 @Module
@@ -29,6 +32,28 @@ object AppModule {
         @ApplicationContext context: Context
     ): OptimizedStatsCollector {
         return OptimizedStatsCollector(context)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideVpnStatsCollector(
+        @ApplicationContext context: Context
+    ): VpnStatsCollector {
+        return VpnStatsCollector(context)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideXrayCore(
+        @ApplicationContext context: Context
+    ): XrayCore {
+        return XrayCore(context)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideXrayConfigBuilder(): XrayConfigBuilder {
+        return XrayConfigBuilder()
     }
     
     @Provides

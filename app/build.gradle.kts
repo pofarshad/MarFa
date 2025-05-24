@@ -125,6 +125,8 @@ dependencies {
     testImplementation("androidx.test.ext:junit-ktx:1.1.5")
     testImplementation("androidx.work:work-testing:2.9.0")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    testImplementation("io.mockk:mockk:1.13.9")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     kaptTest("androidx.room:room-compiler:2.6.1")
     
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
