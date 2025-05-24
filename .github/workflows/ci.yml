@@ -18,9 +18,17 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      with:
-        path: .
       
+    - name: Debug Repository Structure
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Directory contents:"
+        ls -la
+        echo "App directory check:"
+        ls -la app/ || echo "App directory not found"
+        echo "Gradle wrapper check:"
+        ls -la gradlew || echo "Gradle wrapper not found"
+        
     - name: Setup Java 17
       uses: actions/setup-java@v4
       with:
@@ -63,6 +71,14 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
       
+    - name: Debug Repository Structure
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Directory contents:"
+        ls -la
+        echo "App directory check:"
+        ls -la app/ || echo "App directory not found"
+        
     - name: Setup Java 17
       uses: actions/setup-java@v4
       with:
@@ -152,6 +168,16 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
       
+    - name: Debug Repository Structure
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Directory contents:"
+        ls -la
+        echo "App directory check:"
+        ls -la app/ || echo "App directory not found"
+        echo "Gradle wrapper check:"
+        ls -la gradlew || echo "Gradle wrapper not found"
+        
     - name: Setup Java 17
       uses: actions/setup-java@v4
       with:
